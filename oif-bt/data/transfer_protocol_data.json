@@ -1,0 +1,15 @@
+{
+    "_id" : ObjectId("642aefabc0cb3165f0d2a6ee"),
+    "name" : "HTTP",
+    "isActive" : true
+}
+{
+    "_id" : ObjectId("642aefc6c0cb3165f0d2a6ef"),
+    "name" : "HTTPS",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aefd3c0cb3165f0d2a6f0"),
+    "name" : "MQTT",
+    "isActive" : true
+}

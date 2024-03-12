@@ -1,0 +1,717 @@
+{
+    "_id" : ObjectId("6425e7a0df7dfd23264141b7"),
+    "device_id" : "d9f97191-ff33-4542-bf46-0c79e6cf10d2",
+    "name" : "Device - SLPF Test",
+    "transport" : [
+        {
+            "transport_id" : "e83619b8e4a046f6",
+            "host" : "test.mosquitto.org",
+            "port" : NumberInt(1883),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "oc2/cmd/all",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : "This is my note"
+}
+{
+    "_id" : ObjectId("6425e7a0df7dfd23264141b8"),
+    "device_id" : "cc4c03c3-661c-4244-969d-e927876dd1cc",
+    "name" : "Device 1",
+    "transport" : [
+        {
+            "transport_id" : "7acdb4b3f2384edc",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(1883),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6425e7a0df7dfd23264141b9"),
+    "device_id" : "8cafb22b-727f-4917-834b-741952ccde34",
+    "name" : "Device 2",
+    "transport" : [
+        {
+            "transport_id" : "bce2ebc54d274ff5",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8080),
+            "protocol" : "HTTPS",
+            "pub_sub" : false,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "path" : "",
+            "prod" : false,
+            "resourcetype" : "TransportHTTPS",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6425e7a0df7dfd23264141ba"),
+    "device_id" : "a4b7445f-2111-4b34-b2dc-bd9c59ef8de6",
+    "name" : "Device 3",
+    "transport" : [
+        {
+            "transport_id" : "b4f195d13fbd4c7a",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8080),
+            "protocol" : "HTTPS",
+            "pub_sub" : false,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "path" : "",
+            "prod" : false,
+            "resourcetype" : "TransportHTTPS",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6425e7a0df7dfd23264141bb"),
+    "device_id" : "f3ddebb8-33b6-4d58-8c01-f439ecfa1b93",
+    "name" : "Device 4",
+    "transport" : [
+        {
+            "transport_id" : "2b0f7dfc81804648",
+            "host" : "test.mosq.org",
+            "port" : NumberInt(1883),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6425e7a0df7dfd23264141bc"),
+    "device_id" : "aefa9153-5ec3-4524-a37d-712b9295f345",
+    "name" : "Device 5",
+    "transport" : [
+        {
+            "transport_id" : "bec271a07a014f8f",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8081),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6425e7a0df7dfd23264141bd"),
+    "device_id" : "2c24e4f1-993f-4a66-a3b6-be98706ab8b4",
+    "name" : "Device 6",
+    "transport" : [
+        {
+            "transport_id" : "7dd75680584c4d4e",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8082),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6425e7a0df7dfd23264141be"),
+    "device_id" : "47b70ceb-cb6f-48be-8664-1a474b86f1f0",
+    "name" : "Device 7",
+    "transport" : [
+        {
+            "transport_id" : "419f3aecc58b4e45",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8087),
+            "protocol" : "HTTPS",
+            "pub_sub" : false,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "path" : "",
+            "prod" : false,
+            "resourcetype" : "TransportHTTPS",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f182df7dfd23264141bf"),
+    "device_id" : "d9f97191-ff33-4542-bf46-0c79e6cf10d2",
+    "name" : "Device - SLPF",
+    "transport" : [
+        {
+            "transport_id" : "e83619b8e4a046f6",
+            "host" : "test.mosquitto.org",
+            "port" : NumberInt(1883),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "oc2/cmd/all",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f182df7dfd23264141c0"),
+    "device_id" : "cc4c03c3-661c-4244-969d-e927876dd1cc",
+    "name" : "Device 1",
+    "transport" : [
+        {
+            "transport_id" : "7acdb4b3f2384edc",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(1883),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f182df7dfd23264141c1"),
+    "device_id" : "8cafb22b-727f-4917-834b-741952ccde34",
+    "name" : "Device 2",
+    "transport" : [
+        {
+            "transport_id" : "bce2ebc54d274ff5",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8080),
+            "protocol" : "HTTPS",
+            "pub_sub" : false,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "path" : "",
+            "prod" : false,
+            "resourcetype" : "TransportHTTPS",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f182df7dfd23264141c2"),
+    "device_id" : "a4b7445f-2111-4b34-b2dc-bd9c59ef8de6",
+    "name" : "Device 3",
+    "transport" : [
+        {
+            "transport_id" : "b4f195d13fbd4c7a",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8080),
+            "protocol" : "HTTPS",
+            "pub_sub" : false,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "path" : "",
+            "prod" : false,
+            "resourcetype" : "TransportHTTPS",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f182df7dfd23264141c3"),
+    "device_id" : "f3ddebb8-33b6-4d58-8c01-f439ecfa1b93",
+    "name" : "Device 4",
+    "transport" : [
+        {
+            "transport_id" : "2b0f7dfc81804648",
+            "host" : "test.mosq.org",
+            "port" : NumberInt(1883),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f182df7dfd23264141c4"),
+    "device_id" : "aefa9153-5ec3-4524-a37d-712b9295f345",
+    "name" : "Device 5",
+    "transport" : [
+        {
+            "transport_id" : "bec271a07a014f8f",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8081),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f182df7dfd23264141c5"),
+    "device_id" : "2c24e4f1-993f-4a66-a3b6-be98706ab8b4",
+    "name" : "Device 6",
+    "transport" : [
+        {
+            "transport_id" : "7dd75680584c4d4e",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8082),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f182df7dfd23264141c6"),
+    "device_id" : "47b70ceb-cb6f-48be-8664-1a474b86f1f0",
+    "name" : "Device 7",
+    "transport" : [
+        {
+            "transport_id" : "419f3aecc58b4e45",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8087),
+            "protocol" : "HTTPS",
+            "pub_sub" : false,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "path" : "",
+            "prod" : false,
+            "resourcetype" : "TransportHTTPS",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f186df7dfd23264141c7"),
+    "device_id" : "d9f97191-ff33-4542-bf46-0c79e6cf10d2",
+    "name" : "Device - SLPF",
+    "transport" : [
+        {
+            "transport_id" : "e83619b8e4a046f6",
+            "host" : "test.mosquitto.org",
+            "port" : NumberInt(1883),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "oc2/cmd/all",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f186df7dfd23264141c8"),
+    "device_id" : "cc4c03c3-661c-4244-969d-e927876dd1cc",
+    "name" : "Device 1",
+    "transport" : [
+        {
+            "transport_id" : "7acdb4b3f2384edc",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(1883),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f186df7dfd23264141c9"),
+    "device_id" : "8cafb22b-727f-4917-834b-741952ccde34",
+    "name" : "Device 2",
+    "transport" : [
+        {
+            "transport_id" : "bce2ebc54d274ff5",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8080),
+            "protocol" : "HTTPS",
+            "pub_sub" : false,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "path" : "",
+            "prod" : false,
+            "resourcetype" : "TransportHTTPS",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f186df7dfd23264141ca"),
+    "device_id" : "a4b7445f-2111-4b34-b2dc-bd9c59ef8de6",
+    "name" : "Device 3",
+    "transport" : [
+        {
+            "transport_id" : "b4f195d13fbd4c7a",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8080),
+            "protocol" : "HTTPS",
+            "pub_sub" : false,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "path" : "",
+            "prod" : false,
+            "resourcetype" : "TransportHTTPS",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f186df7dfd23264141cb"),
+    "device_id" : "f3ddebb8-33b6-4d58-8c01-f439ecfa1b93",
+    "name" : "Device 4",
+    "transport" : [
+        {
+            "transport_id" : "2b0f7dfc81804648",
+            "host" : "test.mosq.org",
+            "port" : NumberInt(1883),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f186df7dfd23264141cc"),
+    "device_id" : "aefa9153-5ec3-4524-a37d-712b9295f345",
+    "name" : "Device 5",
+    "transport" : [
+        {
+            "transport_id" : "bec271a07a014f8f",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8081),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f186df7dfd23264141cd"),
+    "device_id" : "2c24e4f1-993f-4a66-a3b6-be98706ab8b4",
+    "name" : "Device 6",
+    "transport" : [
+        {
+            "transport_id" : "7dd75680584c4d4e",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8082),
+            "protocol" : "MQTT",
+            "pub_sub" : true,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "prefix" : "",
+            "responseTopic" : "",
+            "broadcastTopic" : "",
+            "deviceTopic" : "",
+            "profileTopic" : "",
+            "resourcetype" : "TransportMQTT",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}
+{
+    "_id" : ObjectId("6426f186df7dfd23264141ce"),
+    "device_id" : "47b70ceb-cb6f-48be-8664-1a474b86f1f0",
+    "name" : "Device 7",
+    "transport" : [
+        {
+            "transport_id" : "419f3aecc58b4e45",
+            "host" : "127.0.0.1",
+            "port" : NumberInt(8087),
+            "protocol" : "HTTPS",
+            "pub_sub" : false,
+            "serialization" : [
+                "JSON"
+            ],
+            "auth" : {
+                "password" : true,
+                "ca_cert" : false,
+                "client_cert" : false,
+                "client_key" : false
+            },
+            "path" : "",
+            "prod" : false,
+            "resourcetype" : "TransportHTTPS",
+            "username" : "admin"
+        }
+    ],
+    "note" : ""
+}

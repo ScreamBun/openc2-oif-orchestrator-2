@@ -1,0 +1,19 @@
+[GENERAL]
+API_PORT = 8000
+LOG_LEVEL = "INFO"
+
+[MONGO]
+MONGO_URI = "mongodb://127.0.0.1:27017"
+MONGO_DATABASE = "oif-db"
+
+[MQTT]
+ORCHESTROR_ID = "orch_mqtt-2c5bcf5a-4a55-434e-8776-7083daf4e03d"
+BROKER = "test.mosquitto.org"
+PORT = 1883
+SEND_TOPICS = ["oc2/cmd","oc2/cmd/all"]
+RESPONSE_TOPICS = ["oc2/rsp"]
+
+# Other Brokers
+# broker = "localhost"
+# broker = "mosquitto.olympus.mtn" # Local SB Lab Broker
+# broker = "test.mosquitto.org" # External Test Broker

@@ -1,0 +1,70 @@
+{
+    "_id" : ObjectId("642aee08c0cb3165f0d2a6de"),
+    "name" : "Bencode",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aee88c0cb3165f0d2a6df"),
+    "name" : "BINN",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aeeafc0cb3165f0d2a6e0"),
+    "name" : "BINN",
+    "isActive" : true
+}
+{
+    "_id" : ObjectId("642aeecec0cb3165f0d2a6e1"),
+    "name" : "BSON",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aeed9c0cb3165f0d2a6e2"),
+    "name" : "CBOR",
+    "isActive" : true
+}
+{
+    "_id" : ObjectId("642aeee0c0cb3165f0d2a6e3"),
+    "name" : "JSON",
+    "isActive" : true
+}
+{
+    "_id" : ObjectId("642aeee8c0cb3165f0d2a6e4"),
+    "name" : "MsgPack",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aeef2c0cb3165f0d2a6e5"),
+    "name" : "S_Expression",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aeefac0cb3165f0d2a6e6"),
+    "name" : "Smile",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aef01c0cb3165f0d2a6e7"),
+    "name" : "Toml",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aef08c0cb3165f0d2a6e8"),
+    "name" : "XML",
+    "isActive" : true
+}
+{
+    "_id" : ObjectId("642aef13c0cb3165f0d2a6e9"),
+    "name" : "UBJSON",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aef19c0cb3165f0d2a6ea"),
+    "name" : "YAML",
+    "isActive" : false
+}
+{
+    "_id" : ObjectId("642aef20c0cb3165f0d2a6eb"),
+    "name" : "VPack",
+    "isActive" : false
+}
