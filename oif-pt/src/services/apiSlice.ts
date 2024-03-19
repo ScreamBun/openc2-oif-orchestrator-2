@@ -97,9 +97,9 @@ export const apiSlice = createApi({
                 return response.data
             },
         }),
-        addNewCommand: builder.mutation<Command, Partial<Command>>({
+        sendCommand: builder.mutation<Command, Partial<Command>>({
             query: initialCommand => ({
-                url: '/commands/add',
+                url: '/command/add',
                 method: 'POST',
                 // Include the entire object as the body of the request
                 body: initialCommand
@@ -127,5 +127,5 @@ export const apiSlice = createApi({
 export const {
     useGetAllDevicesQuery, useGetDevicebyIDQuery, useAddNewDeviceMutation, useEditDeviceMutation, useRemoveDeviceMutation,
     useGetAllActuatorsQuery, useGetActuatorbyIDQuery, useAddNewActuatorMutation, useEditActuatorMutation, useRemoveActuatorMutation,
-    useGetAllCommandsQuery, useGetCommandbyIDQuery, useAddNewCommandMutation, useRemoveCommandMutation
+    useGetAllCommandsQuery, useGetCommandbyIDQuery, useSendCommandMutation, useRemoveCommandMutation
 } = apiSlice;

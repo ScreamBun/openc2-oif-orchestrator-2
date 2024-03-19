@@ -1,18 +1,134 @@
-import React, { useState } from "react";
-import SchemaLoader from "../common/SchemaLoader";
-import CommandCreator from "./CommandCreator";
+import React, { useEffect, useState } from "react";
+import CodeMirror from '@uiw/react-codemirror';
+import { langs } from '@uiw/codemirror-extensions-langs';
+import { githubDark } from '@uiw/codemirror-themes-all';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { useSendCommandMutation } from "../../services/apiSlice";
+import { sbToastError } from "../common/SBToast";
+import { Command } from "../../services/types";
 
 const CommandGenerator = () => {
-    const [loadedSchema, setLoadedSchema] = useState('');
-    const [msgTypeOpts, setMsgTypeOpts] = useState([]);
+    // const [loadedSchema, setLoadedSchema] = useState('');
+    // const [msgTypeOpts, setMsgTypeOpts] = useState([]);
+    const [cmd, setCmd] = useState('');  
+    const [isSending, setIsSending] = useState(false);  
+
+    const [sendCommand, { isLoading }] = useSendCommandMutation();
+
+    const sbEditorOnChange = (cmd: string) => {
+        // setMsg(JSON.stringify(msg, null, 2));
+        setCmd(cmd);
+    }
+
+    const onSendClick = async () => {
+        console.log('cmd: ' + JSON.stringify(cmd, null, 2));
+
+        const command: Command = {
+            id: "",
+            sent_date: "",
+            actuator_id: "",
+            command: cmd,
+            status: ""
+        }        
+
+        setIsSending(true);
+        await sendCommand(command).unwrap()
+            .then(() => {
+                setIsSending(false);
+                console.log('command sent!');
+            })
+            .catch((err) => {
+                console.log(err);
+                sbToastError(`Error: Unable to send command`);
+                return;
+            })
+
+    }
 
     return (
         <div className="card">
             <div className="card-header">
-                Command Generator
+                Commands
             </div>
             <div className="card-body">
+
                 <div className='row'>
+                    <div className='col-md-7'>
+                        <div className="card">
+                            <div className="card-header">
+                                <span className="align-middle">Command Generator</span>
+                                <button type="button" className="btn btn-sm btn-success float-end" title="Send" onClick={onSendClick}>
+                                    <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
+                                </button>
+                            </div>
+                            <div className="card-body p-0">
+                                <CodeMirror
+                                    value={ cmd }
+                                    height="40vh"
+                                    maxHeight='100%'
+                                    onChange={ sbEditorOnChange }
+                                    readOnly={ false }
+                                    theme={ githubDark }
+                                    extensions={ [langs.json()] }
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className='col-md-5'>
+                        <div className="card">
+                            <div className="card-header">
+                                <span>History</span>
+                            </div>
+                            <div className="card-body p-0">
+                                <ul className="list-group">
+                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">A new msg <span className="badge text-bg-primary rounded-pill">Sent</span></li>
+                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">A second msg <span className="badge text-bg-danger rounded-pill">Failed</span></li>
+                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">A third msg <span className="badge text-bg-success rounded-pill">Received</span></li>
+                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">A fourth msg <span className="badge text-bg-success rounded-pill">Received</span></li>
+                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">And a fifth msg <span className="badge text-bg-success rounded-pill">Received</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+                <div className='row pt-2'>
+                    <div className='col-md-12'>
+                        <div className="card">
+                            <div className="card-header">
+                                Details
+                            </div>
+                            <div className="card-body">
+
+                                <div className='row'>
+                                    <div className='col-md-6'>
+                                        <div className="card">
+                                            <div className="card-header">
+                                                Message
+                                            </div>
+                                            <div className="card-body">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='col-md-6'>
+                                        <div className="card">
+                                            <div className="card-header">
+                                                Results
+                                            </div>
+                                            <div className="card-body">
+
+                                            </div>
+                                        </div>
+                                    </div>                            
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* <div className='row'>
                     <div className='col-md-6 pr-1'>
                         <SchemaLoader
                             loadedSchema={loadedSchema} setLoadedSchema={setLoadedSchema}
@@ -22,7 +138,7 @@ const CommandGenerator = () => {
                         <CommandCreator
                             loadedSchema={loadedSchema} msgTypeOpts={msgTypeOpts} />
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

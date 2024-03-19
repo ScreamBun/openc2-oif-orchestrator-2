@@ -8,7 +8,7 @@
             "name": "debug oif-bt",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/app/main.py",
+            "program": "${workspaceFolder}/oif-bt/app/main.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

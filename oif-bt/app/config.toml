@@ -4,13 +4,28 @@ LOG_LEVEL = "INFO"
 
 [MONGO]
 MONGO_URI = "mongodb://127.0.0.1:27017"
-MONGO_DATABASE = "oif-db"
+MONGO_DATABASE = "oif-mongo"
 
 [MQTT]
-ORCHESTROR_ID = "orch_mqtt-2c5bcf5a-4a55-434e-8776-7083daf4e03d"
-BROKER = "test.mosquitto.org"
-PORT = 1883
-SEND_TOPICS = ["oc2/cmd","oc2/cmd/all"]
+PROTOCOL = "MQTTv5"
+# PROTOCOL = "MQTTv311"
+
+TRANSPORT = "tcp"
+# TRANSPORT = "websockets"
+
+CLIENT_ID = "orch2"
+
+BROKER = "3271a3ddd2eb43caa7c4b195c7d6cabd.s2.eu.hivemq.cloud"
+# BROKER = "test.mosquitto.org"
+
+PORT = 8883
+# PORT = 1883
+
+USERNAME = 'Cav01'
+PASSWORD = 'Tango01Village'
+
+# SEND_TOPICS = ["oc2/cmd","oc2/cmd/all", "oc2/cmd/ap/hunt"]
+SEND_TOPICS = ["oc2/cmd"]
 RESPONSE_TOPICS = ["oc2/rsp"]
 
 # Other Brokers

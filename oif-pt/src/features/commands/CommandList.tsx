@@ -35,8 +35,8 @@ const CommandList = () => {
         const rowsofCommands = commands.map(command =>
             <tr key={command.id}>
                 <th scope="row">{command.id}</th>
-                <td>{command.received_date}</td>
-                <td>{command.response_status}</td>
+                {/* <td>{command.received_date}</td>
+                <td>{command.response_status}</td> */}
                 <td>
                     <button type="button" className="btn btn-sm btn-info">
                         <Link to={`${NAV_COMMAND_LIST}/${command.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>

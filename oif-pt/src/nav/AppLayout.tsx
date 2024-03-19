@@ -1,8 +1,7 @@
-//TODO: decide link to logo
-import React from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { NAV_HOME, NAV_ABOUT, NAV_DEVICE_LIST, NAV_ACTUATOR_LIST, NAV_COMMAND_GENERATOR, NAV_COMMAND_LIST, NAV_EXTERNAL_OIF } from './consts';
+import { NAV_HOME, NAV_ABOUT, NAV_DEVICE_LIST, NAV_ACTUATOR_LIST, NAV_COMMAND_GENERATOR, NAV_COMMAND_LIST } from './consts';
 import { NavLink, Outlet } from 'react-router-dom';
+import OpenC2Logo from '../static/assets/img/conductor_oc2_logo.png';
 
 const AppLayout = () => {
 
@@ -11,9 +10,10 @@ const AppLayout = () => {
             <nav className='navbar navbar-expand-md navbar-dark bg-primary fixed-top py-0'>
                 <div className='container-fluid'>
                     <div className='collapse navbar-collapse'>
-                        <a className='navbar-brand' href={NAV_EXTERNAL_OIF} target='_blank' rel="noreferrer">
-                            <span className='font-weight-bold font-italic mx-2'>OIF</span>
-                        </a>
+
+                        <a className='navbar-brand' href={NAV_HOME} title='OpenC2 Orchestrator' rel="noreferrer">
+                            <img src={OpenC2Logo} alt="OpenC2 Logo" className="img-responsive" />
+                        </a>                        
 
                         <ul className="nav navbar-nav me-auto">
                             <li className="nav-item active">
@@ -21,20 +21,16 @@ const AppLayout = () => {
                             </li>
                             <li className="nav-item">
                                 <NavLink className='nav-link px-0' to={NAV_DEVICE_LIST}>Devices</NavLink>
-
                             </li>
                             <li className="nav-item">
                                 <NavLink className='nav-link px-0' to={NAV_ACTUATOR_LIST}>Actuators</NavLink>
                             </li>
-                            <li className="nav-item dropdown">
-                                <button className="nav-link dropdown-toggle btn-link btn" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Commands
-                                </button>
-                                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <NavLink className='dropdown-item' to={NAV_COMMAND_GENERATOR}> Command Generator </NavLink>
-                                    <NavLink className='dropdown-item' to={NAV_COMMAND_LIST}> Command History </NavLink>
-                                </div>
+                            <li className="nav-item">
+                                <NavLink className='nav-link px-0' to={NAV_COMMAND_GENERATOR}>Commands</NavLink>
                             </li>
+                            {/* <li className="nav-item">
+                                <NavLink className='nav-link px-0' to={NAV_COMMAND_LIST}>Comms History</NavLink>
+                            </li>                                                        */}
                         </ul>
 
                         <ul className="nav navbar-nav navbar-right ms-auto">
@@ -52,8 +48,9 @@ const AppLayout = () => {
             <br />
             <br />
 
-            <nav className='navbar navbar-dark bg-secondary fixed-bottom py-1'>
+            <nav className='navbar navbar-dark bg-secondary fixed-bottom px-2 py-1'>
                 <small>v1.0.0</small>
+                <small className='float-right'>OASIS</small>
             </nav>
 
             <ToastContainer position={toast.POSITION.TOP_RIGHT} autoClose={4000} theme='colored' />

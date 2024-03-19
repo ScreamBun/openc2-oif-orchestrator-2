@@ -4,7 +4,6 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from transports.mqtt.mqtt_manager import MqttManager
 from middlewares import request_handler
 from models.common import ResponseModel
 from exceptions import BaseError
@@ -13,13 +12,9 @@ from routes.main_api import router as api_router
 print("oif-bt starting...")
 
 print("load configs")
-with open("./app/config.toml", mode="rb") as fp:
+with open("./oif-bt/app/config.toml", mode="rb") as fp:
     configs = tomli.load(fp)
 print(configs)
-# print(configs["MQTT"]["BROKER"])
-
-mqttMngr = MqttManager()
-print("mqtt manager running...")
 
 app = FastAPI(title='oif-bt')
 app.middleware("http")(request_handler)
@@ -52,5 +47,5 @@ if __name__ == '__main__':
     print("oif-bt running...")
 
     mqttMngr = MqttManager()
-    print("mqtt manager running...")
+    # print("mqtt manager running...")
 

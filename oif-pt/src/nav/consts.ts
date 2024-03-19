@@ -40,5 +40,7 @@ export const NAV_EXTERNAL_UBJSON = "http://ubjson.org/";
 export const NAV_EXTERNAL_VPACK = "https://github.com/arangodb/velocypack";
 export const NAV_EXTERNAL_YAML = "https://yaml.org/spec/1.2/spec.html";
 
-export const PROTOCOL_LIST = ["HTTPS", "MQTT", "COAP", "HTTP"];
-export const SERIALIZATION_LIST = ["BENCODE", "BINN", "BSON", "CBOR", "JSON", "MSGPACK", "S EXPRESSION", "SMILE", "TOML", "XML", "UBJSON", "YAML", "VPACK"];
+// export const PROTOCOL_LIST = ["HTTPS", "MQTT", "COAP", "HTTP"];
+export const PROTOCOL_LIST = ["MQTT", "HTTP"];
+// export const SERIALIZATION_LIST = ["BENCODE", "BINN", "BSON", "CBOR", "JSON", "MSGPACK", "S EXPRESSION", "SMILE", "TOML", "XML", "UBJSON", "YAML", "VPACK"];
+export const SERIALIZATION_LIST = ["JSON"];

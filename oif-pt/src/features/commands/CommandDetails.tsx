@@ -45,14 +45,14 @@ const CommandDetails = () => {
                         </div>
                         <div className="col">
                             <h6>Received</h6>
-                            <p>{command.received_date}</p>
+                            {/* <p>{command.received_date}</p> */}
                         </div>
                     </div>
                     <hr />
                     <div className="row">
                         <div className="col">
                             <h6 style={{ fontWeight: 'bold' }}>Actuators</h6>
-                            <p>{command.actuators}</p>
+                            {/* <p>{command.actuators}</p> */}
                         </div>
                     </div>
                     <hr />
@@ -67,9 +67,9 @@ const CommandDetails = () => {
                         <div className="col">
                             <h6 style={{ fontWeight: 'bold' }}>Response</h6>
                             <p style={{ fontWeight: 'bold' }}> Response Status: </p>
-                            <p>{command.response_status}</p>
+                            {/* <p>{command.response_status}</p> */}
                             <p style={{ fontWeight: 'bold' }}> Response Text: </p>
-                            <p>{command.response_text}</p>
+                            {/* <p>{command.response_text}</p> */}
                         </div>
                     </div>
                 </div>

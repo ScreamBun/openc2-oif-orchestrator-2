@@ -1,24 +1,14 @@
-import { toast } from 'react-toastify';
-import OpenC2Logo from '../static/assets/img/openc2-logo.svg'
 import { NAV_EXTERNAL_BENCODE, NAV_EXTERNAL_BINN, NAV_EXTERNAL_BSON, NAV_EXTERNAL_CBOR, NAV_EXTERNAL_HTTPS, NAV_EXTERNAL_ION, NAV_EXTERNAL_JSON, NAV_EXTERNAL_MQTT, NAV_EXTERNAL_MSGPACK, NAV_EXTERNAL_OIF_DEVICE, NAV_EXTERNAL_OPENDXL, NAV_EXTERNAL_SEXP, NAV_EXTERNAL_SMILE, NAV_EXTERNAL_TOML, NAV_EXTERNAL_UBJSON, NAV_EXTERNAL_VPACK, NAV_EXTERNAL_XML, NAV_EXTERNAL_YAML } from './consts';
 
 const Home = () => {
-
-    const displayLoginNotification = () => {
-        toast.success("Yay toasts are working");
-      };
 
     return (
         <div className='container'>
             <div className='row mb-3'>
                 <div className='col'>
-                    <div className='mb-3'>
-                        <img src={OpenC2Logo} alt="OpenC2 Logo" className="img-responsive w-100" />
-                    </div>
                     <div className='card'>
                         <div className='card-header'>Statement of Purpose</div>
                         <div className='card-body'>
-                            <button onClick={displayLoginNotification}>Remove me</button>
                             <p>
                                 OpenC2 Integration Framework (OIF) is a project that will enable developers to create and test OpenC2
                                 specifications and implementations without having to recreate an entire OpenC2 ecosystem.
