@@ -25,7 +25,7 @@ def on_log(client, userdata, level, buf):
     print("mqtt: ", buf)      
 
 
-def publish(topic = None, msg = "test"):
+def publish(topic = "oc2/cmd", msg = "test"):
 
     print("mqtt: Publishing ->")
     print("\t Topic \t\t=" ,topic)        

@@ -1,4 +1,3 @@
-import datetime
 from fastapi import APIRouter
 from fastapi.encoders import jsonable_encoder
 from models.common import ResponseModel
@@ -30,7 +29,7 @@ async def read_command_data(command_id: str):
 @router.post("/add", response_description="command data added into the database")
 async def add_command_data(command: CommandModel):
     
-    process_command(command)
+    await process_command(command)
     
     return ResponseModel(True, 200, "command added and sent successfully.", False)
 

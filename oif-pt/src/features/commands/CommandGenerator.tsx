@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CodeMirror from '@uiw/react-codemirror';
 import { langs } from '@uiw/codemirror-extensions-langs';
 import { githubDark } from '@uiw/codemirror-themes-all';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useSendCommandMutation } from "../../services/apiSlice";
 import { sbToastError, sbToastSuccess } from "../common/SBToast";
 import { Command } from "../../services/types";
