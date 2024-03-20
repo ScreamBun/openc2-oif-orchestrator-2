@@ -12,7 +12,7 @@ Follow these instructions to get your oif-bt running in your local environment. 
 mkvirtualenv oif-bt
 ```
 
-- Is using vscode (higjly recommended) from the oif-bt director in cmdl enter the following to open vscode in this directory:
+- Is using vscode (highly recommended) from the oif-bt director in cmdl enter the following to open vscode in this directory:
 
 ```bash
 code .
@@ -32,7 +32,7 @@ Cntrl + Shift + P
 pip install -r requirements.txt
 ```
 
-- Open another cmdl or terminal within your IDE and then, duild and deploy your MongoDB using the Dockerfile:
+- Open another cmdl or terminal within your IDE and then, build and deploy your MongoDB using the Dockerfile:
 
 ```bash
 docker build -t oif-mongo .
