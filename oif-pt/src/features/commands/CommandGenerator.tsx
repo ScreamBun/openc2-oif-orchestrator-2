@@ -5,8 +5,9 @@ import { githubDark } from '@uiw/codemirror-themes-all';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useSendCommandMutation } from "../../services/apiSlice";
-import { sbToastError } from "../common/SBToast";
+import { sbToastError, sbToastSuccess } from "../common/SBToast";
 import { Command } from "../../services/types";
+import SBSubmitBtn from "../common/SBSubmitBtn";
 
 const CommandGenerator = () => {
     // const [loadedSchema, setLoadedSchema] = useState('');
@@ -15,13 +16,16 @@ const CommandGenerator = () => {
     const [isSending, setIsSending] = useState(false);  
 
     const [sendCommand, { isLoading }] = useSendCommandMutation();
+    const formId = "command_form";
 
     const sbEditorOnChange = (cmd: string) => {
         // setMsg(JSON.stringify(msg, null, 2));
         setCmd(cmd);
     }
 
-    const onSendClick = async () => {
+    const onSendClick = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         console.log('cmd: ' + JSON.stringify(cmd, null, 2));
 
         const command: Command = {
@@ -37,8 +41,10 @@ const CommandGenerator = () => {
             .then(() => {
                 setIsSending(false);
                 console.log('command sent!');
+                sbToastSuccess(`Command sent`);
             })
             .catch((err) => {
+                setIsSending(false);
                 console.log(err);
                 sbToastError(`Error: Unable to send command`);
                 return;
@@ -58,20 +64,30 @@ const CommandGenerator = () => {
                         <div className="card">
                             <div className="card-header">
                                 <span className="align-middle">Command Generator</span>
-                                <button type="button" className="btn btn-sm btn-success float-end" title="Send" onClick={onSendClick}>
+                                {/* <button type="button" className="btn btn-sm btn-success float-end" title="Send" onClick={onSendClick}>
                                     <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
-                                </button>
+                                </button> */}
+                                <SBSubmitBtn buttonId="sendCommandBtn" 
+                                    buttonTitle="Send command" 
+                                    buttonTxt=""
+                                    customClass="float-end"                                    
+                                    isLoading={isSending}
+                                    formId={formId}
+                                    isDisabled={Object.keys(cmd).length !== 0 && cmd.length !== 0 ? false : true}>
+                                </SBSubmitBtn>
                             </div>
                             <div className="card-body p-0">
-                                <CodeMirror
-                                    value={ cmd }
-                                    height="40vh"
-                                    maxHeight='100%'
-                                    onChange={ sbEditorOnChange }
-                                    readOnly={ false }
-                                    theme={ githubDark }
-                                    extensions={ [langs.json()] }
-                                />
+                                <form id={formId} onSubmit={onSendClick}>
+                                    <CodeMirror
+                                        value={ cmd }
+                                        height="40vh"
+                                        maxHeight='100%'
+                                        onChange={ sbEditorOnChange }
+                                        readOnly={ false }
+                                        theme={ githubDark }
+                                        extensions={ [langs.json()] }
+                                    />
+                                </form>
                             </div>
                         </div>
                     </div>

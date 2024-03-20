@@ -29,7 +29,11 @@ def publish(topic = None, msg = "test"):
 
     print("mqtt: Publishing ->")
     print("\t Topic \t\t=" ,topic)        
-    print("\t Message \t=" ,msg)        
+    print("\t Message \t=" ,msg)
+    
+    if isinstance(msg, dict):
+        msg = json.dumps(msg)
+       
     b_msg = msg.encode('utf-8').strip()     
 
     openc2_properties = Properties(PacketTypes.PUBLISH)
