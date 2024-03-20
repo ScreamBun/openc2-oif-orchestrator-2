@@ -68,11 +68,10 @@ async def send_msg(msg: dict, protocol: str):
 
 async def save_command(cmd: dict):
     
-    # Leftoff here.....
-    if cmd.get('id'):
-        id_val = cmd['id']
-        if not id_val:
-            del cmd['id']
+    #TODO will need another path for updates with the _id
+    
+    if "id" in cmd:
+        del cmd['id']
     
     command_encoded = jsonable_encoder(cmd) 
     saved_cmd = await add_command(command_encoded)
