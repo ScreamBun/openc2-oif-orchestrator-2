@@ -2,10 +2,11 @@ import datetime
 from fastapi import APIRouter
 from fastapi.encoders import jsonable_encoder
 from models.common import ResponseModel
-from db.command_collection import add_command, delete_command, get_command, update_command
+from db.command_collection import delete_command, get_command, update_command
 
 from transports import mqtt
 from models.command import CommandModel
+from logic.command_manager import process_command
 
 router = APIRouter(
     prefix="/command",
@@ -28,16 +29,10 @@ async def read_command_data(command_id: str):
 
 @router.post("/add", response_description="command data added into the database")
 async def add_command_data(command: CommandModel):
-    command = command.as_dict()
     
-    # TODO Left off here
-    mqtt.publish(topic="", msg=command["command"])
+    process_command(command)
     
-    command["sent_date"] = str(datetime.datetime.now().time())
-    command["status"] = "Sent"
-    command_encoded = jsonable_encoder(command)
-    new_command = await add_command(command_encoded)
-    return ResponseModel(new_command, 200, "command added successfully.", False)
+    return ResponseModel(True, 200, "command added and sent successfully.", False)
 
 
 @router.put("/update")
