@@ -8,6 +8,7 @@ from middlewares import request_handler
 from models.common import ResponseModel
 from exceptions import BaseError
 from routes.main_api import router as api_router
+from transports.mqtt import mqtt_manager
 
 print("oif-bt starting...")
 
@@ -40,12 +41,20 @@ async def error_handler(request: Request, exc: BaseError):
 async def root():
     return {"message": "Hello welcome to the OIF-BT"}    
 
-print("oif-bt running...")
-
 if __name__ == '__main__':
-    uvicorn.run("main:app", host='127.0.0.1', port=8000, log_level="info", reload=True)
-    print("oif-bt running...")
-
-    mqttMngr = MqttManager()
+    
+    # print("mqtt manager starting...")
+    # mqtt_manager.set_user_pw()  # Needed for AWS and MQHIV Brokers
+    # mqtt_manager.connect_to_broker()
+    # mqtt_manager.subscribe_to_topics()
+    # mqtt_manager.client.loop_start()   
     # print("mqtt manager running...")
+    
+    print("uvcorn starting...")
+    uvicorn.run("main:app", host='127.0.0.1', port=8000, log_level="info", reload=True)
+    print("uvcorn running...")
+
+    # mqttMngr = MqttManager()
+    
+print("oif-bt running...")    
 

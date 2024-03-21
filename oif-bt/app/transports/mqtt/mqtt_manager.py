@@ -1,9 +1,8 @@
 import json
-import os
 import socket
 import ssl
+import time
 import traceback
-import uuid
 import paho.mqtt.client as mqtt
 
 from benedict import benedict
@@ -14,11 +13,18 @@ import toml
 # from command.transports.response import process_response
 # from command.transports.relay import process_relay
 
-
-def on_connect(client, userdata, flags, rc):
+def on_connect5(client: mqtt.Client, userdata, flags, rc, properties):
     print("mqtt: New mqtt instance connected")
     # client.subscribe("$SYS/#")
-    client.connected_flag=True    
+    # client.connected_flag=True   
+    client.is_connected
+    
+
+def on_connect(client: mqtt.Client, userdata, flags, rc):
+    print("mqtt: New mqtt instance connected")
+    # client.subscribe("$SYS/#")
+    # client.connected_flag=True    
+    client.is_connected
 
 
 def on_log(client, userdata, level, buf):
@@ -47,10 +53,35 @@ def publish(topic = "oc2/cmd", msg = "test"):
     qos = 0
     retain = True
 
-    return client.publish(topic, b_msg, qos, retain, openc2_properties)
+    if "v3" in default_protocol:
+        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id, None, userdata=True, protocol=mqtt.MQTTv311, transport="tcp") 
+        client.on_connect = on_connect
+    else:
+        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id, None, userdata=True, protocol=mqtt.MQTTv5, transport="tcp") 
+        client.on_connect = on_connect5
+
+    set_user_pw(client)
+    connect_to_broker(client)
+    subscribe_to_topics(client)
+    
+    client.loop_start()
+    
+    # unfortunate... but you need to wait a sec for the connection to happen
+    time.sleep(1)    
+        
+    try:
+        mqtt_msg_info = client.publish(topic, b_msg, qos, retain, openc2_properties)
+    except ValueError as ex:
+        client.loop_stop()
+        error_msg = str(ex)
+        raise(error_msg)
+    
+    client.loop_stop()
+    
+    return mqtt_msg_info
 
 
-def on_message(client, userdata, message):
+def on_message(client: mqtt.Client, userdata, message):
     m_decode = str(message.payload.decode("utf-8"))
     print("mqtt: Message Received *")
     print("\t Topic \t\t=",message.topic)
@@ -93,7 +124,7 @@ def on_message(client, userdata, message):
     pass
 
 
-def set_user_pw(user: str = None, pw: str = None):
+def set_user_pw(client: mqtt.Client, user: str = None, pw: str = None):
 
     if user is None:
         user = default_username
@@ -106,7 +137,8 @@ def set_user_pw(user: str = None, pw: str = None):
                     keyfile=None,
                     cert_reqs=ssl.CERT_REQUIRED)    
 
-def connect_to_broker(broker: str = None, port: str = None):
+
+def connect_to_broker(client: mqtt.Client, broker: str = None, port: str = None):
 
     if broker is None:
         broker = default_broker
@@ -115,12 +147,14 @@ def connect_to_broker(broker: str = None, port: str = None):
         port = default_port      
 
     try:
-        client.connect(broker, port) 
+        # client.connect(broker, port) 
+        client.connect_async(broker, port) 
     except Exception:
         print("mqtt: Unable to connect to MQTT Broker")
         print(traceback.format_exc())  
 
-def subscribe_to_topics(topics: list = None):
+
+def subscribe_to_topics(client: mqtt.Client, topics: list = None):
 
     if topics is None:
         topics = []
@@ -132,39 +166,31 @@ def subscribe_to_topics(topics: list = None):
         client.subscribe(topic)          
 
 
-def shutdown():
+def shutdown(client: mqtt.Client):
     print("Shutting down MQTT Instance: ", client_id)
     client.disconnect()
     client.loop_stop()
 
-print(os.getcwd())
-mqtt_configs = toml.load("./oif-bt/app/config.toml")
-client_id = mqtt_configs['MQTT']['CLIENT_ID']
-default_broker = mqtt_configs['MQTT']['BROKER']
-default_port = mqtt_configs['MQTT']['PORT']
-default_protocol = mqtt_configs['MQTT']['PROTOCOL']
 
-default_cmd_topics = mqtt_configs['MQTT']['SEND_TOPICS']
-default_rsp_topics = mqtt_configs['MQTT']['RESPONSE_TOPICS']     
+app_configs = toml.load("./oif-bt/app/config.toml")
+client_id = app_configs['GENERAL']['CLIENT_ID']
+default_broker = app_configs['MQTT']['BROKER']
+default_port = app_configs['MQTT']['PORT']
+default_protocol = app_configs['MQTT']['PROTOCOL']
+
+default_cmd_topics = app_configs['MQTT']['SEND_TOPICS']
+default_rsp_topics = app_configs['MQTT']['RESPONSE_TOPICS']     
 # default_relay_topics = mqtt_configs['relay_topics']  
 
-default_username = mqtt_configs['MQTT']['USERNAME']  
-default_password = mqtt_configs['MQTT']['PASSWORD']
+default_username = app_configs['MQTT']['USERNAME']  
+default_password = app_configs['MQTT']['PASSWORD']
 
-client_id = client_id + "-" + str(uuid.uuid4())
 client_id = client_id + "-" + socket.gethostname()
 
-if "v3" in default_protocol:
-    client = mqtt.Client(client_id, None, userdata=True, protocol=mqtt.MQTTv311, transport="tcp") 
-else:
-    client = mqtt.Client(client_id, None, userdata=True, protocol=mqtt.MQTTv5, transport="tcp") 
+# client.on_message = on_message
+# client.on_log = on_log
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
-client.on_log = on_log
-
-print("MQTT Instance Started")
+print("MQTT INfo")
 print("\t Client ID \t\t= ", client_id)
 print("\t Default Broker \t= ", default_broker)
 print("\t Default Port \t\t= ", default_port)

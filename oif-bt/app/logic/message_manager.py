@@ -19,9 +19,12 @@ async def build_mqtt_msg(cmd: dict):
     if isinstance(cmd, str):
         cmd = json.loads(cmd)
         
+    actual_command = {}        
     if isinstance(cmd["command"], str):
         actual_command = json.loads(cmd["command"])
-        cmd["command"]= actual_command
+        cmd["command"] = actual_command
+    else:
+        actual_command = cmd["command"]
     
     headers_section = { 
         "headers" : {
@@ -35,13 +38,12 @@ async def build_mqtt_msg(cmd: dict):
     body_section = {
         "body" : {
             "openc2" : {
-                "request": cmd 
+                "request": actual_command 
             }
         }
     }
     
     mqtt_msg = { **headers_section, **body_section}
-    # mqtt_msg = json.dumps(mqtt_msg)
     
     return mqtt_msg
 
@@ -80,7 +82,8 @@ async def send_msg(msg: dict, protocol: str, topic: str = None):
         if not topic:
             topic = default_cmd_topics[0]
         
-        mqtt_manager.publish(msg=msg, topic=topic)
+        mqtt_msg_info = mqtt_manager.publish(msg=msg, topic=topic)
+        print(mqtt_msg_info)
     elif protocol == "HTTP":
         # Send via HTTP
         test = ""
