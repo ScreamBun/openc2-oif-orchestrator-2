@@ -13,22 +13,66 @@ import toml
 # from command.transports.response import process_response
 # from command.transports.relay import process_relay
 
-def on_connect5(client: mqtt.Client, userdata, flags, rc, properties):
-    print("mqtt: New mqtt instance connected")
-    # client.subscribe("$SYS/#")
-    # client.connected_flag=True   
-    client.is_connected
+
+# FastAPI BackgroundTask
+# def task_start_subscription(broker: str, port: int, topic: str):
+    # print("mqtt: Starting subscription for broker/topic: ", default_broker, default_rsp_topics)
+    # client = setup_client(broker=default_broker, port=default_port, topics=default_rsp_topics)
+    # print("mqtt: Sub started.....")
+    # # time.sleep(1) 
+    # subscribe_to_topics(client=client, topics=default_rsp_topics)
+    # client.loop_start()
+    # time.sleep(1)
+
+
+def setup_client(broker:str = None, port:str = None, topics:list = None) -> mqtt.Client:
+
+    # TODO: pass in variables broker, etc.  Just using defaults for now
+
+    if "v3" in default_protocol:
+        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, str(client_id), None, userdata=True, protocol=mqtt.MQTTv311, transport="tcp") 
+        client.on_connect = on_connect
+    else:
+        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, str(client_id), None, userdata=True, protocol=mqtt.MQTTv5, transport="tcp") 
+        client.on_connect = on_connect5
+
+    client.on_log = on_log
+    # client.on_subscribe = on_subscribe
+    # client.on_publish = on_publish
+
+    set_user_pw(client)
     
+    connect_to_broker(client=client, broker=broker, port=port)
+    
+    # unfortunate... but you need to wait a sec for the connection to happen
+    # time.sleep(2) 
+    
+    # subscribe_to_topics(client=client, topics=topics)
+    
+    if topics:
+        client.on_message = on_message
+    
+    return client
 
-def on_connect(client: mqtt.Client, userdata, flags, rc):
-    print("mqtt: New mqtt instance connected")
-    # client.subscribe("$SYS/#")
-    # client.connected_flag=True    
-    client.is_connected
 
-
-def on_log(client, userdata, level, buf):
-    print("mqtt: ", buf)      
+def get_properties(is_pub: bool, protocol: str):
+    
+    if is_pub:
+        openc2_properties: Properties = Properties(PacketTypes.PUBLISH)
+    else:
+        openc2_properties: Properties = Properties(PacketTypes.SUBSCRIBE)
+        
+    if not protocol:
+        protocol = default_protocol
+    
+    if "v3" in protocol:
+        openc2_properties = None  
+    else:
+        openc2_properties.PayloadFormatIndicator = 1
+        openc2_properties.ContentType = 'application/openc2'
+        openc2_properties.UserProperty = [('msgType', 'req'), ('encoding', 'json')]
+        
+    return openc2_properties
 
 
 def publish(topic = "oc2/cmd", msg = "test"):
@@ -42,32 +86,17 @@ def publish(topic = "oc2/cmd", msg = "test"):
        
     b_msg = msg.encode('utf-8').strip()     
 
-    openc2_properties = Properties(PacketTypes.PUBLISH)
-    if "v3" in default_protocol:
-        openc2_properties = None  
-    else:
-        openc2_properties.PayloadFormatIndicator = 1
-        openc2_properties.ContentType = 'application/openc2'
-        openc2_properties.UserProperty = [('msgType', 'req'), ('encoding', 'json')] 
-
-    qos = 0
-    retain = True
-
-    if "v3" in default_protocol:
-        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id, None, userdata=True, protocol=mqtt.MQTTv311, transport="tcp") 
-        client.on_connect = on_connect
-    else:
-        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id, None, userdata=True, protocol=mqtt.MQTTv5, transport="tcp") 
-        client.on_connect = on_connect5
-
-    set_user_pw(client)
-    connect_to_broker(client)
-    subscribe_to_topics(client)
+    client = setup_client(broker=default_broker, port=default_port)
     
     client.loop_start()
     
     # unfortunate... but you need to wait a sec for the connection to happen
     time.sleep(1)    
+    
+    openc2_properties = get_properties(True, None) 
+        
+    qos = 0
+    retain = False          
         
     try:
         mqtt_msg_info = client.publish(topic, b_msg, qos, retain, openc2_properties)
@@ -79,6 +108,24 @@ def publish(topic = "oc2/cmd", msg = "test"):
     client.loop_stop()
     
     return mqtt_msg_info
+
+
+def on_connect5(client: mqtt.Client, userdata, flags, rc, properties):
+    # print("mqtt: New mqtt instance connected")
+    # client.subscribe("$SYS/#")
+    client.connected_flag=True   
+    client.is_connected
+    
+
+def on_connect(client: mqtt.Client, userdata, flags, rc):
+    # print("mqtt: New mqtt instance connected")
+    # client.subscribe("$SYS/#")
+    client.connected_flag=True    
+    client.is_connected
+
+
+def on_log(client, userdata, level, buf):
+    print("mqtt: ", buf)     
 
 
 def on_message(client: mqtt.Client, userdata, message):
@@ -124,6 +171,13 @@ def on_message(client: mqtt.Client, userdata, message):
     pass
 
 
+# def on_publish(mosq, obj, mid):
+#     print("*****mqtt: on_publish mid: " + str(mid))
+
+# def on_subscribe(client, userdata, mid, granted_qos):
+#     print("*****mqtt: on_subscribe: " + str(mid) + " " + str(granted_qos))
+
+
 def set_user_pw(client: mqtt.Client, user: str = None, pw: str = None):
 
     if user is None:
@@ -146,6 +200,9 @@ def connect_to_broker(client: mqtt.Client, broker: str = None, port: str = None)
     if port is None:
         port = default_port      
 
+    print("mqtt: Broker ", broker)
+    print("mqtt: Port ", port)
+
     try:
         # client.connect(broker, port) 
         client.connect_async(broker, port) 
@@ -154,20 +211,16 @@ def connect_to_broker(client: mqtt.Client, broker: str = None, port: str = None)
         print(traceback.format_exc())  
 
 
-def subscribe_to_topics(client: mqtt.Client, topics: list = None):
+def subscribe_to_topics(client: mqtt.Client, topics: list = []):
 
-    if topics is None:
-        topics = []
-        topics.extend(default_rsp_topics)
-        # topics.extend(default_relay_topics)
-
-    for topic in topics:
-        print("mqtt: Subscribing to Topic: ", topic)
-        client.subscribe(topic)          
+    if topics:
+        for topic in topics:
+            print("mqtt: Subscribing to Topic ", topic)
+            client.subscribe(topic)          
 
 
 def shutdown(client: mqtt.Client):
-    print("Shutting down MQTT Instance: ", client_id)
+    print("mqtt: Shutting down MQTT Instance ", client_id)
     client.disconnect()
     client.loop_stop()
 

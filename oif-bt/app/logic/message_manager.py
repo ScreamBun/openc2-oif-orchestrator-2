@@ -2,9 +2,14 @@ import json
 import uuid
 import toml
 from db import message_collection
-from models.message import MessageModel
 from transports.mqtt import mqtt_manager
 from logic import utils
+
+
+# FastAPI BackgroundTask
+# def task_determine_send_subscriptions():
+#     #TODO Get topics and protocal from the device
+#     mqtt_manager.task_start_subscription(broker=None, port=None, topic=None)
 
 
 async def build_mqtt_msg(cmd: dict):
@@ -84,11 +89,14 @@ async def send_msg(msg: dict, protocol: str, topic: str = None):
         
         mqtt_msg_info = mqtt_manager.publish(msg=msg, topic=topic)
         print(mqtt_msg_info)
+        
     elif protocol == "HTTP":
         # Send via HTTP
         test = ""
     else:
         print("unable to send, protocal unknown ", protocol)
+        
+    return True
         
 
 app_configs = toml.load("./oif-bt/app/config.toml")
