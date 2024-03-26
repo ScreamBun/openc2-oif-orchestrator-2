@@ -7,10 +7,9 @@ import SBEditor from "../common/SBEditor";
 //ref: "react-json-generator": "https://github.com/ScreamBun/react-json-generator"
 
 const initialState: Command = {
-    sent_date: "",
-    actuator_id: "",
-    command: '',
-    status: ""
+    date_created: "",
+    request_id: "",
+    command: ""
 }
 
 const CommandCreator = (props: any) => {

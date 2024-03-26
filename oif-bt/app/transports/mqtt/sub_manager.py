@@ -1,9 +1,14 @@
+import asyncio
 import socket
 import ssl
+import traceback
+from benedict import benedict
 import paho.mqtt.client as mqtt
 import toml
 
 from logic import utils
+from logic import message_manager
+from models.msg_type import Msg_Type
 
 # def publish_1(client,topic):
 #     message="on"
@@ -27,7 +32,38 @@ def on_log(client, userdata, level, buf):
 
 
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
+    try:
+        print(msg.topic+" "+str(msg.payload))
+        
+        msg_str = str(msg.payload.decode("utf-8"))
+        print("sub manager: MQTT Message Received *")
+        print("\t Message \t=" ,msg_str)
+        print("\t Topic \t\t=",msg.topic)
+        print("\t QOS \t\t=",msg.qos)
+        print("\t Retain flag \t=",msg.retain)
+        
+        if msg_str == 'offline':
+            print('sub manager: offline notification received')
+            # TODO: Not sure what to do with these yet...
+            return True
+        
+        message_dict = utils.convert_to_dict(msg_str)
+        # msg_benedict = benedict(message_dict) # TODO: Update to use benedict?
+    
+        routine_save_msg = asyncio.run(async_process_msg(message_dict))
+    
+    except Exception as e:
+        print(traceback.format_exc())
+        status = 500
+        work_result = "Error processing mqtt message: " + traceback.format_exc() 
+
+ 
+async def async_process_msg(message: dict):
+    try:
+        result = await message_manager.save_msg(message, msg_type=Msg_Type.RESPONSE.value)
+        # print(result)
+    except Exception as e:
+        print(f"Error processing response message: {e}")        
     
     
 def set_user_pw(client: mqtt.Client, user: str = None, pw: str = None):

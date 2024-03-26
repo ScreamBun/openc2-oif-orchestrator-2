@@ -2,6 +2,8 @@ from db import command_collection
 from fastapi import encoders
 
 from logic import message_manager
+from logic import utils
+from models.msg_type import Msg_Type
 
 async def validate_cmd(cmd: dict):
     # TODO Find and enter validation logic
@@ -13,6 +15,8 @@ async def save_command(cmd: dict):
     
     if "id" in cmd:
         del cmd['id']
+        
+    cmd["request_id"] = utils.build_request_id()
     
     command_encoded = encoders.jsonable_encoder(cmd) # needed??
     saved_cmd = await command_collection.add_command(command_encoded)
@@ -35,7 +39,7 @@ async def process_command(cmd: dict):
     
     # TODO: Get topic from actuator / device
     await message_manager.send_msg(msg=msg, protocol="MQTT")
-    await message_manager.save_msg(msg)
+    await message_manager.save_msg(msg, msg_type=Msg_Type.COMMAND.value)
     
     return True
     

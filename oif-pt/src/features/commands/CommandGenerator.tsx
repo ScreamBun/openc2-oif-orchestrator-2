@@ -28,10 +28,9 @@ const CommandGenerator = () => {
 
         const command: Command = {
             id: "",
-            sent_date: "",
-            actuator_id: "",
-            command: cmd,
-            status: ""
+            date_created: "",
+            request_id: "",
+            command: cmd
         }        
 
         setIsSending(true);

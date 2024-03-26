@@ -31,8 +31,7 @@ export interface Actuator {
 
 export interface Command {
     id?: string;
-    sent_date: string;
-    actuator_id: string;
+    date_created?: string;
+    request_id?: string;
     command: string;
-    status?: string
 }

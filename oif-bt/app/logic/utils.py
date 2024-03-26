@@ -1,8 +1,26 @@
+import json
 import socket
 import time
+import uuid
 
 import toml
 
+
+def is_json(data):
+    try:
+        json_object = json.loads(data)
+    except ValueError as e:
+        return False
+    return True
+
+def convert_to_dict(data):
+    dict_data = {}
+    if is_json(data):
+        dict_data = json.loads(data)
+    return dict_data
+
+def build_request_id():
+    return uuid.uuid4().hex
 
 def get_current_datetime_in_millis() -> int :
     return int(round(time.time() * 1000))

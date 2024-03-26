@@ -1,22 +1,15 @@
 import json
-import uuid
 import toml
 from db import message_collection
 from transports.mqtt import mqtt_manager
+from models.msg_type import Msg_Type
 from logic import utils
-
-
-# FastAPI BackgroundTask
-# def task_determine_send_subscriptions():
-#     #TODO Get topics and protocal from the device
-#     mqtt_manager.task_start_subscription(broker=None, port=None, topic=None)
 
 
 async def build_mqtt_msg(cmd: dict):
     mqtt_msg = {}
     
-    # TODO Use command_id as request_id, may not need actuator id
-    temp_request_id = uuid.uuid4().hex
+    request_id = cmd["request_id"]
     temp_millis = utils.get_current_datetime_in_millis()
     # TODO Use device id from mqtt_manager
     temp_from = "OIF Orchestrator 2"
@@ -33,10 +26,10 @@ async def build_mqtt_msg(cmd: dict):
     
     headers_section = { 
         "headers" : {
-            "request_id" : temp_request_id,  
+            "request_id" : request_id,  
             "created" : temp_millis,
             "from" : temp_from,
-            "actuator_id" : temp_request_id
+            "actuator_id" : request_id
         }
     }
     
@@ -60,17 +53,24 @@ async def build_http_msg(cmd: dict):
     return http_msg
 
 
-async def save_msg(message: dict):
+async def save_msg(message: dict, msg_type: str):
     curr_millis = utils.get_current_datetime_in_millis()
-    req_id = message['headers']['request_id'] # TODO Unreliable
     msg_str = json.dumps(message)
     
     message_dict = {
-        'request_id' : req_id,
-        'date_sent' : curr_millis,
         'msg' : msg_str,
-        'status' : 'Sent'
+        'msg_type' : msg_type
     }
+    
+    if message['headers']['request_id']:
+        req_id = message['headers']['request_id'] # TODO Unreliable
+        message_dict['request_id'] = req_id
+        # TODO: Add logic to update command stat data
+    
+    if msg_type == Msg_Type.COMMAND.value:
+        message_dict['date_sent'] = curr_millis
+    elif msg_type == Msg_Type.RESPONSE.value:
+        message_dict['date_received'] = curr_millis
 
     saved_msg = await message_collection.add_message(message_dict)
     

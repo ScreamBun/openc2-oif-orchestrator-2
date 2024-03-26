@@ -6,17 +6,16 @@ from pydantic import BaseModel, Field, Json
 
 class CommandModel(BaseModel):
     id: Optional[ObjectId] = Field(alias='_id')
-    sent_date : str = Field(None,  title="sent date in millis", max_length=120)
-    actuator_id : str = Field(None, title="actuator id", max_length=120)
+    date_created : str = Field(None,  title="date created in millis", max_length=120)
+    request_id : str = Field(None, title="request id", max_length=120)
     command : str = Field(None, title="command sent", max_length=5000)
-    status : str = Field(None, title="status of command", max_length=10)
 
     def as_dict(self):
         return {"id": self.id,
-                "sent_date": self.sent_date,
-                "actuator_id": self.actuator_id,
-                "command": self.command,
-                "status": self.status}
+                "date_created": self.date_created,
+                "request_id": self.request_id,
+                "command": self.command
+                }
         
     class Config:
         json_encoders = {

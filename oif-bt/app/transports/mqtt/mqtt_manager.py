@@ -14,17 +14,6 @@ import toml
 # from command.transports.relay import process_relay
 
 
-# FastAPI BackgroundTask
-# def task_start_subscription(broker: str, port: int, topic: str):
-    # print("mqtt: Starting subscription for broker/topic: ", default_broker, default_rsp_topics)
-    # client = setup_client(broker=default_broker, port=default_port, topics=default_rsp_topics)
-    # print("mqtt: Sub started.....")
-    # # time.sleep(1) 
-    # subscribe_to_topics(client=client, topics=default_rsp_topics)
-    # client.loop_start()
-    # time.sleep(1)
-
-
 def setup_client(broker:str = None, port:str = None, topics:list = None) -> mqtt.Client:
 
     # TODO: pass in variables broker, etc.  Just using defaults for now
@@ -37,17 +26,10 @@ def setup_client(broker:str = None, port:str = None, topics:list = None) -> mqtt
         client.on_connect = on_connect5
 
     client.on_log = on_log
-    # client.on_subscribe = on_subscribe
-    # client.on_publish = on_publish
 
     set_user_pw(client)
     
     connect_to_broker(client=client, broker=broker, port=port)
-    
-    # unfortunate... but you need to wait a sec for the connection to happen
-    # time.sleep(2) 
-    
-    # subscribe_to_topics(client=client, topics=topics)
     
     if topics:
         client.on_message = on_message

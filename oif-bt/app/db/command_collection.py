@@ -1,6 +1,7 @@
 import pydantic
 from db.database import command_collection
 from bson import ObjectId 
+from logic import utils
 
 
 pydantic.json.ENCODERS_BY_TYPE[ObjectId]=str
@@ -17,7 +18,7 @@ async def get_command(id: str):
 async def get_commands():
     n = await command_collection.count_documents({})
     cursor = command_collection.find()
-    cursor.sort('sent_date', 1) 
+    cursor.sort('date_created', 1) 
     commands = await cursor.to_list(length=n)
     if commands:
         return to_command_list(commands)
@@ -25,6 +26,7 @@ async def get_commands():
 
 
 async def add_command(new_command: dict):
+    new_command["date_created"] = utils.get_current_datetime_in_millis()
     command_dbo = await command_collection.insert_one(new_command)
     new_command = await command_collection.find_one({"_id": command_dbo.inserted_id})
     return to_command(new_command)
@@ -56,10 +58,9 @@ async def delete_command(id: str):
 def to_command(item) -> dict:
     return {
         "id": str(item.get("_id")),
-        "sent_date": str(item.get("sent_date")),
-        "actuator_id": item.get("actuator_id"),
-        "command": item.get("command"),
-        "status": item.get("status")
+        "date_created": str(item.get("date_created")),
+        "request_id": item.get("request_id"),
+        "command": item.get("command")
     }    
 
 
