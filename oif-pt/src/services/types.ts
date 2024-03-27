@@ -35,3 +35,12 @@ export interface Command {
     request_id?: string;
     command: string;
 }
+
+export interface Message {
+    id?: string;
+    request_id?: string;
+    date_sent?: string;
+    date_received?: string;
+    msg: string;
+    msg_type: string;
+}

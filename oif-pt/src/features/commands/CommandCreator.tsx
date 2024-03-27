@@ -1,15 +1,23 @@
 import { faX, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { Command } from "../../services/types";
+import { Command, Message } from "../../services/types";
 import SBEditor from "../common/SBEditor";
 //import Generator, { GeneratorChanges } from "react-json-generator";
 //ref: "react-json-generator": "https://github.com/ScreamBun/react-json-generator"
 
-const initialState: Command = {
+const cmdInitialState: Command = {
     date_created: "",
     request_id: "",
     command: ""
+}
+
+const msgInitialState: Message = {
+    request_id: "",
+    date_sent: "",
+    date_received: "",
+    msg: "",
+    msg_type: ""
 }
 
 const CommandCreator = (props: any) => {
@@ -17,7 +25,7 @@ const CommandCreator = (props: any) => {
     const { loadedSchema, msgTypeOpts } = props;
     const [activeView, setActiveView] = useState('creator');
     const [msgType, setMsgType] = useState('');
-    const [cmd, setCmd] = useState(initialState);
+    const [cmd, setCmd] = useState(cmdInitialState);
 
     /*  const handleChange = ({ jsObject, isValid, errors }: GeneratorChanges) => {
  
