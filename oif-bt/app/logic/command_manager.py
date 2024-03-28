@@ -35,11 +35,12 @@ async def process_command(cmd: dict):
     # Get protocol from device (http or mqtt)
     # For now, just use mqtt......
     
-    msg = await message_manager.build_mqtt_msg(cmd)
+    mqtt_msg = await message_manager.build_mqtt_msg(cmd)
     
     # TODO: Get topic from actuator / device
-    await message_manager.send_msg(msg=msg, protocol="MQTT")
-    await message_manager.save_msg(msg, msg_type=Msg_Type.COMMAND.value)
+    await message_manager.send_msg(msg=mqtt_msg, protocol="MQTT")
+    saved_msg = await message_manager.save_msg(mqtt_msg, msg_type=Msg_Type.COMMAND.value)
+    request_id = saved_msg["request_id"]
     
-    return True
+    return request_id
     

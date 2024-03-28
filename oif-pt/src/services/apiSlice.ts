@@ -1,13 +1,13 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Actuator, Command, Device } from './types';
+import { Actuator, Command, Device, Message } from './types';
 
 // Define a service using a base URL and expected endpoints
 //TODO: code-splitting
 export const apiSlice = createApi({
     reducerPath: 'apiSlice',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000/' }),
-    tagTypes: ['Devices', 'Actuators', 'Commands'],
+    tagTypes: ['Devices', 'Actuators', 'Commands', 'Messages'],
     endpoints: (builder) => ({
         getAllDevices: builder.query<Device[], void>({
             query: () => `/devices/`,
@@ -97,7 +97,7 @@ export const apiSlice = createApi({
                 return response.data
             },
         }),
-        sendCommand: builder.mutation<Command, Partial<Command>>({
+        sendCommand: builder.mutation<string, Partial<Command>>({
             query: initialCommand => ({
                 url: '/command/add',
                 method: 'POST',
@@ -105,6 +105,9 @@ export const apiSlice = createApi({
                 body: initialCommand
             }),
             invalidatesTags: [{ type: 'Commands', id: 'LIST' }],
+            transformResponse: (response: { data: string }) => {
+                return response.data
+            },            
         }),
         removeCommand: builder.mutation<{ success: boolean; id: string }, any>({
             query: id => ({
@@ -113,6 +116,18 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: (result, error, { id }) => [{ type: 'Commands', id }],
         }),
+        getMessages: builder.query<Message[], void>({
+            query: () => `/message/messages/`,          
+            transformResponse: (response: { data: Message[] }) => {
+                return response.data
+            },
+        }),
+        getMessagesbyRequestId: builder.query<Message[], string>({
+            query: (request_id) => `/message/messages/${request_id}`,
+            transformResponse: (response: { data: Message[] }) => {
+                return response.data
+            },
+        })                
         /*         getSerializationList: builder.query<string[], void>({
                     query: () => `/actuators/`,
                 }),
@@ -127,5 +142,6 @@ export const apiSlice = createApi({
 export const {
     useGetAllDevicesQuery, useGetDevicebyIDQuery, useAddNewDeviceMutation, useEditDeviceMutation, useRemoveDeviceMutation,
     useGetAllActuatorsQuery, useGetActuatorbyIDQuery, useAddNewActuatorMutation, useEditActuatorMutation, useRemoveActuatorMutation,
-    useGetAllCommandsQuery, useGetCommandbyIDQuery, useSendCommandMutation, useRemoveCommandMutation
+    useGetAllCommandsQuery, useGetCommandbyIDQuery, useSendCommandMutation, useRemoveCommandMutation, 
+    useGetMessagesQuery, useGetMessagesbyRequestIdQuery
 } = apiSlice;

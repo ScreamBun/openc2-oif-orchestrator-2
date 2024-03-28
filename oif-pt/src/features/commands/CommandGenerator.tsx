@@ -6,12 +6,15 @@ import { useSendCommandMutation } from "../../services/apiSlice";
 import { sbToastError, sbToastSuccess } from "../common/SBToast";
 import { Command } from "../../services/types";
 import SBSubmitBtn from "../common/SBSubmitBtn";
+import CommsList from "./CommsList";
 
 const CommandGenerator = () => {
     // const [loadedSchema, setLoadedSchema] = useState('');
     // const [msgTypeOpts, setMsgTypeOpts] = useState([]);
     const [cmd, setCmd] = useState('');  
     const [isSending, setIsSending] = useState(false);  
+    const [requestId, setRequestId] = useState("zzz");  
+    const [viewMessage, setViewMessage] = useState();  
 
     const [sendCommand, { isLoading }] = useSendCommandMutation();
     const formId = "command_form";
@@ -35,10 +38,11 @@ const CommandGenerator = () => {
 
         setIsSending(true);
         await sendCommand(command).unwrap()
-            .then(() => {
+            .then((data) => {
                 setIsSending(false);
-                console.log('command sent!');
-                sbToastSuccess(`Command sent`);
+                sbToastSuccess(`Command sent, waiting for responses`);
+                console.log("request_id: " + JSON.stringify(data))
+                setRequestId(data)
             })
             .catch((err) => {
                 setIsSending(false);
@@ -55,15 +59,11 @@ const CommandGenerator = () => {
                 Commands
             </div>
             <div className="card-body">
-
                 <div className='row'>
                     <div className='col-md-7'>
                         <div className="card">
                             <div className="card-header">
                                 <span className="align-middle">Command Generator</span>
-                                {/* <button type="button" className="btn btn-sm btn-success float-end" title="Send" onClick={onSendClick}>
-                                    <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
-                                </button> */}
                                 <SBSubmitBtn buttonId="sendCommandBtn" 
                                     buttonTitle="Send command" 
                                     buttonTxt=""
@@ -89,30 +89,16 @@ const CommandGenerator = () => {
                         </div>
                     </div>
                     <div className='col-md-5'>
-                        <div className="card">
-                            <div className="card-header">
-                                <span>History</span>
-                            </div>
-                            <div className="card-body p-0">
-                                <ul className="list-group">
-                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">A new msg <span className="badge text-bg-primary rounded-pill">Sent</span></li>
-                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">A second msg <span className="badge text-bg-danger rounded-pill">Failed</span></li>
-                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">A third msg <span className="badge text-bg-success rounded-pill">Received</span></li>
-                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">A fourth msg <span className="badge text-bg-success rounded-pill">Received</span></li>
-                                    <li className="list-group-item list-group-item d-flex justify-content-between align-items-start">And a fifth msg <span className="badge text-bg-success rounded-pill">Received</span></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <CommsList requestId={requestId} viewMessage={viewMessage} setViewMessage={setViewMessage}></CommsList>
                     </div>                    
                 </div>
                 <div className='row pt-2'>
                     <div className='col-md-12'>
                         <div className="card">
                             <div className="card-header">
-                                Details
+                                Message Details
                             </div>
                             <div className="card-body">
-
                                 <div className='row'>
                                     <div className='col-md-6'>
                                         <div className="card">
@@ -120,22 +106,19 @@ const CommandGenerator = () => {
                                                 Message
                                             </div>
                                             <div className="card-body">
-
+                                                <CodeMirror
+                                                    value={ viewMessage }
+                                                    height="40vh"
+                                                    maxHeight='100%'
+                                                    onChange={ sbEditorOnChange }
+                                                    readOnly={ true }
+                                                    theme={ githubDark }
+                                                    extensions={ [langs.json()] }
+                                                />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className='col-md-6'>
-                                        <div className="card">
-                                            <div className="card-header">
-                                                Results
-                                            </div>
-                                            <div className="card-body">
-
-                                            </div>
-                                        </div>
-                                    </div>                            
+                                    </div>                           
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -157,3 +140,7 @@ const CommandGenerator = () => {
     );
 }
 export default CommandGenerator; 
+
+function getMessages(command: Command) {
+    throw new Error("Function not implemented.");
+}

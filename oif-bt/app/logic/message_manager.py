@@ -71,6 +71,11 @@ async def save_msg(message: dict, msg_type: str):
         message_dict['date_sent'] = curr_millis
     elif msg_type == Msg_Type.RESPONSE.value:
         message_dict['date_received'] = curr_millis
+        
+        if message['headers']['from']:
+            message_dict['created_by'] = message['headers']['from']
+        else:
+            message_dict['created_by'] = "Unknown"
 
     saved_msg = await message_collection.add_message(message_dict)
     

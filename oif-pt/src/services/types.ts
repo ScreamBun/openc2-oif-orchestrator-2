@@ -41,6 +41,8 @@ export interface Message {
     request_id?: string;
     date_sent?: string;
     date_received?: string;
+    date_created?: string;
+    created_by?: string;
     msg: string;
     msg_type: string;
 }

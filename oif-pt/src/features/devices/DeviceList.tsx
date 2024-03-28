@@ -1,5 +1,4 @@
 //TODO: add pagination
-import React from "react";
 import { Link } from "react-router-dom";
 import { NAV_DEVICE_CREATOR, NAV_DEVICE_LIST } from "../../nav/consts";
 

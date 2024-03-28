@@ -17,11 +17,21 @@ async def get_message(id: str):
 async def get_messages():
     n = await message_collection.count_documents({})
     cursor = message_collection.find()
-    cursor.sort('date_sent', 1) 
+    cursor.sort('date_created', 1) 
     messages = await cursor.to_list(length=n)
     if messages:
         return to_message_list(messages)
-    return None
+    return []
+
+
+async def get_messages_by_request_id(request_id: str):
+    n = await message_collection.count_documents({})
+    cursor = message_collection.find({"request_id": request_id})
+    cursor.sort('date_created', 1) 
+    messages = await cursor.to_list(length=n)
+    if messages:
+        return to_message_list(messages)
+    return []
 
 
 async def add_message(new_message: dict):
@@ -56,10 +66,13 @@ async def delete_message(id: str):
 def to_message(item) -> dict:
     return {
         "id": str(item.get("_id")),
+        "request_id": str(item.get("request_id")),
         "date_sent": str(item.get("date_sent")),
         "date_received": item.get("date_received"),
-        "status": item.get("status"),
-        "msg": item.get("msg")
+        "date_created": item.get("date_created"),
+        "created_by": item.get("created_by"),
+        "msg": item.get("msg"),
+        "msg_type": item.get("msg_type")
     }    
 
 

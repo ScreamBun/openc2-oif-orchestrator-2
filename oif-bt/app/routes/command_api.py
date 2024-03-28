@@ -13,7 +13,6 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-
 @router.get("/", response_description="Get all commands sent from the database")
 async def get_commands():
     command_list = await command_collection.get_command()
@@ -24,21 +23,15 @@ async def get_commands():
 async def read_command_data(command_id: str):
     command = await command_collection.get_command(command_id)
     return ResponseModel(command, 200, "command retrieved successfully.", False)
-
-
-# def start_subscriptions():
-#     mqtt_manager.task_start_subscription(None, None, None)
  
 
 @router.post("/add", response_description="command data added into the database")
 async def add_command_data(command: CommandModel):
-# async def add_command_data(command: CommandModel, background_tasks: BackgroundTasks):
- 
-    # background_tasks.add_task(start_subscriptions)
-    await command_manager.process_command(command)
+
+    request_id = await command_manager.process_command(command)
     
     print("pub finished")
-    return ResponseModel(True, 200, "command added and sent successfully.", False)
+    return ResponseModel(request_id, 200, "command added and sent successfully.", False)
 
 
 @router.put("/update")
