@@ -5,7 +5,6 @@ from db import command_collection
 
 from models.command import CommandModel
 from logic import command_manager
-# from transports.mqtt import sub_manager
 
 router = APIRouter(
     prefix="/command",
