@@ -14,7 +14,8 @@ const CommandGenerator = () => {
     const [cmd, setCmd] = useState('');  
     const [isSending, setIsSending] = useState(false);  
     const [requestId, setRequestId] = useState("zzz");  
-    const [viewMessage, setViewMessage] = useState();  
+    // const [viewMessage, setViewMessage] = useState();  
+    const [messagesInView, setMessagesInView] = useState([]);
 
     const [sendCommand, { isLoading }] = useSendCommandMutation();
     const formId = "command_form";
@@ -77,7 +78,7 @@ const CommandGenerator = () => {
                                 <form id={formId} onSubmit={onSendClick}>
                                     <CodeMirror
                                         value={ cmd }
-                                        height="40vh"
+                                        height="60vh"
                                         maxHeight='100%'
                                         onChange={ sbEditorOnChange }
                                         readOnly={ false }
@@ -89,35 +90,37 @@ const CommandGenerator = () => {
                         </div>
                     </div>
                     <div className='col-md-5'>
-                        <CommsList requestId={requestId} viewMessage={viewMessage} setViewMessage={setViewMessage}></CommsList>
+                        <CommsList requestId={requestId} messagesInView={messagesInView} setMessagesInView={setMessagesInView}></CommsList>
                     </div>                    
                 </div>
                 <div className='row pt-2'>
                     <div className='col-md-12'>
                         <div className="card">
                             <div className="card-header">
-                                Message Details
+                                Comms Details
                             </div>
                             <div className="card-body">
                                 <div className='row'>
-                                    <div className='col-md-6'>
-                                        <div className="card">
-                                            <div className="card-header">
-                                                Message
+                                    {messagesInView.map(viewMessage => (
+                                        <div className='col-md-4' key={viewMessage['id']}>
+                                            <div className="card">
+                                                <div className="card-header">
+                                                    {viewMessage['message']['msg_type']} Message
+                                                </div>
+                                                <div className="card-body">
+                                                    <CodeMirror
+                                                        value={ JSON.stringify(viewMessage['message'], null, 2) }
+                                                        height="80vh"
+                                                        maxHeight='100%'
+                                                        onChange={ sbEditorOnChange }
+                                                        readOnly={ true }
+                                                        theme={ githubDark }
+                                                        extensions={ [langs.json()] }
+                                                    />
+                                                </div>
                                             </div>
-                                            <div className="card-body">
-                                                <CodeMirror
-                                                    value={ viewMessage }
-                                                    height="40vh"
-                                                    maxHeight='100%'
-                                                    onChange={ sbEditorOnChange }
-                                                    readOnly={ true }
-                                                    theme={ githubDark }
-                                                    extensions={ [langs.json()] }
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>                           
+                                        </div> 
+                                    ))}                                                              
                                 </div>
                             </div>
                         </div>
