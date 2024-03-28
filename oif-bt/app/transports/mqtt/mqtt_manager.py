@@ -19,8 +19,15 @@ def setup_client(broker:str = None, port:str = None, topics:list = None) -> mqtt
     # TODO: pass in variables broker, etc.  Just using defaults for now
 
     if "v3" in default_protocol:
-        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, str(client_id), None, userdata=True, protocol=mqtt.MQTTv311, transport="tcp") 
-        client.on_connect = on_connect
+        client = mqtt.Client(
+            callback_api_version=mqtt.CallbackAPIVersion.VERSION2, 
+            client_id=str(client_id), 
+            clean_session=None, 
+            userdata=True, 
+            protocol=mqtt.MQTTv311, 
+            transport="tcp")     
+            
+        # client.on_connect = on_connect
     else:
         client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, str(client_id), None, userdata=True, protocol=mqtt.MQTTv5, transport="tcp") 
         client.on_connect = on_connect5

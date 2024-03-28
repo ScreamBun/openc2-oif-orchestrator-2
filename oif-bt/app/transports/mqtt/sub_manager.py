@@ -19,11 +19,15 @@ from models.msg_type import Msg_Type
 
 def on_connect5(client: mqtt.Client, userdata, flags, rc, properties):
     print("Connected with result code "+str(rc))
+    client.connected_flag=True   
+    client.is_connected
     client.subscribe(default_sub_topic)
 
 
-def on_connect(client: mqtt.Client, userdata, rc):
+def on_connect(client: mqtt.Client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
+    client.connected_flag=True   
+    client.is_connected    
     client.subscribe(default_sub_topic)
 
 
@@ -96,9 +100,13 @@ curr_millis = utils.get_current_datetime_in_millis()
 client_id = client_id + "-" + socket.gethostname() + "-" + "sub" + "-" + str(curr_millis)
 
 if "v3" in default_protocol:
-    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, str(client_id), None, userdata=True, protocol=mqtt.MQTTv311, transport="tcp") 
+    client = mqtt.Client(
+        callback_api_version=mqtt.CallbackAPIVersion.VERSION2, 
+        client_id=str(client_id), 
+        protocol=mqtt.MQTTv311) 
+    
     client.on_log = on_log
-    client.on_connect = on_connect
+    # client.on_connect = on_connect
 else:
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, str(client_id), None, userdata=True, protocol=mqtt.MQTTv5, transport="tcp") 
     client.on_log = on_log
@@ -109,4 +117,5 @@ client.on_message = on_message
 set_user_pw(client)  # Needed for AWS and MQHIV Brokers
  
 client.connect(default_broker, default_port)
+client.subscribe(default_sub_topic)
 client.loop_start()  
