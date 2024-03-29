@@ -10,6 +10,7 @@ import CommsList from "./CommsList";
 import SBCopyToClipboard from "../common/SBCopyToClipboard";
 import SBDeleteButton from "../common/SBDeleteButton";
 import SBCopyToTabButton from "../common/SBCopyToTabButton";
+import { getDateTime } from "../../services/utils";
 
 const CommandGenerator = () => {
     // const [loadedSchema, setLoadedSchema] = useState('');
@@ -120,15 +121,19 @@ const CommandGenerator = () => {
                                                     <SBCopyToClipboard buttonId={'copy'+viewMessage['id']} data={viewMessage['message']['msg']} shouldStringify={true} customClass='float-end me-2' />
                                                 </div>
                                                 <div className="card-body">
-                                                    <CodeMirror
-                                                        value={ JSON.stringify(viewMessage['message'], null, 2) }
-                                                        height="80vh"
-                                                        maxHeight='100%'
-                                                        onChange={ sbEditorOnChange }
-                                                        readOnly={ true }
-                                                        theme={ githubDark }
-                                                        extensions={ [langs.json()] }
-                                                    />
+                                                    <div className="row">
+                                                        <div className="col-md-12">
+                                                            <CodeMirror
+                                                                value={ JSON.stringify(viewMessage['message']['msg'], null, 2) }
+                                                                height="80vh"
+                                                                maxHeight='100%'
+                                                                onChange={ sbEditorOnChange }
+                                                                readOnly={ true }
+                                                                theme={ githubDark }
+                                                                extensions={ [langs.json()] }
+                                                            />
+                                                        </div>                           
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div> 
