@@ -53,6 +53,61 @@ async def build_http_msg(cmd: dict):
     return http_msg
 
 
+async def convert_inner_msg(msg: dict):
+    actual_msg = {}
+    actual_msg_str = msg.get('msg')
+    
+    if actual_msg_str:
+        actual_msg = utils.convert_to_dict(actual_msg_str)
+        msg["msg"] = actual_msg
+        
+        inner_msg = msg.get("msg")
+        if inner_msg:
+            body = inner_msg.get("body")
+            if body:
+                openc2 = body.get("openc2")
+                if openc2:
+                    response = openc2.get("response")
+                    if response:
+                        results = response.get("results")
+                        if results and isinstance(results, str):
+                            
+                            actual_results = results
+                            if utils.is_json(results):                           
+                                actual_results = utils.convert_to_dict(results)
+                                
+                            msg["msg"]["body"]["openc2"]["response"]["results"] = actual_results
+            
+    return msg
+
+
+async def get_msgs():
+    message_list = await message_collection.get_messages()
+    
+    for i, val in enumerate(message_list):
+        msg = await convert_inner_msg(val)
+        message_list[i] = msg
+
+    return message_list
+
+
+async def get_msgs_by_request_id(request_id: str):
+    message_list = await message_collection.get_messages_by_request_id(request_id)
+    
+    for i, val in enumerate(message_list):
+        msg = await convert_inner_msg(val)
+        message_list[i] = msg
+
+    return message_list
+
+
+async def get_msg_by_id(id: str):
+    msg = await message_collection.get_message(id)
+    msg = await convert_inner_msg(msg)
+
+    return msg
+
+
 async def save_msg(message: dict, msg_type: str):
     curr_millis = utils.get_current_datetime_in_millis()
     msg_str = json.dumps(message)

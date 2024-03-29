@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from models.common import ResponseModel
-from db import message_collection
+from logic import message_manager
 
 
 router = APIRouter(
@@ -11,7 +11,7 @@ router = APIRouter(
 
 @router.get("/messages/", response_description="Get all messages")
 async def get_messages():
-    message_list = await message_collection.get_messages()
+    message_list = await message_manager.get_msgs()
     return ResponseModel(message_list, 200, "", False)
 
 
@@ -19,13 +19,13 @@ async def get_messages():
 async def getMessagesbyRequestId(request_id: str):
     message_list = []
     if request_id:
-        message_list = await message_collection.get_messages_by_request_id(request_id)
+         message_list = await message_manager.get_msgs_by_request_id(request_id)
     return ResponseModel(message_list, 200, "", False)
 
 
 @router.get("/{message_id}", response_description="Get message by id")
 async def read_message_data(message_id: str):
-    message = await message_collection.get_message(message_id)
+    message = await message_manager.get_msg_by_id(message_id)
     return ResponseModel(message, 200, "message retrieved successfully.", False)
  
 

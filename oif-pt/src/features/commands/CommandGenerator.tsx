@@ -78,7 +78,7 @@ const CommandGenerator = () => {
                                 <form id={formId} onSubmit={onSendClick}>
                                     <CodeMirror
                                         value={ cmd }
-                                        height="60vh"
+                                        height="50vh"
                                         maxHeight='100%'
                                         onChange={ sbEditorOnChange }
                                         readOnly={ false }

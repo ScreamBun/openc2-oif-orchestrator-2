@@ -15,8 +15,14 @@ def is_json(data):
 
 def convert_to_dict(data):
     dict_data = {}
-    if is_json(data):
-        dict_data = json.loads(data)
+    
+    if is_json(data) or isinstance(data, str):
+        try:
+            dict_data = json.loads(data)
+        except Exception as ex:
+            error_msg = str(ex)
+            raise f"Unable to convet data to dict: {error_msg}"            
+
     return dict_data
 
 def build_request_id():

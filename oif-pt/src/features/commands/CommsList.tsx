@@ -10,13 +10,11 @@ const CommsList = (props: any) => {
       })     
 
     const rowOfMessages = data.map((message: Message) => 
-        // <div className="list-group" key={message.id}>
-            <CommsListItem key={message.id} message={message} messagesInView={messagesInView} setMessagesInView={setMessagesInView}></CommsListItem>
-        // </div>
+        <CommsListItem key={message.id} message={message} messagesInView={messagesInView} setMessagesInView={setMessagesInView}></CommsListItem>
     );    
 
     return (
-        <div className="card">
+        <div className="card h-50">
             <div className="card-header">
                 <span>Comms List</span>
             </div>
