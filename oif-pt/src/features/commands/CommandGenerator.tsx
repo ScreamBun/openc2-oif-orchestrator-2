@@ -7,6 +7,7 @@ import { sbToastError, sbToastSuccess } from "../common/SBToast";
 import { Command } from "../../services/types";
 import SBSubmitBtn from "../common/SBSubmitBtn";
 import CommsList from "./CommsList";
+import SBCopyToClipboard from "../common/SBCopyToClipboard";
 
 const CommandGenerator = () => {
     // const [loadedSchema, setLoadedSchema] = useState('');
@@ -28,7 +29,9 @@ const CommandGenerator = () => {
     const onSendClick = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        console.log('cmd: ' + JSON.stringify(cmd, null, 2));
+        // console.log('cmd: ' + JSON.stringify(cmd, null, 2));
+
+        setMessagesInView([])
 
         const command: Command = {
             id: "",
@@ -106,6 +109,7 @@ const CommandGenerator = () => {
                                             <div className="card">
                                                 <div className="card-header">
                                                     {viewMessage['message']['msg_type']} Message
+                                                    <SBCopyToClipboard buttonId={viewMessage['id']} data={viewMessage['message']['msg']} shouldStringify={true} customClass='float-end' />
                                                 </div>
                                                 <div className="card-body">
                                                     <CodeMirror
@@ -143,7 +147,3 @@ const CommandGenerator = () => {
     );
 }
 export default CommandGenerator; 
-
-function getMessages(command: Command) {
-    throw new Error("Function not implemented.");
-}

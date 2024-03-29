@@ -12,13 +12,15 @@ const CommsListItem = (props: any) => {
     const [itemClass, setItemClass] = useState(inActiveClasses); 
 
     const onItemClick = (e: React.MouseEvent<HTMLButtonElement>, message: Message) => {
+        e.preventDefault();
+
         setClicked(!clicked);
         if (clicked){
             setItemClass(activeClasses)
             setMessagesInView( 
                 [
-                ...messagesInView, // that contains all the old items
-                { id: message.id, message: message } // and one new item at the end
+                    ...messagesInView, // that contains all the old items
+                    { id: message.id, message: message } // and one new item at the end
                 ]
             );            
         } else {
