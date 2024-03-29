@@ -1,6 +1,5 @@
-import { faExpand, faSquareArrowUpRight } from "@fortawesome/free-solid-svg-icons";
+import { faSquareArrowUpRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DOMPurify from "dompurify";
 
 const SBCopyToTabButton = (props: any) => {
 
