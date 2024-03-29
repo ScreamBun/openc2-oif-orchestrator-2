@@ -8,6 +8,7 @@ import { Command } from "../../services/types";
 import SBSubmitBtn from "../common/SBSubmitBtn";
 import CommsList from "./CommsList";
 import SBCopyToClipboard from "../common/SBCopyToClipboard";
+import SBDeleteButton from "../common/SBDeleteButton";
 
 const CommandGenerator = () => {
     // const [loadedSchema, setLoadedSchema] = useState('');
@@ -15,21 +16,25 @@ const CommandGenerator = () => {
     const [cmd, setCmd] = useState('');  
     const [isSending, setIsSending] = useState(false);  
     const [requestId, setRequestId] = useState("zzz");  
-    // const [viewMessage, setViewMessage] = useState();  
     const [messagesInView, setMessagesInView] = useState([]);
 
     const [sendCommand, { isLoading }] = useSendCommandMutation();
     const formId = "command_form";
 
     const sbEditorOnChange = (cmd: string) => {
-        // setMsg(JSON.stringify(msg, null, 2));
         setCmd(cmd);
     }
 
+    const handleDeleteFromChild = (id: string) => {
+        if (id){
+            setMessagesInView(
+                messagesInView.filter((a: { id: string | undefined; }) => a.id !== id)
+            );
+        }       
+    }    
+
     const onSendClick = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        // console.log('cmd: ' + JSON.stringify(cmd, null, 2));
 
         setMessagesInView([])
 
@@ -108,8 +113,9 @@ const CommandGenerator = () => {
                                         <div className='col-md-4' key={viewMessage['id']}>
                                             <div className="card">
                                                 <div className="card-header">
-                                                    {viewMessage['message']['msg_type']} Message
-                                                    <SBCopyToClipboard buttonId={viewMessage['id']} data={viewMessage['message']['msg']} shouldStringify={true} customClass='float-end' />
+                                                    {viewMessage['message']['msg_type']} Message                                                
+                                                    <SBDeleteButton buttonId={'delete'+viewMessage['id']} itemId={viewMessage['message']['id']} sendDeleteToParent={handleDeleteFromChild}customClass='float-end' />
+                                                    <SBCopyToClipboard buttonId={'copy'+viewMessage['id']} data={viewMessage['message']['msg']} shouldStringify={true} customClass='float-end me-2' />
                                                 </div>
                                                 <div className="card-body">
                                                     <CodeMirror
