@@ -22,9 +22,7 @@ const SBCopyToClipboard = (props: any) => {
         try {
 
             if (shouldStringify === true) {
-                console.log("Stringify-ing")
                 copied_data = JSON.stringify(data, null, 4);
-                console.log(copied_data)
             }
 
             navigator.clipboard.writeText(copied_data);
