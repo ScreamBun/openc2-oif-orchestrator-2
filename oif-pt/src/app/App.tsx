@@ -12,7 +12,7 @@ import ActuatorDetails from '../features/actuators/ActuatorDetails';
 import ActuatorList from '../features/actuators/ActuatorList';
 import CommandDetails from '../features/commands/CommandDetails';
 import CommandGenerator from '../features/commands/CommandGenerator';
-import CommsList from '../features/commands/CommsList';
+import MessageList from '../features/commands/MessageList';
 
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
             <Route path={NAV_ACTUATOR} element={<ActuatorDetails />} />
             <Route path={NAV_ACTUATOR_EDIT} element={<ActuatorCreator />} />
 
-            <Route path={NAV_COMMAND_LIST} element={<CommsList />} />
+            <Route path={NAV_COMMAND_LIST} element={<MessageList />} />
             <Route path={NAV_COMMAND_GENERATOR} element={<CommandGenerator />} />
             <Route path={NAV_COMMAND} element={<CommandDetails />} />
 

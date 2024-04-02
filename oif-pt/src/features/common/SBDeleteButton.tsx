@@ -7,7 +7,7 @@ const SBDeleteButton = (props: any) => {
     const { buttonId, itemId, sendDeleteToParent, customClass} = props;
 
     const onDelete = () => {
-        sbToastSuccess('Message remvoed');
+        sbToastSuccess('Message removed');
         sendDeleteToParent(itemId);
     }
     

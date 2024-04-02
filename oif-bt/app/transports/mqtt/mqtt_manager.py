@@ -100,15 +100,11 @@ def publish(topic = "oc2/cmd", msg = "test"):
 
 
 def on_connect5(client: mqtt.Client, userdata, flags, rc, properties):
-    # print("mqtt: New mqtt instance connected")
-    # client.subscribe("$SYS/#")
     client.connected_flag=True   
     client.is_connected
     
 
 def on_connect(client: mqtt.Client, userdata, flags, rc):
-    # print("mqtt: New mqtt instance connected")
-    # client.subscribe("$SYS/#")
     client.connected_flag=True    
     client.is_connected
 
@@ -158,13 +154,6 @@ def on_message(client: mqtt.Client, userdata, message):
         # process_response(msg_benedict)
 
     pass
-
-
-# def on_publish(mosq, obj, mid):
-#     print("*****mqtt: on_publish mid: " + str(mid))
-
-# def on_subscribe(client, userdata, mid, granted_qos):
-#     print("*****mqtt: on_subscribe: " + str(mid) + " " + str(granted_qos))
 
 
 def set_user_pw(client: mqtt.Client, user: str = None, pw: str = None):

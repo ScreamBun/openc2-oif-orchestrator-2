@@ -8,9 +8,9 @@ pydantic.json.ENCODERS_BY_TYPE[ObjectId]=str
 
 async def get_message(id: str):
     if id != 'undefined':
-      cmd = await message_collection.find_one({"_id": ObjectId(id)})
-      if cmd:
-        return to_message(cmd)
+      msg = await message_collection.find_one({"_id": ObjectId(id)})
+      if msg:
+        return to_message(msg)
     return None
 
 
@@ -22,6 +22,14 @@ async def get_messages():
     if messages:
         return to_message_list(messages)
     return []
+
+
+async def get_message_by_created_by(created_by: str):
+    if created_by:
+      msg = await message_collection.find_one({"created_by": created_by})
+      if msg:
+        return to_message(msg)
+    return None
 
 
 async def get_messages_by_request_id(request_id: str):
@@ -71,6 +79,7 @@ def to_message(item) -> dict:
         "date_received": item.get("date_received"),
         "date_created": item.get("date_created"),
         "created_by": item.get("created_by"),
+        "color_indicator": item.get("color_indicator"),
         "msg": item.get("msg"),
         "msg_type": item.get("msg_type")
     }    

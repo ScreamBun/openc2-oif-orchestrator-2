@@ -10,6 +10,7 @@ class MessageModel(BaseModel):
     date_received : str = Field(None,  title="received date in millis", max_length=120)
     date_created : str = Field(None,  title="created date in millis", max_length=120)
     created_by : str = Field(None,  title="created by whom", max_length=120)
+    color_indicator : str = Field(None,  title="created by color indicator", max_length=20)
     msg : str = Field(None, title="command sent", max_length=10000)
     msg_type : str = Field(None, title="message type (Command, Response, Relay, Unknown)", max_length=10)
 
@@ -21,6 +22,7 @@ class MessageModel(BaseModel):
                     "date_received": self.date_received,
                     "date_created": self.date_created,
                     "created_by": self.created_by,
+                    "color_indicator": self.color_indicator,
                     "msg": self.msg,
                     "msg_type": self.msg_type
                 }

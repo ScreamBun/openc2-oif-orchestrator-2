@@ -1,8 +1,8 @@
 import { useGetMessagesbyRequestIdQuery } from "../../services/apiSlice";
 import { Message } from "../../services/types";
-import CommsListItem from "./CommsListItem";
+import MessageListItem from "./MessageListItem";
 
-const CommsList = (props: any) => {
+const MessageList = (props: any) => {
 
     const { requestId = "zzz", messagesInView, setMessagesInView } = props;
     const { data = [], error, isLoading, isFetching, refetch } = useGetMessagesbyRequestIdQuery(requestId, {
@@ -10,13 +10,13 @@ const CommsList = (props: any) => {
       })     
 
     const rowOfMessages = data.map((message: Message) => 
-        <CommsListItem key={message.id} message={message} messagesInView={messagesInView} setMessagesInView={setMessagesInView}></CommsListItem>
+        <MessageListItem key={message.id} message={message} messagesInView={messagesInView} setMessagesInView={setMessagesInView}></MessageListItem>
     );    
 
     return (
-        <div className="card h-50">
+        <div className="card h-100 overflow-auto">
             <div className="card-header">
-                <span>Comms List</span>
+                <span>Message List</span>
             </div>
             <div className="card-body p-0">
                 <div className="list-group">
@@ -26,4 +26,4 @@ const CommsList = (props: any) => {
         </div>
     );
 }
-export default CommsList; 
+export default MessageList; 

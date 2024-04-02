@@ -1,0 +1,114 @@
+{
+    "headers": {
+      "request_id": "347fde4cc44f49c49f80085d318c578a",
+      "created": 1712082502011,
+      "from": "oc2-orch2-priapus"
+    },
+    "body": {
+      "openc2": {
+        "request": {
+          "action": "query",
+          "target": { "th": { "huntflows": { "path": "./" } } }
+        }
+      }
+    }
+}  
+
+
+{
+  "headers": {
+    "request_id": "ae2ca7fcaa0e4e739f2e22as55b170396",
+    "created": 1712063787321,
+    "from": "OIF Orchestrator 2",
+    "actuator_id": "ae2ca7fcaa0e4e739f2e22a55b170396"
+  },
+  "body": {
+    "openc2": {
+      "request": {
+        "action": "investigate",
+        "target": { "th": { "hunt": "./hunts/jinja/oc2-hunt-1.jhf" } }
+      }
+    }
+  }
+}
+
+{
+    "headers": {
+        "request_id": "ae2ca7fcaa0e4e739f2e22a55b170491",
+        "created": 1712063788821,
+        "from": "OIF Orchestrator 2"
+    },
+    "body": {
+        "openc2": {
+            "request": {
+                "action": "investigate",
+                "target": {
+                    "th": {
+                    "hunt": "./hunts/jinja/oc2-hunt-2.jhf"
+                    }
+                },
+                "args": {
+                    "th": {
+                    "huntargs": {
+                        "string_args": ["filename_1:disablefw.json", "filename_2:hosts.json"]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+{
+    "headers": {
+        "request_id": "ae2ca7fcaa0e4e739f2e22a55b170231",
+        "created": 17120638789821,
+        "from": "OIF Orchestrator 2"
+    },
+    "body": {
+        "openc2": {
+            "request": {
+                "action": "investigate",
+                "target": {
+                    "th": {
+                    "hunt": "./hunts/jinja/oc2-hunt-3.jhf"
+                    }
+                },
+                "args": {
+                    "th": {
+                    "huntargs": {
+                        "string_args": ["filename_1:disablefw.json", "filename_2:hosts.json"]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+{
+    "headers": {
+        "request_id": "ae2ca7fcaa0e4e739f2e22a52b270236",
+        "created": 17120638799890,
+        "from": "OIF Orchestrator 2"
+    },
+    "body": {
+        "openc2": {
+            "request": {
+                "action": "investigate",
+                "target": {
+                    "th": {
+                    "hunt": "./hunts/jinja/oc2-hunt-4.jhf"
+                    }
+                },
+                "args": {
+                    "th": {
+                    "huntargs": {
+                        "string_args": ["filename_1:siblings.json", "filename_2:hosts.json"]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

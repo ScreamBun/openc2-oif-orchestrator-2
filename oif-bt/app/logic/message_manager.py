@@ -10,9 +10,8 @@ async def build_mqtt_msg(cmd: dict):
     mqtt_msg = {}
     
     request_id = cmd["request_id"]
-    temp_millis = utils.get_current_datetime_in_millis()
-    # TODO Use device id from mqtt_manager
-    temp_from = "OIF Orchestrator 2"
+    curr_time_millis = utils.get_current_datetime_in_millis()
+    request_from = utils.get_client_name()
     
     if isinstance(cmd, str):
         cmd = json.loads(cmd)
@@ -27,9 +26,8 @@ async def build_mqtt_msg(cmd: dict):
     headers_section = { 
         "headers" : {
             "request_id" : request_id,  
-            "created" : temp_millis,
-            "from" : temp_from,
-            "actuator_id" : request_id
+            "created" : curr_time_millis,
+            "from" : request_from
         }
     }
     
@@ -118,20 +116,29 @@ async def save_msg(message: dict, msg_type: str):
     }
     
     if message['headers']['request_id']:
-        req_id = message['headers']['request_id'] # TODO Unreliable
+        req_id = message['headers']['request_id']
         message_dict['request_id'] = req_id
-        # TODO: Add logic to update command stat data
     
     if msg_type == Msg_Type.COMMAND.value:
         message_dict['date_sent'] = curr_millis
     elif msg_type == Msg_Type.RESPONSE.value:
         message_dict['date_received'] = curr_millis
         
-        if message['headers']['from']:
-            message_dict['created_by'] = message['headers']['from']
-        else:
-            message_dict['created_by'] = "Unknown"
+    if message['headers']['from']:
+        message_dict['created_by'] = message['headers']['from']
+    else:
+        message_dict['created_by'] = "Unknown"    
 
+    msg_created_by = await message_collection.get_message_by_created_by(message_dict['created_by'])
+    color_indicator = None
+    
+    if msg_created_by:
+        color_indicator = msg_created_by.get("color_indicator")
+        
+    if color_indicator == None:    
+        color_indicator = utils.get_random_color()
+
+    message_dict['color_indicator'] = color_indicator
     saved_msg = await message_collection.add_message(message_dict)
     
     return saved_msg

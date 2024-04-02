@@ -1,4 +1,5 @@
 import json
+import secrets
 import socket
 import time
 import uuid
@@ -36,6 +37,15 @@ def get_hostname() -> str :
 
 def get_client_name() -> str : 
     app_configs = toml.load("./oif-bt/app/config.toml")
-    client_id = app_configs['CLIENT_ID']
+    client_id = app_configs['GENERAL']['CLIENT_ID']
     client_name = client_id + "-" + get_hostname()
     return client_name
+
+def get_random_color():
+    r = secrets.randbelow(256)
+    g = secrets.randbelow(256)
+    b = secrets.randbelow(256)
+    
+    color = "rgb({}, {}, {})".format(r,g,b)
+    
+    return color
