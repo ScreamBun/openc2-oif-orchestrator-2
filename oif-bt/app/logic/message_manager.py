@@ -129,7 +129,8 @@ async def save_msg(message: dict, msg_type: str):
     else:
         message_dict['created_by'] = "Unknown"    
    
-    color_indicator = utils.get_random_color()
+    # color_indicator = utils.get_random_color()
+    color_indicator = utils.string_to_colour(message_dict['created_by'])
 
     message_dict['color_indicator'] = color_indicator
     saved_msg = await message_collection.add_message(message_dict)

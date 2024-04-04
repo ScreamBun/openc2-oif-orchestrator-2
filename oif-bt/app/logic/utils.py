@@ -1,3 +1,4 @@
+import binascii
 import json
 import secrets
 import socket
@@ -5,6 +6,7 @@ import time
 import uuid
 
 import toml
+import webcolors
 
 
 def is_json(data):
@@ -45,6 +47,19 @@ def get_random_color():
     r = secrets.randbelow(256)
     g = secrets.randbelow(256)
     b = secrets.randbelow(256)
+    
+    color = "rgb({}, {}, {})".format(r,g,b)
+    
+    return color
+
+def string_to_colour(name: str):
+    str_bytes = bytes(name, 'utf-8')
+    hex_value = binascii.hexlify(str_bytes)
+    color_tup = tuple(int(hex_value[i:i+2], 16) for i in (0, 2, 4))
+    
+    r = color_tup[0]
+    g = color_tup[1]
+    b = color_tup[2]
     
     color = "rgb({}, {}, {})".format(r,g,b)
     

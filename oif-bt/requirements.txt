@@ -5,3 +5,4 @@ python-benedict==0.31.0
 toml==0.10.2
 tomli==2.0.1
 uvicorn==0.21.1
+webcolors==1.13.0
