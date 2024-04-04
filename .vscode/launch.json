@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "debug oif-bt",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/oif-bt/app/main.py",
             "console": "integratedTerminal",

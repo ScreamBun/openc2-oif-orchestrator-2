@@ -11,6 +11,7 @@ import SBCopyToClipboard from "../common/SBCopyToClipboard";
 import SBDeleteButton from "../common/SBDeleteButton";
 import SBCopyToTabButton from "../common/SBCopyToTabButton";
 import { getDateTime } from "../../services/utils";
+import SBDownloadBtn from "../common/SBDownloadBtn";
 
 
 const CommandGenerator = () => {
@@ -125,9 +126,10 @@ const CommandGenerator = () => {
                                                         <span title="Date Sent" className="badge text-bg-dark rounded-pill">{getDateTime(viewMessage['message']['date_sent'])}</span>
                                                     )}                                            
 
-                                                    <SBDeleteButton buttonId={'delete'+viewMessage['id']} itemId={viewMessage['message']['id']} sendDeleteToParent={handleDeleteFromChild}customClass='float-end' />
+                                                    <SBDeleteButton buttonId={'delete'+viewMessage['id']} itemId={viewMessage['message']['id']} sendDeleteToParent={handleDeleteFromChild} customClass='float-end' />
                                                     <SBCopyToTabButton buttonId={''+viewMessage['id']} data={viewMessage['message']['msg']} tabName={'Expanded View'} customClass='float-end me-2' />
                                                     <SBCopyToClipboard buttonId={'copy'+viewMessage['id']} data={viewMessage['message']['msg']} shouldStringify={true} customClass='float-end me-2' />
+                                                    <SBDownloadBtn buttonId={'download'+viewMessage['id']} filename={viewMessage['message']['created_by'] + "_" + viewMessage['message']['msg_type'] + "_" + viewMessage['message']['request_id']} data={viewMessage['message']['msg']} customClass='float-end me-2' />
 
                                                 </div>
                                                 <div className="card-body">
