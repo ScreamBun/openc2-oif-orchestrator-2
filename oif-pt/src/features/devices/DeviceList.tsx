@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { NAV_DEVICE_CREATOR, NAV_DEVICE_LIST } from "../../nav/consts";
 
-import { CreateBtn } from "../common/CRUDbtn";
+import { CreateBtn } from "../common/CrudBtn";
 import { useGetAllDevicesQuery } from "../../services/apiSlice";
 import { Device } from "../../services/types";
 

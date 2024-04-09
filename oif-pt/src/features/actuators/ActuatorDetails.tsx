@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router";
 import FileOptBtn from "../common/FileOptBtn";
-import { DeleteBtn, EditBtn } from "../common/CRUDbtn";
+import { DeleteBtn, EditBtn } from "../common/CrudBtn";
 import { useGetActuatorbyIDQuery, useRemoveActuatorMutation } from "../../services/apiSlice";
 import { NAV_ACTUATOR_LIST } from "../../nav/consts";
 

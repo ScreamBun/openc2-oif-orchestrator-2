@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetCommandbyIDQuery } from "../../services/apiSlice";
-import { DeleteBtn } from "../common/CRUDbtn";
+import { DeleteBtn } from "../common/CrudBtn";
 
 const CommandDetails = () => {
     const { commandID } = useParams<{ commandID?: string }>();

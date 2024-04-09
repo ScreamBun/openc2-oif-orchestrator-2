@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { NAV_ACTUATOR_CREATOR, NAV_ACTUATOR_LIST } from "../../nav/consts";
 import { useGetAllActuatorsQuery } from "../../services/apiSlice";
-import { CreateBtn } from "../common/CRUDbtn";
+import { CreateBtn } from "../common/CrudBtn";
 
 const ActuatorList = () => {
     const {

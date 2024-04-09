@@ -6,7 +6,7 @@ const MessageList = (props: any) => {
 
     const { requestId = "zzz", messagesInView, setMessagesInView } = props;
     const { data = [], error, isLoading, isFetching, refetch } = useGetMessagesbyRequestIdQuery(requestId, {
-        pollingInterval: 2000
+        pollingInterval: 5000
       })     
 
     const rowOfMessages = data.map((message: Message) => 

@@ -1,5 +1,5 @@
 import React from "react";
-import { DeleteBtn, EditBtn } from "../common/CRUDbtn";
+import { DeleteBtn, EditBtn } from "../common/CrudBtn";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetDevicebyIDQuery, useRemoveDeviceMutation } from "../../services/apiSlice";
 import { NAV_DEVICE_LIST } from "../../nav/consts";

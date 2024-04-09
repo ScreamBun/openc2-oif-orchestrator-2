@@ -36,6 +36,11 @@ export interface Command {
     command: string;
 }
 
+export interface MessageWrapper {
+    id: string;
+    message: Message;
+}
+
 export interface Message {
     id?: string;
     request_id?: string;

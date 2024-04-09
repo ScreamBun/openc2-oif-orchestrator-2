@@ -4,14 +4,10 @@ import { langs } from '@uiw/codemirror-extensions-langs';
 import { githubDark } from '@uiw/codemirror-themes-all';
 import { useSendCommandMutation } from "../../services/apiSlice";
 import { sbToastError, sbToastSuccess } from "../common/SBToast";
-import { Command } from "../../services/types";
+import { Command, MessageWrapper } from "../../services/types";
 import SBSubmitBtn from "../common/SBSubmitBtn";
 import MessageList from "./MessageList";
-import SBCopyToClipboard from "../common/SBCopyToClipboard";
-import SBDeleteButton from "../common/SBDeleteButton";
-import SBCopyToTabButton from "../common/SBCopyToTabButton";
-import { getDateTime } from "../../services/utils";
-import SBDownloadBtn from "../common/SBDownloadBtn";
+import MessageViewer from "./MessageViewer";
 
 
 const CommandGenerator = () => {
@@ -20,7 +16,7 @@ const CommandGenerator = () => {
     const [cmd, setCmd] = useState('');  
     const [isSending, setIsSending] = useState(false);  
     const [requestId, setRequestId] = useState("zzz");  
-    const [messagesInView, setMessagesInView] = useState([]);
+    const [messagesInView, setMessagesInView] = useState<MessageWrapper[]>([]);
 
     const [sendCommand, { isLoading }] = useSendCommandMutation();
     const formId = "command_form";
@@ -29,13 +25,22 @@ const CommandGenerator = () => {
         setCmd(cmd);
     }
 
-    const handleDeleteFromChild = (id: string) => {
-        if (id){
+    const toggleMsgView = (isChecked: boolean, messageWrapper: MessageWrapper) => {
+        console.log("ischecked: " + isChecked + " msg_id: " + messageWrapper.id)
+
+        if (isChecked === true){
+            setMessagesInView( 
+                [
+                    ...messagesInView, // that contains all the old items
+                    { id: messageWrapper.id, message: messageWrapper.message } // and one new item at the end
+                ]
+            );            
+        } else {
             setMessagesInView(
-                messagesInView.filter((a: { id: string | undefined; }) => a.id !== id)
-            );
-        }       
-    }    
+                messagesInView.filter((a: { id: string }) => a.id !== messageWrapper.id)
+            );      
+        }        
+    }   
 
     const onSendClick = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -107,76 +112,9 @@ const CommandGenerator = () => {
                 </div>
                 <div className='row pt-2'>
                     <div className='col-md-12'>
-                        <div className="card">
-                            <div className="card-header">
-                                Message Viewer
-                            </div>
-                            <div className="card-body">
-                                <div className='row'>
-                                    {messagesInView.map(viewMessage => (
-                                        <div className='col-md-6' key={viewMessage['id']}>
-                                            <div className="card">
-                                                <div className="card-header">
-                                                    <div className="row">
-                                                        <div className="col-md-12">
-                                                            <span className={"badge rounded-pill " + (viewMessage['message']['msg_type'] === 'Response' ? 'text-bg-success' : 'text-bg-primary')}>{viewMessage['message']['msg_type']} </span>
-                                                            <span title="Created by" className="badge text-bg-dark rounded-pill">{viewMessage['message']['created_by']} </span>
-                                                            <span className="badge rounded-pill me-2" style={{ backgroundColor: viewMessage['message']['color_indicator'] }}>&nbsp;</span>                                                    
-                                                            
-                                                            <SBDeleteButton buttonId={'delete'+viewMessage['id']} itemId={viewMessage['message']['id']} sendDeleteToParent={handleDeleteFromChild} customClass='float-end' />
-                                                            <SBCopyToTabButton buttonId={''+viewMessage['id']} data={viewMessage['message']['msg']} tabName={'Expanded View'} customClass='float-end me-2' />
-                                                            <SBCopyToClipboard buttonId={'copy'+viewMessage['id']} data={viewMessage['message']['msg']} shouldStringify={true} customClass='float-end me-2' />
-                                                            <SBDownloadBtn buttonId={'download'+viewMessage['id']} filename={viewMessage['message']['created_by'] + "_" + viewMessage['message']['msg_type'] + "_" + viewMessage['message']['request_id']} data={viewMessage['message']['msg']} customClass='float-end me-2' />                                                            
-                                                        </div>
-                                                    </div>                                                      
-                                                    <div className="row">
-                                                        <div className="col-md-12">
-                                                            
-                                                            { viewMessage['message']['msg_type'] === "Response" ? (
-                                                                <span title="Date Received" className="badge text-bg-dark rounded-pill">{getDateTime(viewMessage['message']['date_received'])}</span>
-                                                            ) : (
-                                                                <span title="Date Sent" className="badge text-bg-dark rounded-pill">{getDateTime(viewMessage['message']['date_sent'])}</span>
-                                                            )}    
-
-                                                        </div>
-                                                    </div>                                                  
-
-                                                </div>
-                                                <div className="card-body">
-                                                    <div className="row">
-                                                        <div className="col-md-12">
-                                                            <CodeMirror
-                                                                value={ JSON.stringify(viewMessage['message']['msg'], null, 2) }
-                                                                height="80vh"
-                                                                maxHeight='100%'
-                                                                onChange={ sbEditorOnChange }
-                                                                readOnly={ true }
-                                                                theme={ githubDark }
-                                                                extensions={ [langs.json()] }
-                                                            />
-                                                        </div>                           
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    ))}                                                              
-                                </div>
-                            </div>
-                        </div>
+                        <MessageViewer messagesInView={messagesInView} setMessagesInView={setMessagesInView} toggleMsgView={toggleMsgView}></MessageViewer>
                     </div>
                 </div>
-
-                {/* <div className='row'>
-                    <div className='col-md-6 pr-1'>
-                        <SchemaLoader
-                            loadedSchema={loadedSchema} setLoadedSchema={setLoadedSchema}
-                            msgTypeOpts={msgTypeOpts} setMsgTypeOpts={setMsgTypeOpts} />
-                    </div>
-                    <div className='col-md-6 pl-1'>
-                        <CommandCreator
-                            loadedSchema={loadedSchema} msgTypeOpts={msgTypeOpts} />
-                    </div>
-                </div> */}
             </div>
         </div>
     );

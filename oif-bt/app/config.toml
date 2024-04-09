@@ -26,7 +26,7 @@ PASSWORD = 'Tango01Village'
 # PASSWORD = ''
 
 # SEND_TOPICS = ["oc2/cmd","oc2/cmd/all", "oc2/cmd/ap/hunt"]
-SEND_TOPICS = ["oc2/cmd/test"]
+SEND_TOPICS = ["oc2/cmd/ap/hunt"]
 RESPONSE_TOPICS = ["oc2/rsp"]
 
 # Other Brokers
