@@ -122,11 +122,12 @@ const CommandGenerator = () => {
                                                             <span className={"badge rounded-pill " + (viewMessage['message']['msg_type'] === 'Response' ? 'text-bg-success' : 'text-bg-primary')}>{viewMessage['message']['msg_type']} </span>
                                                             <span title="Created by" className="badge text-bg-dark rounded-pill">{viewMessage['message']['created_by']} </span>
                                                             <span className="badge rounded-pill me-2" style={{ backgroundColor: viewMessage['message']['color_indicator'] }}>&nbsp;</span>                                                    
-                                                            
-                                                            <SBDeleteButton buttonId={'delete'+viewMessage['id']} itemId={viewMessage['message']['id']} sendDeleteToParent={handleDeleteFromChild} customClass='float-end' />
-                                                            <SBCopyToTabButton buttonId={''+viewMessage['id']} data={viewMessage['message']['msg']} tabName={'Expanded View'} customClass='float-end me-2' />
-                                                            <SBCopyToClipboard buttonId={'copy'+viewMessage['id']} data={viewMessage['message']['msg']} shouldStringify={true} customClass='float-end me-2' />
-                                                            <SBDownloadBtn buttonId={'download'+viewMessage['id']} filename={viewMessage['message']['created_by'] + "_" + viewMessage['message']['msg_type'] + "_" + viewMessage['message']['request_id']} data={viewMessage['message']['msg']} customClass='float-end me-2' />                                                            
+                                                            <div className="btn-group btn-group-sm float-end" role="group">
+                                                                <SBCopyToClipboard buttonId={'copy'+viewMessage['id']} data={viewMessage['message']['msg']} shouldStringify={true} />
+                                                                <SBDownloadBtn buttonId={'download'+viewMessage['id']} filename={viewMessage['message']['created_by'] + "_" + viewMessage['message']['msg_type'] + "_" + viewMessage['message']['request_id']} data={viewMessage['message']['msg']} />                                                            
+                                                                <SBCopyToTabButton buttonId={''+viewMessage['id']} data={viewMessage['message']['msg']} tabName={'Expanded View'} />
+                                                                <SBDeleteButton buttonId={'delete'+viewMessage['id']} itemId={viewMessage['message']['id']} sendDeleteToParent={handleDeleteFromChild} />
+                                                            </div>
                                                         </div>
                                                     </div>                                                      
                                                     <div className="row">
