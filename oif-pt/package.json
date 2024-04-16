@@ -21,7 +21,6 @@
     "@uiw/react-codemirror": "^4.19.11",
     "bootstrap": "^5.3.3",
     "react": "^18.2.0",
-    "react-bootswatch-theme-switcher": "https://github.com/ScreamBun/react-bootswatch-theme-switcher.git",
     "react-dom": "^18.2.0",
     "react-json-generator": "https://github.com/ScreamBun/react-json-generator",
     "react-redux": "^8.0.1",
