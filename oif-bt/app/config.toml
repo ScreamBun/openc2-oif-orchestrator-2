@@ -14,16 +14,16 @@ PROTOCOL = "MQTTv5"
 TRANSPORT = "tcp"
 # TRANSPORT = "websockets"
 
-BROKER = "3271a3ddd2eb43caa7c4b195c7d6cabd.s2.eu.hivemq.cloud"
-# BROKER = "test.mosquitto.org"
+# BROKER = "3271a3ddd2eb43caa7c4b195c7d6cabd.s2.eu.hivemq.cloud"
+BROKER = "test.mosquitto.org"
 
-PORT = 8883
-# PORT = 1883
+# PORT = 8883
+PORT = 1883
 
-USERNAME = 'Cav01'
-PASSWORD = 'Tango01Village'
-# USERNAME = ''
-# PASSWORD = ''
+# USERNAME = 'Cav01'
+# PASSWORD = 'Tango01Village'
+USERNAME = ''
+PASSWORD = ''
 
 # SEND_TOPICS = ["oc2/cmd","oc2/cmd/all", "oc2/cmd/ap/hunt"]
 SEND_TOPICS = ["oc2/cmd/ap/hunt"]

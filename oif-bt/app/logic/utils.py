@@ -52,15 +52,16 @@ def get_random_color():
     
     return color
 
-def string_to_colour(name: str):
-    str_bytes = bytes(name, 'utf-8')
-    hex_value = binascii.hexlify(str_bytes)
-    color_tup = tuple(int(hex_value[i:i+2], 16) for i in (0, 2, 4))
-    
-    r = color_tup[0]
-    g = color_tup[1]
-    b = color_tup[2]
-    
-    color = "rgb({}, {}, {})".format(r,g,b)
+def string_to_color(name: str):
+    # creates a hex color from a provided string; designed to be used with uuid
+    # uuid will have appropriate length and characters
+    # other use not advised.
+    # print ("printing created by ; "+ name)
+    if len(name)>5:
+        color = "#"
+        for i in range (len(name)-1, len(name)-7, -1):
+            color =  color + name[i]
+    else: 
+        color = "#000000"        
     
     return color

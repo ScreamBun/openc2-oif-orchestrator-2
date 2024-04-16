@@ -3,6 +3,7 @@ import toml
 from db import message_collection
 from transports.mqtt import mqtt_manager
 from models.msg_type import Msg_Type
+from models.message import MessageModel
 from logic import utils
 
 
@@ -88,14 +89,6 @@ async def get_msgs():
 
     return message_list
 
-def hexify_creator(created_by):
-    hex_string = "#"
-    
-    for i in range (len(created_by)-1, len(created_by)-7):
-        hex_string = created_by[i] + hex_string
-    return hex_string
-
-
 async def get_msgs_by_request_id(request_id: str):
     message_list = await message_collection.get_messages_by_request_id(request_id)
     
@@ -133,7 +126,8 @@ async def save_msg(message: dict, msg_type: str):
         
     if message['headers']['from']:
         message_dict['created_by'] = message['headers']['from']
-        color_indicator = hexify_creator(message_dict["created_by"])
+        color_indicator = utils.string_to_color(message_dict["created_by"])
+        # print("generating color : "+color_indicator)
     else:
         message_dict['created_by'] = "Unknown"    
         color_indicator = ('#000000')
