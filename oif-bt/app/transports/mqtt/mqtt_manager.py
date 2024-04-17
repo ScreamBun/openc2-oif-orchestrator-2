@@ -222,7 +222,7 @@ client_id = client_id + "-" + socket.gethostname()
 # client.on_message = on_message
 # client.on_log = on_log
 
-print("MQTT INfo")
+print("MQTT INFO")
 print("\t Client ID \t\t= ", client_id)
 print("\t Default Broker \t= ", default_broker)
 print("\t Default Port \t\t= ", default_port)

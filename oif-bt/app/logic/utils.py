@@ -1,12 +1,12 @@
 import binascii
 import json
+import re
 import secrets
 import socket
 import time
 import uuid
 
 import toml
-import webcolors
 
 
 def is_json(data):
@@ -53,14 +53,23 @@ def get_random_color():
     return color
 
 def string_to_color(name: str):
-    # creates a hex color from a provided string; designed to be used with uuid
-    # uuid will have appropriate length and characters
-    # other use not advised.
-    # print ("printing created by ; "+ name)
-    if len(name)>5:
-        color = "#"
-        for i in range (len(name)-1, len(name)-7, -1):
-            color =  color + name[i]
+    # creates a hex color from a provided string; designed to be used with id or hostnamr
+    print ("printing created by : "+ name)
+    if len(name) > 3:
+        color = "#ff"
+
+        for i in range (len(name)-1, len(name)-5, -1):
+            print('character '+name[i])
+            match =  re.search(r"[('a-f')('0-9')]", name[i])
+            print(match)
+            if match is not None:    
+                color = color + name[i]
+                print(color)
+            else:
+                color = color + 'f'
+                print(color)
+        print(color)
+        return color
     else: 
         color = "#000000"        
     
