@@ -10,13 +10,11 @@ export const apiSlice = createApi({
     tagTypes: ['Devices', 'Actuators', 'Commands', 'Messages'],
     endpoints: (builder) => ({
         getAllDevices: builder.query<Device[], void>({
-            query: () => `/devices/`,
-            providesTags: (result = []) =>
-                [...result.map(({ id }) => ({ type: 'Devices' as const, id })),
-                { type: 'Devices', id: 'LIST' },],
+            query: () => `/devices/`,           
             transformResponse: (response: { data: Device[] }) => {
                 return response.data
             },
+            providesTags: ["Devices"]            
         }),
         getDevicebyID: builder.query<Device, string>({
             query: (id) => `/devices/${id}`,
@@ -47,7 +45,7 @@ export const apiSlice = createApi({
                 url: `devices/${id}/delete`,
                 method: 'DELETE'
             }),
-            invalidatesTags: (result, error, { id }) => [{ type: 'Devices', id }],
+            invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
         }),
         getAllActuators: builder.query<Actuator[], void>({
             query: () => `/actuators/`,

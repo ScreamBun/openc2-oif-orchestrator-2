@@ -1,18 +1,19 @@
-//TODO: add pagination
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { NAV_DEVICE_CREATOR, NAV_DEVICE_LIST } from "../../nav/consts";
 
 import { CreateBtn } from "../common/CRUDbtn";
-import { useGetAllDevicesQuery } from "../../services/apiSlice";
+import { useGetAllDevicesQuery, useRemoveDeviceMutation } from "../../services/apiSlice";
 import { Device } from "../../services/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy, faEye } from "@fortawesome/free-solid-svg-icons";
+import SBDeleteButton from "../common/SBDeleteButton";
+import { sbToastError, sbToastSuccess } from "../common/SBToast";
 
 
 const DeviceList = () => {
-    const {
-        data: devices,
-        isLoading,
-        error
-    } = useGetAllDevicesQuery();
+    const { data: devices = [], isLoading, error } = useGetAllDevicesQuery();
+    const [removeDevice] = useRemoveDeviceMutation(); 
 
     if (isLoading) {
         return (
@@ -20,7 +21,7 @@ const DeviceList = () => {
                 <div className="card-header">
                     <div className='row'>
                         <div className='col-9 my-auto'>
-                            List of Devices
+                            Devices
                         </div>
                         <div className="col-3">
                             <CreateBtn link={NAV_DEVICE_CREATOR} />
@@ -40,7 +41,7 @@ const DeviceList = () => {
                 <div className="card-header">
                     <div className='row'>
                         <div className='col-9 my-auto'>
-                            List of Devices
+                            Devices
                         </div>
                         <div className="col-3">
                             <CreateBtn link={NAV_DEVICE_CREATOR} />
@@ -54,15 +55,41 @@ const DeviceList = () => {
         );
     }
 
+    const onRemove = async (id: string) => {
+        if (id){
+            await removeDevice(id).unwrap()
+            .then((data) => {
+                sbToastSuccess(`Device removed`);
+            })
+            .catch((err) => {
+                console.log(err);
+                sbToastError(`Error: Unable to remove device`);
+                return;
+            });            
+        }
+    }    
+
     const rowsofDevices = devices.map((device: Device) =>
         <tr key={device.id}>
-            <th scope="row">{device.device_id}</th>
             <td>{device.name}</td>
+            <td>{device.transport.host}</td>
+            <td>{device.transport.port}</td>
+            <td>{device.transport.protocol}</td>
+            <td>{device.transport.serialization}</td>
             <td>
-                <button type="button" className="btn btn-sm btn-info">
+                {/* <button type="button" className="btn btn-sm btn-primary">
                     <Link to={`${NAV_DEVICE_LIST}/${device.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        See Device Details
+                        <span></span>
                     </Link>
+                </button> */}
+                <SBDeleteButton buttonId={'delete'+device.id} itemId={device.id} sendDeleteToParent={onRemove} customClass='ms-2 float-end' />                                
+                <button type="button" className="btn btn-sm btn-primary ms-2 float-end" title="Create Duplicate">
+                    <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
+                </button>                
+                <button type="button" className="btn btn-sm btn-primary ms-2 float-end" title="View or Edit">
+                    <Link to={`${NAV_DEVICE_LIST}/${device.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <FontAwesomeIcon icon={faEye}></FontAwesomeIcon>
+                    </Link>                    
                 </button>
             </td>
         </tr >
@@ -73,26 +100,33 @@ const DeviceList = () => {
             <div className="card-header">
                 <div className="row">
                     <div className="col-9 my-auto">
-                        List of Devices
+                        Devices
                     </div>
                     <div className="col-3">
                         <CreateBtn link={NAV_DEVICE_CREATOR} />
                     </div>
                 </div>
             </div>
-            <div className="card-body">
-                <table className="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Device ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rowsofDevices}
-                    </tbody>
-                </table>
+            <div className="card-body p-0">
+                <div className="row p-0">
+                    <div className="col-md-12">
+                        <table className="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Host</th>
+                                <th scope="col">Port</th>
+                                <th scope="col">Protocol</th>
+                                <th scope="col">Serialization</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rowsofDevices}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -11,7 +11,7 @@ const AppLayout = () => {
                 <div className='container-fluid'>
                     <div className='collapse navbar-collapse'>
 
-                        <a className='navbar-brand' href={NAV_HOME} title='OpenC2 Orchestrator' rel="noreferrer">
+                        <a className='navbar-brand' href={NAV_HOME} title='OpenC2 Producer' rel="noreferrer">
                             <img src={OpenC2Logo} alt="OpenC2 Logo" className="img-responsive" />
                         </a>                        
 

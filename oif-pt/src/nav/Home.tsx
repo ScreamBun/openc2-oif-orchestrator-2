@@ -14,9 +14,10 @@ const Home = () => {
                                 specifications and implementations without having to recreate an entire OpenC2 ecosystem.
                             </p>
                             <p>
-                                The OIF Orchestrator was created with the intent of being an easy-to-configure OpenC2 producer that can be
-                                used in the creation of reference implementations to control multiple devices. To that end it allows for the
-                                addition of multiple serializations and transportation types.
+                                The OpenC2 Producer is a proof-of-concept tool that implements the "Producer" function described in OpenC2 Specifications. 
+                                This tool supplies a reference implementation that can be extended as needed to aid in the use of OpenC2 as a standardized 
+                                means of communication between various devices. 
+                                The tool is intended to be simple to start and use for OpenC2 development and testing.
                             </p>
                         </div>
                     </div>

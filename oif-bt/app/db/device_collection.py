@@ -21,7 +21,7 @@ async def get_devices():
     devices = await cursor.to_list(length=n)
     if devices:
         return to_device_list(devices)
-    return None
+    return []
 
 
 async def add_device(new_device: dict):

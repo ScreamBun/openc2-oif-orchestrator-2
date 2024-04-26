@@ -13,11 +13,7 @@ const MessageListItem = (props: any) => {
     }
 
     const toggleMsgView = () => {
-
-        console.log('toggle / checked: ' + checked);
-
         if (!checked){
-            console.log('onItemClick / setMessagesInView: ' + JSON.stringify(messagesInView, null, 2));
             setMessagesInView( 
                 [
                     ...messagesInView, // that contains all the old items
@@ -27,8 +23,7 @@ const MessageListItem = (props: any) => {
         } else {
             setMessagesInView(
                 messagesInView.filter((a: { id: string | undefined; }) => a.id !== message.id)
-            );  
-            console.log('onItemClick / messagesInView.filter: ' + JSON.stringify(messagesInView, null, 2));          
+            );        
         }        
 
         return checked;
