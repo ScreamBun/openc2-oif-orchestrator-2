@@ -71,26 +71,20 @@ const DeviceList = () => {
 
     const rowsofDevices = devices.map((device: Device) =>
         <tr key={device.id}>
-            <td>{device.name}</td>
+            <td>
+                <Link to={`${NAV_DEVICE_LIST}/${device.id}`}>
+                    {device.name}
+                </Link>    
+            </td>
             <td>{device.transport.host}</td>
             <td>{device.transport.port}</td>
             <td>{device.transport.protocol}</td>
             <td>{device.transport.serialization}</td>
             <td>
-                {/* <button type="button" className="btn btn-sm btn-primary">
-                    <Link to={`${NAV_DEVICE_LIST}/${device.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <span></span>
-                    </Link>
-                </button> */}
                 <SBDeleteButton buttonId={'delete'+device.id} itemId={device.id} sendDeleteToParent={onRemove} customClass='ms-2 float-end' />                                
                 <button type="button" className="btn btn-sm btn-primary ms-2 float-end" title="Create Duplicate">
                     <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
                 </button>                
-                <button type="button" className="btn btn-sm btn-primary ms-2 float-end" title="View or Edit">
-                    <Link to={`${NAV_DEVICE_LIST}/${device.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <FontAwesomeIcon icon={faEye}></FontAwesomeIcon>
-                    </Link>                    
-                </button>
             </td>
         </tr >
     );

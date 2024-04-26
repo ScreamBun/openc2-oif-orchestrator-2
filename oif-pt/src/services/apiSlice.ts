@@ -30,7 +30,8 @@ export const apiSlice = createApi({
                 // Include the entire object as the body of the request
                 body: initialDevice
             }),
-            invalidatesTags: [{ type: 'Devices', id: 'LIST' }],
+            // invalidatesTags: [{ type: 'Devices', id: 'LIST' }],
+            invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
         }),
         editDevice: builder.mutation<Device, Pick<Device, 'id'>>({
             query: device => ({
@@ -38,7 +39,7 @@ export const apiSlice = createApi({
                 method: 'PUT',
                 body: device
             }),
-            invalidatesTags: (result, error, { id }) => [{ type: 'Devices', id }],
+            invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
         }),
         removeDevice: builder.mutation<{ success: boolean; id: string }, any>({
             query: id => ({
