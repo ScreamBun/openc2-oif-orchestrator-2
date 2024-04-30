@@ -1,19 +1,22 @@
-import React from "react";
-import { DeleteBtn, EditBtn } from "../common/CRUDbtn";
+import { SBDeleteBtn, SBEditBtn } from "../common/CRUDBtns";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetDevicebyIDQuery, useRemoveDeviceMutation } from "../../services/apiSlice";
+import { useGetDeviceByIDQuery, useRemoveDeviceMutation } from "../../services/apiSlice";
 import { NAV_DEVICE_LIST } from "../../nav/consts";
+import { SBBackBtn } from "../common/SBBackBtn";
+import { SBLabel } from "../common/SBLabel";
 
 const DeviceDetails = () => {
     const { deviceID } = useParams<{ deviceID: string }>();
+
     const goto = useNavigate();
-    const { data: device, isLoading, error } = useGetDevicebyIDQuery(`${deviceID}`);
+    const { data: device, isLoading, error } = useGetDeviceByIDQuery(`${deviceID}`);
 
     const [deleteDevice, { isLoading: isDeleting }] = useRemoveDeviceMutation();
+
     const onDelete = () => {
         deleteDevice(`${deviceID}`);
         goto(NAV_DEVICE_LIST);
-    }
+    }   
 
     //TODO: toggle password
 
@@ -25,7 +28,7 @@ const DeviceDetails = () => {
                 <div className="card-header">
                     <div className='row'>
                         <div className='col-9 my-auto'>
-                            Device Details <span className="text-muted">{deviceID} </span>
+                            {/* Device Details <span className="text-muted">{deviceID} </span> */}
                         </div>
                     </div>
                 </div>
@@ -42,6 +45,7 @@ const DeviceDetails = () => {
                 <div className="card-header">
                     <div className='row'>
                         <div className='col-9 my-auto'>
+                            <SBDeleteBtn id={deviceID} type={'device'} onDelete={onDelete} disabled={isDeleting} customClass='float-end' />
                             Device Details <span className="text-muted">{deviceID} </span>
                         </div>
                     </div>
@@ -57,99 +61,132 @@ const DeviceDetails = () => {
         <div className="card">
             <div className="card-header">
                 <div className='row'>
-                    <div className='col-9 my-auto'>
-                        Device Details <span className="text-muted"> {deviceID} </span>
+                    <div className='col-9'>
+                        <SBBackBtn link={NAV_DEVICE_LIST}></SBBackBtn>                  
+                        <span>{device.name}</span>
                     </div>
                     <div className='col-3'>
-                        <DeleteBtn id={deviceID} type={'device'} onDelete={onDelete} disabled={isDeleting} />
-                        <EditBtn link={`/devices/${deviceID}/edit/`} />
+                        <SBDeleteBtn id={deviceID} type={'device'} onDelete={onDelete} disabled={isDeleting} customClass='float-end' />
+                        <SBEditBtn link={`/devices/${deviceID}/edit/`} customClass='me-1 float-end' />
                     </div>
                 </div>
             </div>
             <div className="card-body">
-                <div className="row">
-                    <div className="col">
-                        <label className="text-muted" htmlFor="name">Name</label>
-                        <p> {device.name} </p>
+                <div className="card">
+                    <div className="card-header">
+                        Identification
                     </div>
-                    <div className="col">
-                        <label className="text-muted" htmlFor="id">Device ID</label>
-                        <p> {device.device_id} </p>
+                    <div className="card-body">
+                        <div className="row">
+                            <div className="col-md-4">
+                                <SBLabel labelFor="name" labelText="Name" labelValue={device.name}></SBLabel>
+                            </div>
+                            <div className="col-md-4">
+                                <SBLabel labelFor="device_id" labelText="Device ID" labelValue={device.device_id}></SBLabel>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <hr />
-                <h5>Transports</h5>
-                <div>
-                    <div className="row mb-2">
-                        <h6 style={{ fontWeight: 'bold' }}>Connection</h6>
-                        <div className="col">
-                            <label className="text-muted" htmlFor="protocol">Protocol</label>
-                            <p>{device.transport?.protocol}</p>
-                        </div>
-                        <div className="col">
-                            <label className="text-muted" htmlFor="host">Host</label>
-                            <p> {device.transport?.host} </p>
-                        </div>
-                        <div className="col">
-                            <label className="text-muted" htmlFor="port">Port</label>
-                            <p> {device.transport?.port} </p>
-                        </div>
+                <div className="card mt-2">
+                    <div className="card-header">
+                        Transport
                     </div>
-                    <div className="form-row mb-2">
-                        <h6 style={{ fontWeight: 'bold' }}>Serialization</h6>
-                        <p>
-                            {device.transport?.serialization?.map(item => {
-                                return (<li key={item}>{item}</li>);
-                            })}
-                        </p>
-                    </div>
-                    <div className="row">
-                        <h6 style={{ fontWeight: 'bold' }}>HTTPS options </h6>
-                        <div className="col">
-                            <label className="text-muted" htmlFor="path">Path</label>
-                            <p> {device.transport?.https_path} </p>
-                        </div>
-                        <div className="col">
-                            <label className="text-muted" htmlFor="security">Security</label>
-                            <p> {device.transport?.https_security} </p>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <h6 style={{ fontWeight: 'bold' }}>Authentication </h6>
+                    <div className="card-body">
                         <div className="row">
-                            <div className="col">
-                                <label className="text-muted" htmlFor="username">Username</label>
-                                <p> {device.transport?.auth?.username} </p>
+                            <div className="col-md-4">
+                                <SBLabel labelFor="transport_protocol" labelText="Protocol" labelValue={device.transport.protocol}></SBLabel>
                             </div>
-                            <div className="col">
-                                <label className="text-muted" htmlFor="password">Password</label>
-                                <p> {device.transport?.auth?.password} </p>
+                            <div className="col-md-4">
+                                <SBLabel labelFor="transport_serialization" labelText="Serialization" labelValue={device.transport.serialization}></SBLabel>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col">
-                                <label className="text-muted" htmlFor="ca_cert">CA Certificate</label>
-                                <p> {device.transport?.auth?.ca_cert} </p>
-                            </div>
-                            <div className="col">
-                                <label className="text-muted" htmlFor="client_cert">Client Certificate</label>
-                                <p> {device.transport?.auth?.client_cert} </p>
-                            </div>
-                            <div className="col">
-                                <label className="text-muted" htmlFor="client_key">Client Key</label>
-                                <p> {device.transport?.auth?.client_key} </p>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div className="form-row">
-                        <label className="text-muted" htmlFor="notes">Notes</label>
-                        <p> {device.note} </p>
                     </div>
                 </div>
-            </div>
-        </div >
+                { device.transport?.protocol?.includes("HTTP") 
+                    ? 
+                    <div className="card mt-2">
+                        <div className="card-header">
+                            HTTP
+                        </div>
+                        <div className="card-body">
+                            <div className="row">
+                                <div className="col-md-4">
+                                    <SBLabel labelFor="http_host" labelText="Host" labelValue={device.transport.http?.host}></SBLabel>
+                                </div>
+                                <div className="col-md-4">
+                                    <SBLabel labelFor="http_port" labelText="Port" labelValue={device.transport.http?.port}></SBLabel>
+                                </div>
+                                <div className="col-md-4">
+                                    <SBLabel labelFor="http_api_endpoint" labelText="API Endpoint" labelValue={device.transport.http?.api_endpoint}></SBLabel>
+                                </div>                            
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4">
+                                    <SBLabel labelFor="http_username" labelText="Username" labelValue={device.transport.http?.username}></SBLabel>
+                                </div>
+                                <div className="col-md-4">
+                                    <SBLabel labelFor="http_password" labelText="Password"></SBLabel>
+                                    { device.transport.http?.password 
+                                    ? <p id='http_password'>**********</p> 
+                                    : <p id='http_password'></p> }
+                                     
+                                </div>                           
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4">
+                                    <SBLabel labelFor="http_ca_cert" labelText="CA Cert" labelValue={device.transport.http?.ca_cert}></SBLabel>
+                                </div>
+                                <div className="col-md-4">
+                                    <SBLabel labelFor="http_client_cert" labelText="Client Cert" labelValue={device.transport.http?.client_cert}></SBLabel>
+                                </div>
+                                <div className="col-md-4">
+                                    <SBLabel labelFor="http_client_key" labelText="Client Key" labelValue={device.transport.http?.client_key}></SBLabel>
+                                </div>                            
+                            </div>  
+                        </div>                    
+                    </div>
+                    :
+                    <span></span>
+                }
 
+                { device.transport?.protocol?.includes("MQTT") 
+                        ?
+                        <div className="card mt-2">
+                            <div className="card-header">
+                                MQTT
+                            </div>
+                            <div className="card-body">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_broker" labelText="Broker" labelValue={device.transport.mqtt?.broker}></SBLabel>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_port" labelText="Port" labelValue={device.transport.mqtt?.port}></SBLabel>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_pub_topics" labelText="Publish to Topics" labelValue={device.transport.mqtt?.pub_topics}></SBLabel>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_sub_topics" labelText="Subscibe to Topics" labelValue={device.transport.mqtt?.sub_topics}></SBLabel>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_username" labelText="Username" labelValue={device.transport.mqtt?.username}></SBLabel>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_password" labelText="Password" labelValue={device.transport.mqtt?.password}></SBLabel>
+                                    </div>                           
+                                </div> 
+                            </div>                    
+                        </div>
+                        :
+                        <span></span>
+                    }
+            </div>
+        </div>
     );
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetCommandbyIDQuery } from "../../services/apiSlice";
-import { DeleteBtn } from "../common/CRUDbtn";
+import { SBDeleteBtn } from "../common/CRUDBtns";
 
 const CommandDetails = () => {
     const { commandID } = useParams<{ commandID?: string }>();
@@ -33,7 +33,7 @@ const CommandDetails = () => {
                             Command Details
                         </div>
                         <div className='col-3'>
-                            <DeleteBtn id={command.id} type={'command'} />
+                            <SBDeleteBtn id={command.id} type={'command'} />
                         </div>
                     </div>
                 </div>

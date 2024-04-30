@@ -4,15 +4,29 @@ import { sbToastSuccess } from "./SBToast";
 
 const SBDeleteButton = (props: any) => {
 
-    const { buttonId, itemId, sendDeleteToParent, customClass} = props;
+    // TODO: Remove, replace with CRUDBtn for delete
+
+    const { 
+        buttonId, 
+        buttonTitle = 'Remove Item', 
+        customClass, 
+        itemId, 
+        deleteMsg = 'Item removed', 
+        useConfirm = false,
+        sendDeleteToParent
+    } = props;
 
     const onDelete = () => {
-        sbToastSuccess('Message removed');
-        sendDeleteToParent(itemId);
+        if (useConfirm) {
+            // TODO: Add confirmation pop
+        } else {
+            sbToastSuccess(deleteMsg);
+            sendDeleteToParent(itemId);
+        }
     }
     
     return (
-        <button id={'delete'+buttonId} type='button' title="Remove Message" className={'btn btn-sm btn-danger ' + customClass} onClick={onDelete}>
+        <button id={'delete'+buttonId} type='button' title={buttonTitle} className={'btn btn-sm btn-danger ' + customClass} onClick={onDelete}>
             <FontAwesomeIcon icon={faTrash} />
         </button>
     )

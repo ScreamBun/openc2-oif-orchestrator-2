@@ -58,7 +58,6 @@ def to_device(item) -> dict:
         "id": str(item.get("_id")),
         "device_id": str(item.get("device_id")),
         "name": item.get("name"),
-        "note": item.get("note"),
         "transport": item.get("transport"),
         "created_at": item.get("created_at"),
         "updated_at": item.get("updated_at")

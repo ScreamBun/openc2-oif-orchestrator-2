@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { NAV_ACTUATOR_CREATOR, NAV_ACTUATOR_LIST } from "../../nav/consts";
 import { useGetAllActuatorsQuery } from "../../services/apiSlice";
-import { CreateBtn } from "../common/CRUDbtn";
+import { SBCreateBtn } from "../common/CRUDBtns";
 
 const ActuatorList = () => {
     const {
@@ -19,7 +19,7 @@ const ActuatorList = () => {
                             List of Actuators
                         </div>
                         <div className="col-3">
-                            <CreateBtn link={NAV_ACTUATOR_CREATOR} />
+                            <SBCreateBtn link={NAV_ACTUATOR_CREATOR} />
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@ const ActuatorList = () => {
                             List of Actuators
                         </div>
                         <div className="col-3">
-                            <CreateBtn link={NAV_ACTUATOR_CREATOR} />
+                            <SBCreateBtn link={NAV_ACTUATOR_CREATOR} />
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@ const ActuatorList = () => {
                             List of Actuators
                         </div>
                         <div className="col-3">
-                            <CreateBtn link={NAV_ACTUATOR_CREATOR} />
+                            <SBCreateBtn link={NAV_ACTUATOR_CREATOR} />
                         </div>
                     </div>
                 </div>

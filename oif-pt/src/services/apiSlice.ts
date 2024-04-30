@@ -16,7 +16,7 @@ export const apiSlice = createApi({
             },
             providesTags: ["Devices"]            
         }),
-        getDevicebyID: builder.query<Device, string>({
+        getDeviceByID: builder.query<Device, string>({
             query: (id) => `/devices/${id}`,
             providesTags: (_result, _err, id) => [{ type: 'Devices', id }],
             transformResponse: (response: { data: Device }) => {
@@ -139,7 +139,7 @@ export const apiSlice = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
-    useGetAllDevicesQuery, useGetDevicebyIDQuery, useAddNewDeviceMutation, useEditDeviceMutation, useRemoveDeviceMutation,
+    useGetAllDevicesQuery, useGetDeviceByIDQuery, useAddNewDeviceMutation, useEditDeviceMutation, useRemoveDeviceMutation,
     useGetAllActuatorsQuery, useGetActuatorbyIDQuery, useAddNewActuatorMutation, useEditActuatorMutation, useRemoveActuatorMutation,
     useGetAllCommandsQuery, useGetCommandbyIDQuery, useSendCommandMutation, useRemoveCommandMutation, 
     useGetMessagesQuery, useGetMessagesbyRequestIdQuery

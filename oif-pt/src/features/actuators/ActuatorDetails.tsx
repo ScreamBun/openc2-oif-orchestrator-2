@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router";
 import FileOptBtn from "../common/FileOptBtn";
-import { DeleteBtn, EditBtn } from "../common/CRUDbtn";
+import { SBDeleteBtn, SBEditBtn } from "../common/CRUDBtns";
 import { useGetActuatorbyIDQuery, useRemoveActuatorMutation } from "../../services/apiSlice";
 import { NAV_ACTUATOR_LIST } from "../../nav/consts";
 
@@ -58,8 +58,8 @@ const ActuatorDetails = () => {
                         Actuator Details
                     </div>
                     <div className='col-3'>
-                        <DeleteBtn id={actuator.id} type={'actuator'} onDelete={onDelete} disabled={isDeleting} />
-                        <EditBtn link={`/actuators/${actuatorID}/edit/`} />
+                        <SBDeleteBtn id={actuator.id} type={'actuator'} onDelete={onDelete} disabled={isDeleting} />
+                        <SBEditBtn link={`/actuators/${actuatorID}/edit/`} />
                     </div>
                 </div>
             </div>

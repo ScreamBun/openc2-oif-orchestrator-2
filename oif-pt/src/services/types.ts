@@ -1,23 +1,29 @@
 export interface Device {
     id?: string;
-    device_id: string;
-    name: string;
+    device_id?: string;
+    name?: string;
     transport: {
-        host?: string;
-        port?: number | undefined;
         protocol?: string;
-        serialization?: Array<string>;
-        https_path?: string;
-        https_security?: 'Production' | 'Development';
-        auth: {
+        serialization?: string;
+        http: {
+            host?: string;
+            port?: number | undefined;
+            api_endpoint?: string;
             username?: string;
             password?: string;
             ca_cert?: string;
             client_cert?: string;
             client_key?: string;
+        }, 
+        mqtt: {
+            broker?: string;
+            port?: string;
+            pub_topics?: Array<string>;
+            sub_topics?: Array<string>;
+            username?: string;
+            password?: string;          
         }
     }
-    note?: string;
 }
 
 export interface Actuator {

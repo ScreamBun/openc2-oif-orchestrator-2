@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { NAV_DEVICE_CREATOR, NAV_DEVICE_LIST } from "../../nav/consts";
 
-import { CreateBtn } from "../common/CRUDbtn";
+import { SBCreateBtn, SBDeleteBtn } from "../common/CRUDBtns";
 import { useGetAllDevicesQuery, useRemoveDeviceMutation } from "../../services/apiSlice";
 import { Device } from "../../services/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy, faEye } from "@fortawesome/free-solid-svg-icons";
-import SBDeleteButton from "../common/SBDeleteButton";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import { sbToastError, sbToastSuccess } from "../common/SBToast";
 
 
@@ -24,7 +22,7 @@ const DeviceList = () => {
                             Devices
                         </div>
                         <div className="col-3">
-                            <CreateBtn link={NAV_DEVICE_CREATOR} />
+                            <SBCreateBtn link={NAV_DEVICE_CREATOR} />
                         </div>
                     </div>
                 </div>
@@ -44,7 +42,7 @@ const DeviceList = () => {
                             Devices
                         </div>
                         <div className="col-3">
-                            <CreateBtn link={NAV_DEVICE_CREATOR} />
+                            <SBCreateBtn link={NAV_DEVICE_CREATOR} />
                         </div>
                     </div>
                 </div>
@@ -55,11 +53,15 @@ const DeviceList = () => {
         );
     }
 
-    const onRemove = async (id: string) => {
+    const onRemove = async (id: string | undefined, name: string | undefined) => {
         if (id){
             await removeDevice(id).unwrap()
             .then((data) => {
-                sbToastSuccess(`Device removed`);
+                if (name) {
+                    sbToastSuccess(`${name} removed`);
+                } else {
+                    sbToastSuccess(`Device removed`);
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -76,12 +78,11 @@ const DeviceList = () => {
                     {device.name}
                 </Link>    
             </td>
-            <td>{device.transport.host}</td>
-            <td>{device.transport.port}</td>
+            <td>{device.device_id}</td>
             <td>{device.transport.protocol}</td>
             <td>{device.transport.serialization}</td>
             <td>
-                <SBDeleteButton buttonId={'delete'+device.id} itemId={device.id} sendDeleteToParent={onRemove} customClass='ms-2 float-end' />                                
+                <SBDeleteBtn id={'delete'+device.id} type={device.name} onDelete={() => {onRemove(device.id, device.name)}} customClass='ms-2 float-end' />                                
                 <button type="button" className="btn btn-sm btn-primary ms-2 float-end" title="Create Duplicate">
                     <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
                 </button>                
@@ -97,28 +98,27 @@ const DeviceList = () => {
                         Devices
                     </div>
                     <div className="col-3">
-                        <CreateBtn link={NAV_DEVICE_CREATOR} />
+                        <SBCreateBtn link={NAV_DEVICE_CREATOR} />
                     </div>
                 </div>
             </div>
             <div className="card-body p-0">
                 <div className="row p-0">
                     <div className="col-md-12">
-                        <table className="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Host</th>
-                                <th scope="col">Port</th>
-                                <th scope="col">Protocol</th>
-                                <th scope="col">Serialization</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {rowsofDevices}
-                        </tbody>
-                    </table>
+                        <table className="table table-sm table-bordered table-striped table-hover">
+                            <thead className="thead-dark">
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Protocol</th>
+                                    <th scope="col">Serialization</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {rowsofDevices}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
