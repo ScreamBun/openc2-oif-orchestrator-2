@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const MultiSelect = (props: any) => {
+const SBChecklist = (props: any) => {
     const { fieldOpts, name, value, onchange } = props;
     const [listData, setListData] = useState(value)
 
@@ -38,4 +38,4 @@ const MultiSelect = (props: any) => {
     );
 }
 
-export default MultiSelect;
+export default SBChecklist;

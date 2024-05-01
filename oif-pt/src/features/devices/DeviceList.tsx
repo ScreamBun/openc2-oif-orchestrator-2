@@ -94,7 +94,7 @@ const DeviceList = () => {
         <div className="card">
             <div className="card-header">
                 <div className="row">
-                    <div className="col-9 my-auto">
+                    <div className="col-9 my-auto p-1">
                         Devices
                     </div>
                     <div className="col-3">

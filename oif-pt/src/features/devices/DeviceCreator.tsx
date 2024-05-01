@@ -5,10 +5,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NAV_DEVICE_LIST, PROTOCOL_LIST, SERIALIZATION_LIST } from "../../nav/consts";
 import { useAddNewDeviceMutation, useEditDeviceMutation, useGetDeviceByIDQuery } from "../../services/apiSlice";
 import { Device } from "../../services/types";
-import MultiSelect from "../common/MultiSelect";
+import SBChecklist from "../common/SBChecklist";
 import { sbToastError, sbToastSuccess } from "../common/SBToast";
 import { SBCancelBtn } from "../common/SBCancelBtn";
 import { SBLabel } from "../common/SBLabel";
+import SBSelect from "../common/SBSelect";
+import { Option } from "../common/SBSelect";
+import SBGroupList from "../common/SBGroupList";
 
 
 const initialState: Device = {
@@ -118,6 +121,13 @@ const DeviceCreator = () => {
         const key = e.target.name;
         const value = e.target.value;
         handleChange(key, value);
+    }
+
+    const testData = ['test1', 'test2', 'test3'];
+    const [testSelection, setTestSelection] = useState<Option | null>();
+
+    const handleSelection = (e: Option) => {
+        setTestSelection(e);
     }
 
     //TODO: handle file Upload
@@ -273,14 +283,22 @@ const DeviceCreator = () => {
                                 <div className="row">
                                     <div className="col-md-4">
                                         <SBLabel labelFor="mqtt_broker" labelText="Broker"></SBLabel>
-                                        <input type='text' className="form-control" id="mqtt_broker" name="transport.mqtt.broker" value={inputData.transport?.mqtt?.broker ?? ''} onChange={handleFieldChange} required />                                                                                
+                                        <input type='text' className="form-control" id="mqtt_broker" name="transport.mqtt.broker" value={inputData.transport?.mqtt?.broker ?? ''} onChange={handleFieldChange} required />
                                     </div>
                                     <div className="col-md-4">
                                         <SBLabel labelFor="mqtt_port" labelText="Port"></SBLabel>
-                                        <input type='number' className="form-control" id="mqtt_port" name="transport.mqtt.port" value={inputData.transport?.mqtt.port ?? ''} onChange={handleFieldChange} required/>                                        
+                                        <input type='number' className="form-control" id="mqtt_port" name="transport.mqtt.port" value={inputData.transport?.mqtt?.port ?? ''} onChange={handleFieldChange} required/>                                        
                                     </div>
                                 </div>
-                                {/* Leftoff here */}
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_pub_topics" labelText="Publish to Topics" labelValue={inputData.transport.mqtt?.pub_topics}></SBLabel>
+                                        <SBGroupList id="mqtt_pub_topics" data={inputData.transport.mqtt?.pub_topics} useInput={true}></SBGroupList>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_sub_topics" labelText="Subscibe to Topics" labelValue={inputData.transport.mqtt?.sub_topics}></SBLabel>
+                                    </div>
+                                </div>
                             </div>                    
                         </div>
                         :

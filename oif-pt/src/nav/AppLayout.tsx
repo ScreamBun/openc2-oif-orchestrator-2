@@ -1,5 +1,5 @@
 import { toast, ToastContainer } from 'react-toastify';
-import { NAV_HOME, NAV_ABOUT, NAV_DEVICE_LIST, NAV_ACTUATOR_LIST, NAV_COMMAND_GENERATOR, NAV_COMMAND_LIST } from './consts';
+import { NAV_HOME, NAV_ABOUT, NAV_DEVICE_LIST, NAV_ACTUATOR_LIST, NAV_COMMAND_GENERATOR } from './consts';
 import { NavLink, Outlet } from 'react-router-dom';
 import OpenC2Logo from '../static/assets/img/conductor_oc2_logo.png';
 
