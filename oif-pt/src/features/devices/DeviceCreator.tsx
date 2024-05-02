@@ -50,7 +50,8 @@ const DeviceCreator = () => {
 
     const [inputData, setInputData] = useState(device ? device : initialState);
     const [isEditing, setIsEditing] = useState(device?.id ? true : false);
-    const [showPassword, setShowPassword] = useState(false); 
+    const [showHttpPassword, setShowHttpPassword] = useState(false); 
+    const [showMqttPassword, setShowMqttPassword] = useState(false); 
 
     const [addNewDevice, { isLoading: isFetching }] = useAddNewDeviceMutation();
     const [updateDevice, { isLoading: isUpdating }] = useEditDeviceMutation();
@@ -85,9 +86,13 @@ const DeviceCreator = () => {
         }
     }
 
-    const toggleShowPw = () => { 
-        setShowPassword(!showPassword); 
-    };     
+    const toggleHttpShowPw = () => { 
+        setShowHttpPassword(!showHttpPassword); 
+    };   
+    
+    const toggleMqttShowPw = () => { 
+        setShowMqttPassword(!showMqttPassword); 
+    };      
 
     const handleChange = (fieldName: string, fieldValue: any) => {
         let key: string = "";
@@ -111,6 +116,7 @@ const DeviceCreator = () => {
         } else if (fieldName.includes("transport") && fieldName.includes("mqtt")) {
             // console.log("transport mqtt")
             setInputData((values: any) => ({ ...values, transport: { ...values.transport, mqtt: { ...values.transport.mqtt, [key]: fieldValue } } }))
+            // console.log(JSON.stringify(inputData, null, 2));
 
         } else {
             setInputData((values: any) => ({ ...values, [fieldName]: fieldValue }))
@@ -121,13 +127,6 @@ const DeviceCreator = () => {
         const key = e.target.name;
         const value = e.target.value;
         handleChange(key, value);
-    }
-
-    const testData = ['test1', 'test2', 'test3'];
-    const [testSelection, setTestSelection] = useState<Option | null>();
-
-    const handleSelection = (e: Option) => {
-        setTestSelection(e);
     }
 
     //TODO: handle file Upload
@@ -260,9 +259,9 @@ const DeviceCreator = () => {
                                     <div className="col-md-4">
                                         <SBLabel labelFor="http_password" labelText="Password"></SBLabel>
                                         <div className="input-group mb-3">
-                                            <input className={showPassword ? "form-control text-secure" : "form-control"} id="http_password" type='text' name="transport.http.password" autoComplete="off" value={inputData.transport?.http?.password ?? ''} onChange={handleFieldChange} required />
-                                            <button className="btn btn-secondary" type="button" id="show_hide_pw" title="Show / hide password" onClick={toggleShowPw}>
-                                                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye}></FontAwesomeIcon>
+                                            <input className={showHttpPassword ? "form-control text-secure" : "form-control"} id="http_password" type='text' name="transport.http.password" autoComplete="off" value={inputData.transport?.http?.password ?? ''} onChange={handleFieldChange} required />
+                                            <button className="btn btn-secondary" type="button" id="show_hide_pw" title="Show / hide password" onClick={toggleHttpShowPw}>
+                                                <FontAwesomeIcon icon={showHttpPassword ? faEyeSlash : faEye}></FontAwesomeIcon>
                                             </button>
                                         </div>
                                     </div>                           
@@ -290,15 +289,31 @@ const DeviceCreator = () => {
                                         <input type='number' className="form-control" id="mqtt_port" name="transport.mqtt.port" value={inputData.transport?.mqtt?.port ?? ''} onChange={handleFieldChange} required/>                                        
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row mt-2">
                                     <div className="col-md-4">
-                                        <SBLabel labelFor="mqtt_pub_topics" labelText="Publish to Topics" labelValue={inputData.transport.mqtt?.pub_topics}></SBLabel>
-                                        <SBGroupList id="mqtt_pub_topics" data={inputData.transport.mqtt?.pub_topics} useInput={true}></SBGroupList>
+                                        <SBLabel labelFor="mqtt_pub_topics" labelText="Publish to Topics"></SBLabel>
+                                        <SBGroupList id="mqtt_pub_topics" data={inputData.transport.mqtt?.pub_topics} fieldName="transport.mqtt.pub_topics" useInput={true} onDataChange={handleChange}></SBGroupList>
                                     </div>
                                     <div className="col-md-4">
-                                        <SBLabel labelFor="mqtt_sub_topics" labelText="Subscibe to Topics" labelValue={inputData.transport.mqtt?.sub_topics}></SBLabel>
+                                        <SBLabel labelFor="mqtt_sub_topics" labelText="Subscibe to Topics"></SBLabel>
+                                        <SBGroupList id="mqtt_sub_topics" data={inputData.transport.mqtt?.sub_topics} fieldName="transport.mqtt.sub_topics" useInput={true} onDataChange={handleChange}></SBGroupList>
                                     </div>
                                 </div>
+                                <div className="row mt-2">
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_username" labelText="Username"></SBLabel>
+                                        <input type='text' className="form-control" id="mqtt_username" name="transport.mqtt.username" value={inputData.transport?.mqtt?.username ?? ''} onChange={handleFieldChange} />                                        
+                                    </div>
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="mqtt_password" labelText="Password"></SBLabel>
+                                        <div className="input-group mb-3">
+                                            <input className={showMqttPassword ? "form-control text-secure" : "form-control"} id="mqtt_password" type='text' name="transport.mqtt.password" autoComplete="off" value={inputData.transport?.mqtt?.password ?? ''} onChange={handleFieldChange} />
+                                            <button className="btn btn-secondary" type="button" id="show_hide_mqtt_pw" title="Show / hide password" onClick={toggleMqttShowPw}>
+                                                <FontAwesomeIcon icon={showMqttPassword ? faEyeSlash : faEye}></FontAwesomeIcon>
+                                            </button>
+                                        </div>                                        
+                                    </div>                           
+                                </div>                                 
                             </div>                    
                         </div>
                         :
@@ -308,73 +323,8 @@ const DeviceCreator = () => {
                     <br/>
                     <pre>{JSON.stringify(inputData, null, 2)}</pre>                    
 
-                {/* <div className="card mt-2">
-                    <div className="card-header">
-                        Transport
-                    </div>
-                    <div className="card-body">
-                        <div className="row">
-                            <div className="col-md-4">
-                                <SBLabel labelFor={'protocol'} labelText={'Protocol'} isRequired={true} />
-                                <select required className="form-select" id="protocol" name="transport.protocol" value={inputData.transport?.protocol ?? ''} onChange={handleFieldChange}>
-                                    <option value=''>Choose...</option>
-                                    {PROTOCOL_LIST.map((s: any) => <option key={s} value={s} >{s}</option>)}
-                                </select>
-                            </div>
-                            <div className="col-md-4">
-                                <SBLabel labelFor={'host'} labelText={'Host'} isRequired={true} />
-                                <input type='text' className="form-control" id="host"
-                                    name="transport.host" value={inputData.transport?.host ?? ''} onChange={handleFieldChange} required />
-                            </div>
-                            <div className="col-md-4">
-                                <SBLabel labelFor={'port'} labelText={'Port'} isRequired={true} />
-                                <input type='number' className="form-control" id="port"
-                                    name="transport.port" value={inputData.transport?.port ?? ''} onChange={handleFieldChange} required/>
-                            </div>
-                        </div>
-                        <div className="form-row mt-2">
-                            <SBLabel labelFor={'serialization'} labelText={'Serialization'} isRequired={true} />
-                            <MultiSelect required id='serialization' fieldOpts={SERIALIZATION_LIST} name="transport.serialization" value={inputData.transport?.serialization ?? []} onchange={handleChange} />
-                        </div>                        
-                    </div>
-                </div>                     */}
-
-                {/* <div className="row">
-                    <h6 style={{ fontWeight: 'bold' }}>HTTPS options </h6>
-                    <div className="col">
-                        <label htmlFor="path">Path</label>
-                        <input type='text' className="form-control" id="path"
-                            pattern="^[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$"
-                            name="transport.https_path" value={inputData.transport?.https_path ?? ''} onChange={handleFieldChange} />
-                        <small className="text-muted">Default: "/"</small>
-                    </div>
-                    <div className="col">
-                        <label htmlFor="security">Security</label>
-                        <select className="form-select" id="security" name="transport.https_security" value={inputData.transport?.https_security ?? 'Development'} onChange={handleFieldChange}>
-                            <option value='Production'>Production</option>
-                            <option value='Development'>Development</option>
-                        </select>
-                        <div>
-                            <p className="text-muted"><small>Default: "Development"</small></p>
-                        </div>
-                    </div>
-                </div>
+                {/* 
                 <div className="row">
-                    <h6 style={{ fontWeight: 'bold' }}>Authentication </h6>
-                    <div className="row">
-                        <div className="col">
-                            <label htmlFor="username">Username</label>
-                            <input type='text' className="form-control" id="username" name="transport.auth.username" value={inputData.transport?.auth?.username ?? ''} onChange={handleFieldChange} />
-                        </div>
-                        <div className="col">
-                            <label htmlFor="password">Password</label>
-                            <input type='password' className="form-control" id="password" autoComplete="off" name="transport.auth.password" value={inputData.transport?.auth?.password ?? ''} onChange={handleFieldChange} />
-                        </div>
-                        <div className="col">
-                            <label htmlFor="password">Confirm Password</label>
-                            <input type='password' className="form-control" id="password_confirmation" name="password_confirmation" autoComplete="off" />
-                        </div>
-                    </div>
                     <div className="row">
                         <div className="col">
                             <label htmlFor="ca_cert">CA Certificate</label>

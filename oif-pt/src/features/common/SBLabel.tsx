@@ -12,9 +12,19 @@ export const SBLabel = (props: any) => {
                         : <label htmlFor={labelFor}>{labelText}</label>
                     }
                     <p>
-                        {labelValue.map(item => {
-                            return (<li key={item}>{item}</li>);
-                        })}
+                        {labelValue && labelValue.length > 0 ?
+                            <ul className="list-group mt-2">
+                                {labelValue.map(item => {
+                                    return (
+                                        <li className="list-group-item d-flex justify-content-between align-items-center" key={item}>{item}</li>
+                                    );
+                                })}
+                            </ul>
+                        :
+                            <ul className="list-group mt-2">
+                                <li className="list-group-item d-flex justify-content-between align-items-center">No items</li>
+                            </ul>
+                        }
                     </p>   
                 </span>
             );
