@@ -2,6 +2,7 @@ fastapi==0.95.0
 motor==3.1.1
 paho-mqtt==2.0.0
 python-benedict==0.31.0
+python-multipart==0.0.9
 toml==0.10.2
 tomli==2.0.1
 uvicorn==0.21.1

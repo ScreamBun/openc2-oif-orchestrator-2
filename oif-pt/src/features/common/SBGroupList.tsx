@@ -68,7 +68,7 @@ const SBGroupList = (props: SBGroupListProps) => {
     };
 
     const listOfItems = data.map((item: string) =>
-        <li className="list-group-item d-flex justify-content-between align-items-center">
+        <li key={item} className="list-group-item d-flex justify-content-between align-items-center">
             {item}
             <button role="link" className='btn btn-sm' title="Remove item" onClick={(e) => { onRemoveClick(item, e); }}>
                 <FontAwesomeIcon icon={faMinusCircle}></FontAwesomeIcon>            

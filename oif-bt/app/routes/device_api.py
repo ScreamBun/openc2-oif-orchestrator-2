@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from models.common import ResponseModel
 from exceptions import BaseError
@@ -69,3 +69,17 @@ async def update_device_data(device: DeviceUpdateModel):
 async def delete_device_data(device_id: str):
     deleted_result = await delete_device(device_id)
     return ResponseModel(deleted_result, 200, "Device deleted successfully.", False)
+
+
+@router.post("/cacert_upload/{device_id}")
+async def cacert_upload(device_id: str, file: UploadFile = File(...)):
+    try:
+        contents = file.file.read()
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+    finally:
+        file.file.close()
+
+    return {"message": f"Successfully uploaded {file.filename}"}

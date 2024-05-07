@@ -11,7 +11,7 @@ export const SBLabel = (props: any) => {
                         ? <label htmlFor={labelFor}>{labelText}<span className="text-danger ms-1">*</span></label>
                         : <label htmlFor={labelFor}>{labelText}</label>
                     }
-                    <p>
+                    <span>
                         {labelValue && labelValue.length > 0 ?
                             <ul className="list-group mt-2">
                                 {labelValue.map(item => {
@@ -25,7 +25,7 @@ export const SBLabel = (props: any) => {
                                 <li className="list-group-item d-flex justify-content-between align-items-center">No items</li>
                             </ul>
                         }
-                    </p>   
+                    </span>   
                 </span>
             );
         } else {

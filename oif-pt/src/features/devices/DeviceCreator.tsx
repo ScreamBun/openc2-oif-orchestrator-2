@@ -5,13 +5,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NAV_DEVICE_LIST, PROTOCOL_LIST, SERIALIZATION_LIST } from "../../nav/consts";
 import { useAddNewDeviceMutation, useEditDeviceMutation, useGetDeviceByIDQuery } from "../../services/apiSlice";
 import { Device } from "../../services/types";
-import SBChecklist from "../common/SBChecklist";
-import { sbToastError, sbToastSuccess } from "../common/SBToast";
+import { sbToastError } from "../common/SBToast";
 import { SBCancelBtn } from "../common/SBCancelBtn";
 import { SBLabel } from "../common/SBLabel";
-import SBSelect from "../common/SBSelect";
-import { Option } from "../common/SBSelect";
 import SBGroupList from "../common/SBGroupList";
+import { NULL } from "sass";
+import SBFileUpload from "../common/SBFileUpload";
 
 
 const initialState: Device = {
@@ -56,21 +55,32 @@ const DeviceCreator = () => {
     const [addNewDevice, { isLoading: isFetching }] = useAddNewDeviceMutation();
     const [updateDevice, { isLoading: isUpdating }] = useEditDeviceMutation();
 
+    const caCertInputId = "ca_cert";
+    const clientCertInputId = "client_cert";
+    const clientKeyInputId = "client_key";
+
     const onSave = async () => {
+
+        const inputFile1 = document.getElementById(caCertInputId) as HTMLInputElement;
+        const inputFile2 = document.getElementById(clientCertInputId) as HTMLInputElement;
+        const inputFile3 = document.getElementById(clientKeyInputId) as HTMLInputElement;
+
+        const formData = new FormData();
+        formData.append(caCertInputId, inputFile1?.files?.item(0) as File);
+        formData.append(clientCertInputId, inputFile2?.files?.item(0) as File);
+        formData.append(clientKeyInputId, inputFile3?.files?.item(0) as File);
 
         if (isEditing) {
             await updateDevice(inputData).unwrap()
                 .then(() => {
                     setIsEditing(false);
-                    // sbToastSuccess(`Device updates saved`)
                     goto(`${NAV_DEVICE_LIST}/${deviceID}`);
                 })
                 .catch((err) => {
                     console.log(err);
                     sbToastError(`Error: Failed to update device`);
                     return;
-                })
-
+                });
         } else {
             await addNewDevice(inputData).unwrap()
                 .then(() => {
@@ -82,7 +92,7 @@ const DeviceCreator = () => {
                     console.log(err);
                     sbToastError(`Error: Failed to update device`);
                     return;
-                })
+                });
         }
     }
 
@@ -110,7 +120,7 @@ const DeviceCreator = () => {
             
 
         } else if (fieldName.includes("transport") && fieldName.includes("http")) {
-            // console.log("transport http")
+            console.log("transport http")
             setInputData((values: any) => ({ ...values, transport: { ...values.transport, http: { ...values.transport.http, [key]: fieldValue } } }))
 
         } else if (fieldName.includes("transport") && fieldName.includes("mqtt")) {
@@ -127,7 +137,7 @@ const DeviceCreator = () => {
         const key = e.target.name;
         const value = e.target.value;
         handleChange(key, value);
-    }
+    }   
 
     //TODO: handle file Upload
     if (isLoading) {
@@ -140,7 +150,7 @@ const DeviceCreator = () => {
                         </div>
                         <div className='col-3'>
                             <SBCancelBtn customClass={'ms-2 float-end'}></SBCancelBtn>
-                            <button type="button" className="btn btn-sm btn-success float-end" title="Save" onClick={onSave}>
+                            <button type="submit" className="btn btn-sm btn-success float-end" title="Save">
                                 <FontAwesomeIcon icon={faSave}></FontAwesomeIcon>
                             </button>
                         </div>
@@ -237,7 +247,7 @@ const DeviceCreator = () => {
                                 HTTP
                             </div>
                             <div className="card-body">
-                                <div className="row">
+                                <div className="row mt-2">
                                     <div className="col-md-4">
                                         <SBLabel labelFor={'host'} labelText={'Host'} isRequired={true} />
                                         <input type='text' className="form-control" id="host" name="transport.http.host" value={inputData.transport?.http?.host ?? ''} onChange={handleFieldChange} required />
@@ -251,21 +261,57 @@ const DeviceCreator = () => {
                                         <input type='text' className="form-control" id="http_api_endpoint" name="transport.http.api_endpoint" value={inputData.transport?.http?.api_endpoint ?? ''} onChange={handleFieldChange} required />                                        
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row mt-2">
                                     <div className="col-md-4">
                                         <SBLabel labelFor="http_username" labelText="Username"></SBLabel>
                                         <input type='text' className="form-control" id="http_username" name="transport.http.username" value={inputData.transport?.http?.username ?? ''} onChange={handleFieldChange} />                                        
                                     </div>
                                     <div className="col-md-4">
                                         <SBLabel labelFor="http_password" labelText="Password"></SBLabel>
-                                        <div className="input-group mb-3">
+                                        <div className="input-group">
                                             <input className={showHttpPassword ? "form-control text-secure" : "form-control"} id="http_password" type='text' name="transport.http.password" autoComplete="off" value={inputData.transport?.http?.password ?? ''} onChange={handleFieldChange} required />
                                             <button className="btn btn-secondary" type="button" id="show_hide_pw" title="Show / hide password" onClick={toggleHttpShowPw}>
                                                 <FontAwesomeIcon icon={showHttpPassword ? faEyeSlash : faEye}></FontAwesomeIcon>
                                             </button>
                                         </div>
                                     </div>                           
-                                </div>                                
+                                </div>
+                                <div className="row mt-2">
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="http_ca_cert" labelText="CA Cert"></SBLabel>
+                                        <SBFileUpload 
+                                            fieldId={caCertInputId} 
+                                            fieldTitle={"Certificate Authority File Types: .pem, .crt, .ca-bundle, .cer, .p7b, .p7c, .p7s"}
+                                            dataKey={"transport.http.ca_cert"} 
+                                            dataValue={inputData.transport?.http?.ca_cert}
+                                            filesAccepted={".pem, .crt, .ca-bundle, .cer, .p7b, .p7c, .p7s"}
+                                            sendChangeToParent={handleChange}
+                                        ></SBFileUpload>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="http_client_cert" labelText="Client Cert"></SBLabel>
+                                        <SBFileUpload 
+                                            fieldId={clientCertInputId} 
+                                            fieldTitle={"Client Certificate File Types: .pem, .crt, .ca-bundle, .cer, .p7b, .p7c, .p7s"}
+                                            dataKey={"transport.http.client_cert"} 
+                                            dataValue={inputData.transport?.http?.client_cert}
+                                            filesAccepted={".pem, .crt, .ca-bundle, .cer, .p7b, .p7c, .p7s"}
+                                            sendChangeToParent={handleChange}
+                                        ></SBFileUpload>                                        
+                                    </div>
+                                    <div className="col-md-4">
+                                        <SBLabel labelFor="http_client_key" labelText="Client Key"></SBLabel>
+                                        <SBFileUpload 
+                                            fieldId={clientKeyInputId} 
+                                            fieldTitle={"Keystore File Types: .key, .keystore, .jks"}
+                                            dataKey={"transport.http.client_key"} 
+                                            dataValue={inputData.transport?.http?.client_key}
+                                            filesAccepted={".key, .keystore, .jks"}
+                                            sendChangeToParent={handleChange}
+                                        ></SBFileUpload>                                         
+                                        {/* <input type='file' className="form-control" id="client_key" name="transport.http.client_key" title="Keystore File Types: .key, .keystore, .jks" accept=".key, .keystore, .jks" value={inputData.transport?.http?.client_key ?? ''} onChange={handleFileChange} /> */}
+                                    </div>                            
+                                </div>                                                                 
                             </div>                    
                         </div>
                         :
@@ -321,25 +367,7 @@ const DeviceCreator = () => {
                     }                    
 
                     <br/>
-                    <pre>{JSON.stringify(inputData, null, 2)}</pre>                    
-
-                {/* 
-                <div className="row">
-                    <div className="row">
-                        <div className="col">
-                            <label htmlFor="ca_cert">CA Certificate</label>
-                            <input type='file' className="form-control" id="ca_cert" name="transport.auth.ca_cert" value={inputData.transport?.auth?.ca_cert ?? ''} onChange={handleFieldChange} />
-                        </div>
-                        <div className="col">
-                            <label htmlFor="client_cert">Client Certificate</label>
-                            <input type='file' className="form-control" id="client_cert" name="transport.auth.client_cert" value={inputData.transport?.auth?.client_cert ?? ''} onChange={handleFieldChange} />
-                        </div>
-                        <div className="col">
-                            <label htmlFor="client_key">Client Key</label>
-                            <input type='file' className="form-control" id="client_key" name="transport.auth.client_key" value={inputData.transport?.auth?.client_key ?? ''} onChange={handleFieldChange} />
-                        </div>
-                    </div>
-                </div> */}
+                    <pre>{JSON.stringify(inputData, null, 2)}</pre>
                    
                 </form>
             </div>

@@ -16,7 +16,7 @@ import MessageList from '../features/commands/MessageList';
 
 
 function App() {
-
+  debugger;
   return (
     <div className="container-fluid">
       <Router>
