@@ -53,3 +53,10 @@ export interface Message {
     msg: string;
     msg_type: string;
 }
+
+export interface ResponseModel{
+    data: any,
+    code: number,
+    message: string,
+    error: boolean
+}

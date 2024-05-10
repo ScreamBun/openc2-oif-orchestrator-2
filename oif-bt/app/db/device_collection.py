@@ -32,16 +32,15 @@ async def add_device(new_device: dict):
 
 async def update_device(id: str, data: dict):
     if len(data) < 1:
-        return False
+        return None
     
     device_dbo = await device_collection.find_one({"_id": ObjectId(id)})
     if device_dbo:
         device_updated = await device_collection.update_one(
             {"_id": ObjectId(id)}, {"$set": data}
         )
-        if device_updated:
-            return True
-        return False
+
+        return await get_device_by_id(id)
 
 
 async def delete_device(id: str):

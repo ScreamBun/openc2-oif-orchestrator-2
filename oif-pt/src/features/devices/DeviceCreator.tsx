@@ -3,13 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NAV_DEVICE_LIST, PROTOCOL_LIST, SERIALIZATION_LIST } from "../../nav/consts";
-import { useAddNewDeviceMutation, useEditDeviceMutation, useGetDeviceByIDQuery } from "../../services/apiSlice";
-import { Device } from "../../services/types";
+import { useAddNewDeviceMutation, useEditDeviceMutation, useGetDeviceByIDQuery, useUploadCaCertMutation, useUploadClientCertMutation, useUploadClientKeyMutation } from "../../services/apiSlice";
+import { Device, ResponseModel } from "../../services/types";
 import { sbToastError } from "../common/SBToast";
 import { SBCancelBtn } from "../common/SBCancelBtn";
 import { SBLabel } from "../common/SBLabel";
 import SBGroupList from "../common/SBGroupList";
-import { NULL } from "sass";
 import SBFileUpload from "../common/SBFileUpload";
 
 
@@ -52,29 +51,105 @@ const DeviceCreator = () => {
     const [showHttpPassword, setShowHttpPassword] = useState(false); 
     const [showMqttPassword, setShowMqttPassword] = useState(false); 
 
-    const [addNewDevice, { isLoading: isFetching }] = useAddNewDeviceMutation();
-    const [updateDevice, { isLoading: isUpdating }] = useEditDeviceMutation();
+    const [addNewDevice] = useAddNewDeviceMutation();
+    const [updateDevice] = useEditDeviceMutation();
+    const [uploadCaCert] = useUploadCaCertMutation();
+    const [uploadClientCert] = useUploadClientCertMutation();
+    const [uploadClientKey] = useUploadClientKeyMutation();
 
     const caCertInputId = "ca_cert";
     const clientCertInputId = "client_cert";
     const clientKeyInputId = "client_key";
 
+    const uploadCerts = async (id: string | undefined, isUpdate: boolean) => {
+
+        // TODO: Move to loop... 
+        const formDataCaCert = new FormData();
+        const inputFileCaCert = document.getElementById(caCertInputId) as HTMLInputElement;
+        if (inputFileCaCert?.files?.item(0)){
+            formDataCaCert.append(caCertInputId, inputFileCaCert?.files?.item(0) as File);
+        } else {
+            formDataCaCert.append(caCertInputId, "");
+        }
+
+        const formDataClientCert = new FormData();
+        const inputFileClientCert = document.getElementById(clientCertInputId) as HTMLInputElement;
+        if (inputFileClientCert?.files?.item(0)){
+            formDataClientCert.append(clientCertInputId, inputFileClientCert?.files?.item(0) as File);
+        } else {
+            formDataClientCert.append(clientCertInputId, "");
+        }
+
+        const formDataClientKey = new FormData();
+        const inputFileClientKey = document.getElementById(clientKeyInputId) as HTMLInputElement;
+        if (inputFileClientKey?.files?.item(0)){
+            formDataClientKey.append(clientKeyInputId, inputFileClientKey?.files?.item(0) as File);
+        } else {
+            formDataClientKey.append(clientKeyInputId, "");
+        }
+        
+        if (id === undefined){
+            id = ""
+        }
+
+        await uploadCaCert({id, formData: formDataCaCert}).unwrap()
+        .then(() => {
+            // setIsEditing(false);
+            // if(isUpdate) {
+            //     goto(`${NAV_DEVICE_LIST}/${id}`);
+            // } else {
+            //     // New
+            //     goto(`${NAV_DEVICE_LIST}`);
+            // }
+        })
+        .catch((err) => {
+            console.log(err);
+            sbToastError(`Error: Failed unable to upload certs`);
+            return;
+        });
+
+        await uploadClientCert({id, formData: formDataClientCert}).unwrap()
+        .then(() => {
+            // setIsEditing(false);
+            // if(isUpdate) {
+            //     goto(`${NAV_DEVICE_LIST}/${id}`);
+            // } else {
+            //     // New
+            //     goto(`${NAV_DEVICE_LIST}`);
+            // }
+        })
+        .catch((err) => {
+            console.log(err);
+            sbToastError(`Error: Failed unable to upload certs`);
+            return;
+        });
+
+        await uploadClientKey({id, formData: formDataClientKey}).unwrap()
+        .then(() => {
+            setIsEditing(false);
+            if(isUpdate) {
+                goto(`${NAV_DEVICE_LIST}/${id}`);
+            } else {
+                // New
+                goto(`${NAV_DEVICE_LIST}`);
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            sbToastError(`Error: Failed unable to upload certs`);
+            return;
+        });
+    
+    }
+
     const onSave = async () => {
-
-        const inputFile1 = document.getElementById(caCertInputId) as HTMLInputElement;
-        const inputFile2 = document.getElementById(clientCertInputId) as HTMLInputElement;
-        const inputFile3 = document.getElementById(clientKeyInputId) as HTMLInputElement;
-
-        const formData = new FormData();
-        formData.append(caCertInputId, inputFile1?.files?.item(0) as File);
-        formData.append(clientCertInputId, inputFile2?.files?.item(0) as File);
-        formData.append(clientKeyInputId, inputFile3?.files?.item(0) as File);
 
         if (isEditing) {
             await updateDevice(inputData).unwrap()
-                .then(() => {
-                    setIsEditing(false);
-                    goto(`${NAV_DEVICE_LIST}/${deviceID}`);
+                .then((rsp: ResponseModel) => {
+                    if (!rsp.error){
+                        uploadCerts(rsp.data.id, true);
+                    }
                 })
                 .catch((err) => {
                     console.log(err);
@@ -83,9 +158,11 @@ const DeviceCreator = () => {
                 });
         } else {
             await addNewDevice(inputData).unwrap()
-                .then(() => {
+                .then((rsp: ResponseModel) => {
+                    if (!rsp.error) {
+                        uploadCerts(rsp.data.id, false);
+                    }
                     setInputData(initialState);
-                    // sbToastSuccess(`New device created`)
                     goto(`${NAV_DEVICE_LIST}`);
                 })
                 .catch((err) => {
@@ -196,7 +273,7 @@ const DeviceCreator = () => {
                 </div>
             </div>
             <div className="card-body">
-                <form onSubmit={onSave}>
+                <form>
 
                     <div className="card">
                         <div className="card-header">
@@ -309,7 +386,6 @@ const DeviceCreator = () => {
                                             filesAccepted={".key, .keystore, .jks"}
                                             sendChangeToParent={handleChange}
                                         ></SBFileUpload>                                         
-                                        {/* <input type='file' className="form-control" id="client_key" name="transport.http.client_key" title="Keystore File Types: .key, .keystore, .jks" accept=".key, .keystore, .jks" value={inputData.transport?.http?.client_key ?? ''} onChange={handleFileChange} /> */}
                                     </div>                            
                                 </div>                                                                 
                             </div>                    

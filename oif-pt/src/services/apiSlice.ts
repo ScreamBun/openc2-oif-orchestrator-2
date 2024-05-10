@@ -1,6 +1,6 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Actuator, Command, Device, Message } from './types';
+import { Actuator, Command, Device, Message, ResponseModel } from './types';
 
 // Define a service using a base URL and expected endpoints
 //TODO: code-splitting
@@ -23,7 +23,7 @@ export const apiSlice = createApi({
                 return response.data
             },
         }),
-        addNewDevice: builder.mutation<Device, Partial<Device>>({
+        addNewDevice: builder.mutation<ResponseModel, Partial<Device>>({
             query: initialDevice => ({
                 url: '/devices/add',
                 method: 'POST',
@@ -33,7 +33,7 @@ export const apiSlice = createApi({
             // invalidatesTags: [{ type: 'Devices', id: 'LIST' }],
             invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
         }),
-        editDevice: builder.mutation<Device, Pick<Device, 'id'>>({
+        editDevice: builder.mutation<ResponseModel, Pick<Device, 'id'>>({
             query: device => ({
                 url: `devices/${device.id}/update`,
                 method: 'PUT',
@@ -48,6 +48,36 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
         }),
+        uploadCaCert: builder.mutation<{success: boolean}, {id: string, formData: FormData}>({
+            query: ({ id, formData }) => 
+                ({
+                    url: `devices/cacert_upload/${id}`,                  
+                    method: 'POST',
+                    body: formData,
+                    formData: true 
+                }),
+            invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
+        }),  
+        uploadClientCert: builder.mutation<{success: boolean}, {id: string, formData: FormData}>({
+            query: ({ id, formData }) => 
+                ({
+                    url: `devices/clientcert_upload/${id}`,                  
+                    method: 'POST',
+                    body: formData,
+                    formData: true 
+                }),
+            invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
+        }),
+        uploadClientKey: builder.mutation<{success: boolean}, {id: string, formData: FormData}>({
+            query: ({ id, formData }) => 
+                ({
+                    url: `devices/clientkey_upload/${id}`,                  
+                    method: 'POST',
+                    body: formData,
+                    formData: true 
+                }),
+            invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
+        }),            
         getAllActuators: builder.query<Actuator[], void>({
             query: () => `/actuators/`,
             transformResponse: (response: { data: Actuator[] }) => {
@@ -140,6 +170,7 @@ export const apiSlice = createApi({
 // auto-generated based on the defined endpoints
 export const {
     useGetAllDevicesQuery, useGetDeviceByIDQuery, useAddNewDeviceMutation, useEditDeviceMutation, useRemoveDeviceMutation,
+    useUploadCaCertMutation, useUploadClientCertMutation, useUploadClientKeyMutation,
     useGetAllActuatorsQuery, useGetActuatorbyIDQuery, useAddNewActuatorMutation, useEditActuatorMutation, useRemoveActuatorMutation,
     useGetAllCommandsQuery, useGetCommandbyIDQuery, useSendCommandMutation, useRemoveCommandMutation, 
     useGetMessagesQuery, useGetMessagesbyRequestIdQuery
