@@ -4,9 +4,7 @@ import { NAV_DEVICE_CREATOR, NAV_DEVICE_LIST } from "../../nav/consts";
 import { SBCreateBtn, SBDeleteBtn } from "../common/CRUDBtns";
 import { useGetAllDevicesQuery, useRemoveDeviceMutation } from "../../services/apiSlice";
 import { Device } from "../../services/types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
-import { sbToastError, sbToastSuccess } from "../common/SBToast";
+import { sbToastError } from "../common/SBToast";
 
 
 const DeviceList = () => {
@@ -56,13 +54,7 @@ const DeviceList = () => {
     const onRemove = async (id: string | undefined, name: string | undefined) => {
         if (id){
             await removeDevice(id).unwrap()
-            .then((data) => {
-                if (name) {
-                    sbToastSuccess(`${name} removed`);
-                } else {
-                    sbToastSuccess(`Device removed`);
-                }
-            })
+            .then((data) => {})
             .catch((err) => {
                 console.log(err);
                 sbToastError(`Error: Unable to remove device`);

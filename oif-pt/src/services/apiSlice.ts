@@ -27,11 +27,9 @@ export const apiSlice = createApi({
             query: initialDevice => ({
                 url: '/devices/add',
                 method: 'POST',
-                // Include the entire object as the body of the request
                 body: initialDevice
             }),
-            // invalidatesTags: [{ type: 'Devices', id: 'LIST' }],
-            invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
+            invalidatesTags: ['Devices'],
         }),
         editDevice: builder.mutation<ResponseModel, Pick<Device, 'id'>>({
             query: device => ({
@@ -46,7 +44,7 @@ export const apiSlice = createApi({
                 url: `devices/${id}/delete`,
                 method: 'DELETE'
             }),
-            invalidatesTags: (result, error, arg) => [{ type: 'Devices', id: arg.id }],
+            invalidatesTags: ['Devices'],
         }),
         uploadCaCert: builder.mutation<{success: boolean}, {id: string, formData: FormData}>({
             query: ({ id, formData }) => 
