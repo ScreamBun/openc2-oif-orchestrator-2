@@ -7,28 +7,12 @@ from db import device_collection
 from logic import device_manager, const
 
 from models.device import DeviceModel, DeviceUpdateModel
-from models.device_certs import DeviceCertsModel
 
 router = APIRouter(
     prefix="/devices",
     tags=["Device"],
     responses={404: {"description": "Not found"}},
 )
-
-
-# @router.get("/known_exception", response_description="Get all Device data from the database")
-# async def get_exception():
-#     try:
-#         z = 1 / 0
-#     except ZeroDivisionError:
-#         raise BaseError(message="Zero Division Error", status_code=501)
-#     return ResponseModel("okay...", 200, "")
-
-
-# @router.get("/unknown_exception", response_description="Get all Device data from the database")
-# async def get_exception():
-#     z = 1 / 0
-#     return ResponseModel("okay...", 200, "")
 
 
 @router.get("/", response_description="Get all Device data from the database")
@@ -76,24 +60,21 @@ async def delete_device_data(device_id: str):
 
 @router.post("/cacert_upload/{device_id}")
 async def cacert_upload(device_id: str, ca_cert: Optional[UploadFile] = None):
-    # for file in files:
-    #     await device_manager.store_cert_file(device_id, const.CA_CERT, file)
+    await device_manager.store_cert_file(device_id, const.CA_CERT, ca_cert)
 
     return {"message": f"cacert updated"}
 
 
 @router.post("/clientcert_upload/{device_id}")
 async def cacert_upload(device_id: str, client_cert: Optional[UploadFile] = None):
-    # for file in files:
-    #     await device_manager.store_cert_file(device_id, const.CA_CERT, file)
+    await device_manager.store_cert_file(device_id, const.CLIENT_CERT, client_cert)
 
     return {"message": f"clientcert updated"}
 
 
 @router.post("/clientkey_upload/{device_id}")
 async def cacert_upload(device_id: str, client_key: Optional[UploadFile] = None):
-    # for file in files:
-    #     await device_manager.store_cert_file(device_id, const.CA_CERT, file)
+    await device_manager.store_cert_file(device_id, const.CLIENT_KEY, client_key)
 
     return {"message": f"clientkey updated"}
 
@@ -107,6 +88,6 @@ async def clientcert_upload(device_id: str, file: Optional[UploadFile] = None):
 
 @router.post("/clientkey_upload/{device_id}")
 async def clientcert_upload(device_id: str, file: Optional[UploadFile] = None):
-    await device_manager.store_cert_file(device_id, const.KEY_CERT, file)
+    await device_manager.store_cert_file(device_id, const.CLIENT_KEY, file)
 
     return {"message": f"clientkey processed"}

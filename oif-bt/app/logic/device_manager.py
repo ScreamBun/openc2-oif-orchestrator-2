@@ -6,8 +6,8 @@ from db  import device_collection
 
 async def store_cert_file(id: str, cert_name: str, cert_file: UploadFile | None) -> bool:
     
-    cur_path = os.path.abspath(os.getcwd())
-    file_full_path = cur_path + const.DEVICE_PATH + id
+    cur_path = os.path.abspath(os.getcwd() + const.DEVICE_PATH)
+    file_full_path = os.path.join(cur_path, id, cert_name)
     
     if cert_file != None and cert_file.filename != None:
         file_manager.add_file(file_full_path, cert_file)

@@ -79,10 +79,12 @@ const DeviceDetails = () => {
                     <div className="card-body">
                         <div className="row">
                             <div className="col-md-4">
-                                <SBLabel labelFor="name" labelText="Name" labelValue={device.name}></SBLabel>
+                                <label htmlFor="name">Name</label>
+                                <p id="name" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.name}</p>                                
                             </div>
                             <div className="col-md-4">
-                                <SBLabel labelFor="device_id" labelText="Device ID" labelValue={device.device_id}></SBLabel>
+                                <label htmlFor="device_id">Device ID</label>
+                                <p id="device_id" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.device_id}</p>                                     
                             </div>
                         </div>
                     </div>
@@ -94,10 +96,12 @@ const DeviceDetails = () => {
                     <div className="card-body">
                         <div className="row">
                             <div className="col-md-4">
-                                <SBLabel labelFor="transport_protocol" labelText="Protocol" labelValue={device.transport.protocol}></SBLabel>
+                                <label htmlFor="transport_protocol">Protocol</label>
+                                <p id="transport_protocol" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.protocol}</p>                                 
                             </div>
                             <div className="col-md-4">
-                                <SBLabel labelFor="transport_serialization" labelText="Serialization" labelValue={device.transport.serialization}></SBLabel>
+                                <label htmlFor="transport_serialization">Serialization</label>
+                                <p id="transport_serialization" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.serialization}</p>                                 
                             </div>
                         </div>
                     </div>
@@ -111,36 +115,42 @@ const DeviceDetails = () => {
                         <div className="card-body">
                             <div className="row">
                                 <div className="col-md-4">
-                                    <SBLabel labelFor="http_host" labelText="Host" labelValue={device.transport.http?.host}></SBLabel>
+                                    <label htmlFor="http_host">Host</label>
+                                    <p id="http_host" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.http?.host}</p>
                                 </div>
                                 <div className="col-md-4">
-                                    <SBLabel labelFor="http_port" labelText="Port" labelValue={device.transport.http?.port}></SBLabel>
+                                    <label htmlFor="http_port">Port</label>
+                                    <p id="http_port" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.http?.port}</p>                                    
                                 </div>
                                 <div className="col-md-4">
-                                    <SBLabel labelFor="http_api_endpoint" labelText="API Endpoint" labelValue={device.transport.http?.api_endpoint}></SBLabel>
+                                    <label htmlFor="http_api_endpoint">API Endpoint</label>
+                                    <p id="http_port" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.http?.api_endpoint}</p>                                      
                                 </div>                            
                             </div>
                             <div className="row">
                                 <div className="col-md-4">
-                                    <SBLabel labelFor="http_username" labelText="Username" labelValue={device.transport.http?.username}></SBLabel>
+                                    <label htmlFor="http_username">Username</label>
+                                    <p id="http_username" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.http?.username}</p>                                      
                                 </div>
                                 <div className="col-md-4">
-                                    <SBLabel labelFor="http_password" labelText="Password"></SBLabel>
+                                    <label htmlFor="http_password">Password</label>
                                     { device.transport.http?.password 
-                                    ? <p id='http_password'>**********</p> 
-                                    : <p id='http_password'></p> }
-                                     
+                                    ? <p id='http_password' className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>**********</p> 
+                                    : <p id='http_password' className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}></p> }                                    
                                 </div>                           
                             </div>
                             <div className="row">
                                 <div className="col-md-4">
-                                    <SBLabel labelFor="http_ca_cert" labelText="CA Cert" labelValue={device.transport.http?.ca_cert}></SBLabel>
+                                    <label htmlFor="http_ca_cert">CA Cert</label>
+                                    <p id="http_ca_cert" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.http?.ca_cert}</p>
                                 </div>
                                 <div className="col-md-4">
-                                    <SBLabel labelFor="http_client_cert" labelText="Client Cert" labelValue={device.transport.http?.client_cert}></SBLabel>
+                                    <label htmlFor="http_client_cert">Client Cert</label>
+                                    <p id="http_client_cert" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.http?.client_cert}</p>
                                 </div>
                                 <div className="col-md-4">
-                                    <SBLabel labelFor="http_client_key" labelText="Client Key" labelValue={device.transport.http?.client_key}></SBLabel>
+                                    <label htmlFor="http_client_key">Client Key</label>
+                                    <p id="http_client_key" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.http?.client_key}</p>
                                 </div>                            
                             </div>  
                         </div>                    
@@ -158,26 +168,58 @@ const DeviceDetails = () => {
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-md-4">
-                                        <SBLabel labelFor="mqtt_broker" labelText="Broker" labelValue={device.transport.mqtt?.broker}></SBLabel>
+                                        <label htmlFor="mqtt_broker">Broker</label>
+                                        <p id="mqtt_broker" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.mqtt?.broker}</p>
                                     </div>
                                     <div className="col-md-4">
-                                        <SBLabel labelFor="mqtt_port" labelText="Port" labelValue={device.transport.mqtt?.port}></SBLabel>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        <SBLabel labelFor="mqtt_pub_topics" labelText="Publish to Topics" labelValue={device.transport.mqtt?.pub_topics}></SBLabel>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <SBLabel labelFor="mqtt_sub_topics" labelText="Subscibe to Topics" labelValue={device.transport.mqtt?.sub_topics}></SBLabel>
+                                        <label htmlFor="mqtt_port">Port</label>
+                                        <p id="mqtt_port" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.mqtt?.port}</p>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-md-4">
-                                        <SBLabel labelFor="mqtt_username" labelText="Username" labelValue={device.transport.mqtt?.username}></SBLabel>
+                                        <label htmlFor="mqtt_pub_topics">Publish to Topics</label>
+                                        {device.transport.mqtt?.pub_topics && device.transport.mqtt?.pub_topics.length > 0 ?
+                                            <ul className="list-group mb-2">
+                                                {device.transport.mqtt?.pub_topics.map(item => {
+                                                    return (
+                                                        <li className="list-group-item d-flex justify-content-between align-items-center py-1 px-2" key={item}>{item}</li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        :
+                                            <ul className="list-group mb-2">
+                                                <li className="list-group-item d-flex justify-content-between align-items-center py-1 px-2">No items</li>
+                                            </ul>
+                                        }                                        
                                     </div>
                                     <div className="col-md-4">
-                                        <SBLabel labelFor="mqtt_password" labelText="Password" labelValue={device.transport.mqtt?.password}></SBLabel>
+                                        <label htmlFor="mqtt_sub_topics">Subscibe to Topics</label>
+                                        {device.transport.mqtt?.sub_topics && device.transport.mqtt?.sub_topics.length > 0 ?
+                                            <ul className="list-group mb-2">
+                                                {device.transport.mqtt?.sub_topics.map(item => {
+                                                    return (
+                                                        <li className="list-group-item d-flex justify-content-between align-items-center py-1 px-2" key={item}>{item}</li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        :
+                                            <ul className="list-group mb-2">
+                                                <li className="list-group-item d-flex justify-content-between align-items-center py-1 px-2">No items</li>
+                                            </ul>
+                                        }                                         
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <label htmlFor="mqtt_username">Username</label>
+                                        <p id="mqtt_username" className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>{device.transport.mqtt?.username}</p>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <label htmlFor="mqtt_password">Password</label>
+                                        { device.transport.mqtt?.password 
+                                        ? <p id='mqtt_password' className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}>**********</p> 
+                                        : <p id='mqtt_password' className="card mb-2 py-1 px-2" style={{minHeight: '34px'}}></p> }                                                                            
                                     </div>                           
                                 </div> 
                             </div>                    

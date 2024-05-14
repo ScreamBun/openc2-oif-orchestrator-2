@@ -1,37 +1,34 @@
-import { useState } from "react";
-
 const SBFileUpload = (props: any) => {
 
     const { 
         fieldId, 
         fieldTitle = 'Upload a file', 
         dataKey,
-        dataValue,        
-        customClass, 
+        // dataValue,    
+        // customClass, 
         filesAccepted,
-        isMultipleFiles,
+        // isMultipleFiles,
         sendChangeToParent
     } = props;
 
-    const [sbFileValue, setSbFileValue] = useState<string>(''); 
+    // const [sbFileValue, setSbFileValue] = useState<string>(''); 
 
     const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         console.log("onFileChange e.target.name: " + e.target.name);
         console.log("onFileChange e.target.value: " + e.target.value);
         const fileKey = e.target.name;
-        const fileValue = e.target.value;
+        // const fileValue = e.target.value;
+        let filename = "";
 
         // TODO: isMultipleFiles....
 
-        // if(e.target.files != null && e.target.files.length > 0) {
-        //     console.log("e.target.files: " + e.target.files[0].name);
-        //     fileName = e.target.files[0].name
-        // } else {
-        //     console.log("e.target.files: " + 0);
-        // }
+        if(e.target.files != null && e.target.files.length > 0) {
+            // console.log("e.target.files: " + e.target.files[0].name);
+            filename = e.target.files[0].name
+        } 
 
-        sendChangeToParent(fileKey, fileValue);
+        sendChangeToParent(fileKey, filename);
     } 
     
     return (

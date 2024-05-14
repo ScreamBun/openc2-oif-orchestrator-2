@@ -47,98 +47,97 @@ const DeviceCreator = () => {
     const { data: device, isLoading, error } = useGetDeviceByIDQuery(`${deviceID}`);
 
     const [inputData, setInputData] = useState(device ? device : initialState);
+    const [prevInputData] = useState(device ? device : initialState);
     const [isEditing, setIsEditing] = useState(device?.id ? true : false);
-    const [showHttpPassword, setShowHttpPassword] = useState(false); 
-    const [showMqttPassword, setShowMqttPassword] = useState(false); 
+    const [showHttpPassword, setShowHttpPassword] = useState(true); 
+    const [showMqttPassword, setShowMqttPassword] = useState(true); 
+
+    const [formDataCaCertState, setFormDataCaCertState] = useState(new FormData());
+    const [formDataClientCertState, setFormDataClientCertState] = useState(new FormData());
+    const [formDataClientKeyState, setFormDataClientKeyState] = useState(new FormData());
 
     const [addNewDevice] = useAddNewDeviceMutation();
     const [updateDevice] = useEditDeviceMutation();
-    const [uploadCaCert] = useUploadCaCertMutation();
-    const [uploadClientCert] = useUploadClientCertMutation();
-    const [uploadClientKey] = useUploadClientKeyMutation();
+    const [uploadCaCert, { isLoading: isCaCertLoading }] = useUploadCaCertMutation();
+    const [uploadClientCert, { isLoading: isClientCertLoading }] = useUploadClientCertMutation();
+    const [uploadClientKey, { isLoading: isClientKeyLoading }] = useUploadClientKeyMutation();
 
     const caCertInputId = "ca_cert";
     const clientCertInputId = "client_cert";
     const clientKeyInputId = "client_key";
 
-    const uploadCerts = async (id: string | undefined, isUpdate: boolean) => {
+    const waitOnCerts = (goToWhenDone: string) => {        
+        setTimeout(() => {  
+          console.log('waiting for certs to load...');  
+          if (isCaCertLoading || isClientCertLoading || isClientKeyLoading) {
+            waitOnCerts(goToWhenDone);  
+          } else {
+            console.log('all certs loaded');
+            setIsEditing(false);
+            goto(goToWhenDone);
+          }
+        }, 500)
+    }
 
-        // TODO: Move to loop... 
-        const formDataCaCert = new FormData();
-        const inputFileCaCert = document.getElementById(caCertInputId) as HTMLInputElement;
-        if (inputFileCaCert?.files?.item(0)){
-            formDataCaCert.append(caCertInputId, inputFileCaCert?.files?.item(0) as File);
+    const updateCertState = (cert_id: string) => {
+        const formData = new FormData();
+        const inputCertFile = document.getElementById(cert_id) as HTMLInputElement;
+
+        if (inputCertFile?.files?.item(0)){
+            formData.append(cert_id, inputCertFile?.files?.item(0) as File);
         } else {
-            formDataCaCert.append(caCertInputId, "");
+            formData.append(cert_id, "");
         }
 
-        const formDataClientCert = new FormData();
-        const inputFileClientCert = document.getElementById(clientCertInputId) as HTMLInputElement;
-        if (inputFileClientCert?.files?.item(0)){
-            formDataClientCert.append(clientCertInputId, inputFileClientCert?.files?.item(0) as File);
-        } else {
-            formDataClientCert.append(clientCertInputId, "");
+        if (cert_id === caCertInputId){
+            setFormDataCaCertState(formData);
+        } else if (cert_id === clientCertInputId){
+            setFormDataClientCertState(formData);
+        } else if (cert_id === clientKeyInputId){
+            setFormDataClientKeyState(formData);
         }
+    }
 
-        const formDataClientKey = new FormData();
-        const inputFileClientKey = document.getElementById(clientKeyInputId) as HTMLInputElement;
-        if (inputFileClientKey?.files?.item(0)){
-            formDataClientKey.append(clientKeyInputId, inputFileClientKey?.files?.item(0) as File);
-        } else {
-            formDataClientKey.append(clientKeyInputId, "");
-        }
+    const uploadCerts = async (id: string | undefined, goToWhenDone: string) => {
+
+        // TODO: Check previous state?
         
         if (id === undefined){
             id = ""
         }
 
-        await uploadCaCert({id, formData: formDataCaCert}).unwrap()
-        .then(() => {
-            // setIsEditing(false);
-            // if(isUpdate) {
-            //     goto(`${NAV_DEVICE_LIST}/${id}`);
-            // } else {
-            //     // New
-            //     goto(`${NAV_DEVICE_LIST}`);
-            // }
-        })
-        .catch((err) => {
-            console.log(err);
-            sbToastError(`Error: Failed unable to upload certs`);
-            return;
-        });
+        if (formDataCaCertState.has(caCertInputId)){
+            await uploadCaCert({id, formData: formDataCaCertState}).unwrap()
+            .then(() => {})
+            .catch((err) => {
+                console.log(err);
+                sbToastError(`Error: Failed unable to upload certs`);
+                return;
+            });            
+        }
 
-        await uploadClientCert({id, formData: formDataClientCert}).unwrap()
-        .then(() => {
-            // setIsEditing(false);
-            // if(isUpdate) {
-            //     goto(`${NAV_DEVICE_LIST}/${id}`);
-            // } else {
-            //     // New
-            //     goto(`${NAV_DEVICE_LIST}`);
-            // }
-        })
-        .catch((err) => {
-            console.log(err);
-            sbToastError(`Error: Failed unable to upload certs`);
-            return;
-        });
+        if (formDataClientCertState.has(clientCertInputId)){
+            await uploadClientCert({id, formData: formDataClientCertState}).unwrap()
+            .then(() => {})
+            .catch((err) => {
+                console.log(err);
+                sbToastError(`Error: Failed unable to upload certs`);
+                return;
+            });
+        }
 
-        await uploadClientKey({id, formData: formDataClientKey}).unwrap()
-        .then(() => {
-            setIsEditing(false);
-            if(isUpdate) {
-                goto(`${NAV_DEVICE_LIST}/${id}`);
-            } else {
-                // New
-                goto(`${NAV_DEVICE_LIST}`);
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            sbToastError(`Error: Failed unable to upload certs`);
-            return;
-        });
+        if (formDataClientKeyState.has(clientKeyInputId)){
+            await uploadClientKey({id, formData: formDataClientKeyState}).unwrap()
+            .then(() => {})
+            .catch((err) => {
+                console.log(err);
+                sbToastError(`Error: Failed unable to upload certs`);
+                return;
+            });
+        }
+
+        // Wait for all certs to finish loading
+        waitOnCerts(goToWhenDone);
     
     }
 
@@ -148,7 +147,7 @@ const DeviceCreator = () => {
             await updateDevice(inputData).unwrap()
                 .then((rsp: ResponseModel) => {
                     if (!rsp.error){
-                        uploadCerts(rsp.data.id, true);
+                        uploadCerts(rsp.data.id, `${NAV_DEVICE_LIST}/${rsp.data.id}`);
                     }
                 })
                 .catch((err) => {
@@ -160,7 +159,7 @@ const DeviceCreator = () => {
             await addNewDevice(inputData).unwrap()
                 .then((rsp: ResponseModel) => {
                     if (!rsp.error) {
-                        uploadCerts(rsp.data.id, false);
+                        uploadCerts(rsp.data.id, `${NAV_DEVICE_LIST}`);
                     }
                     setInputData(initialState);
                     goto(`${NAV_DEVICE_LIST}`);
@@ -287,8 +286,7 @@ const DeviceCreator = () => {
                                 </div>
                                 <div className="col-md-4">
                                     <SBLabel labelFor={'device_id'} labelText={'Device ID'} isRequired={true} />
-                                    <input type='text' className={`form-control${isEditing ? '-plaintext' : ''}`} readOnly={isEditing ? true : false}
-                                        id="device_id" name="device_id" value={inputData.device_id ?? ''} onChange={handleFieldChange} required/>
+                                    <input type='text' className="form-control" id="device_id" name="device_id" value={inputData.device_id ?? ''} onChange={handleFieldChange} required />
                                 </div>
                             </div>
                         </div>
@@ -355,36 +353,36 @@ const DeviceCreator = () => {
                                 </div>
                                 <div className="row mt-2">
                                     <div className="col-md-4">
-                                        <SBLabel labelFor="http_ca_cert" labelText="CA Cert"></SBLabel>
+                                        <SBLabel labelFor="http_ca_cert" labelText="CA Cert" labelValue={inputData.transport.http?.ca_cert}></SBLabel>
                                         <SBFileUpload 
                                             fieldId={caCertInputId} 
                                             fieldTitle={"Certificate Authority File Types: .pem, .crt, .ca-bundle, .cer, .p7b, .p7c, .p7s"}
                                             dataKey={"transport.http.ca_cert"} 
                                             dataValue={inputData.transport?.http?.ca_cert}
                                             filesAccepted={".pem, .crt, .ca-bundle, .cer, .p7b, .p7c, .p7s"}
-                                            sendChangeToParent={handleChange}
+                                            sendChangeToParent={(key: string, name: string) => {handleChange(key, name); updateCertState(caCertInputId);}}
                                         ></SBFileUpload>
                                     </div>
                                     <div className="col-md-4">
-                                        <SBLabel labelFor="http_client_cert" labelText="Client Cert"></SBLabel>
+                                        <SBLabel labelFor="http_client_cert" labelText="Client Cert" labelValue={inputData.transport.http?.client_cert}></SBLabel>
                                         <SBFileUpload 
                                             fieldId={clientCertInputId} 
                                             fieldTitle={"Client Certificate File Types: .pem, .crt, .ca-bundle, .cer, .p7b, .p7c, .p7s"}
                                             dataKey={"transport.http.client_cert"} 
                                             dataValue={inputData.transport?.http?.client_cert}
                                             filesAccepted={".pem, .crt, .ca-bundle, .cer, .p7b, .p7c, .p7s"}
-                                            sendChangeToParent={handleChange}
+                                            sendChangeToParent={(key: string, name: string) => {handleChange(key, name); updateCertState(clientCertInputId);}}
                                         ></SBFileUpload>                                        
                                     </div>
                                     <div className="col-md-4">
-                                        <SBLabel labelFor="http_client_key" labelText="Client Key"></SBLabel>
+                                        <SBLabel labelFor="http_client_key" labelText="Client Key" labelValue={inputData.transport.http?.client_key}></SBLabel>
                                         <SBFileUpload 
                                             fieldId={clientKeyInputId} 
                                             fieldTitle={"Keystore File Types: .key, .keystore, .jks"}
                                             dataKey={"transport.http.client_key"} 
                                             dataValue={inputData.transport?.http?.client_key}
                                             filesAccepted={".key, .keystore, .jks"}
-                                            sendChangeToParent={handleChange}
+                                            sendChangeToParent={(key: string, name: string) => {handleChange(key, name); updateCertState(clientKeyInputId);}}
                                         ></SBFileUpload>                                         
                                     </div>                            
                                 </div>                                                                 
@@ -442,8 +440,8 @@ const DeviceCreator = () => {
                         <span></span>
                     }                    
 
-                    <br/>
-                    <pre>{JSON.stringify(inputData, null, 2)}</pre>
+                    {/* <br/>
+                    <pre>{JSON.stringify(inputData, null, 2)}</pre> */}
                    
                 </form>
             </div>

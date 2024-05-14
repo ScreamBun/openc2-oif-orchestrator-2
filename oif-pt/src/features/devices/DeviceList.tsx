@@ -83,9 +83,9 @@ const DeviceList = () => {
             <td>{device.transport.serialization}</td>
             <td>
                 <SBDeleteBtn id={'delete'+device.id} type={device.name} onDelete={() => {onRemove(device.id, device.name)}} customClass='ms-2 float-end' />                                
-                <button type="button" className="btn btn-sm btn-primary ms-2 float-end" title="Create Duplicate">
+                {/* <button type="button" className="btn btn-sm btn-primary ms-2 float-end" title="Create Duplicate">
                     <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
-                </button>                
+                </button>                 */}
             </td>
         </tr >
     );
