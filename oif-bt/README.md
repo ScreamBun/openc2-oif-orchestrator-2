@@ -22,7 +22,7 @@ code .
 - Make sure your IDE is using the correct virtual environment, use these commands in vscode to pick the correct 'Python Interpreter' aka virtual environment:
 
 ```bash
-Cntrl + Shift + P
+Ctrl + Shift + P
 ```
 
 - Then pick the 'oif-bt' Interpreter
